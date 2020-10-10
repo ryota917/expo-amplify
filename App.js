@@ -7,6 +7,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 //import screens
 import Single1 from './screens/Single1';
@@ -32,16 +33,38 @@ const Stack = createStackNavigator(
 //Tab
 const Tab = createBottomTabNavigator(
   {
-    Tab1: { screen: createStackNavigator({ Tab1: { screen: Tab1 } })},
-    Tab2: { screen: createStackNavigator({ Tab2: { screen: Tab2 } })},
+    Tab1: {
+      screen: createStackNavigator({ Tab1: { screen: Tab1 } }),
+      //Tabのアイコン(FontAwesomeから取得)
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='home' color={tintColor} />
+      }
+    },
+    Tab2: {
+      screen: createStackNavigator({ Tab2: { screen: Tab2 } }),
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='cog' color={tintColor} />
+      }
+    }
   }
 );
 
 //drawer
 const Drawer = createDrawerNavigator(
   {
-    Stacks: { screen: Stack },
-    Tabs: { screen: Tab },
+    Stacks: {
+      screen: Stack,
+      //ハンバーガメニューのアイコン
+      navigationOptions: {
+        drawerIcon: <Icon name='check' size={24} />
+      }
+    },
+    Tabs: {
+      screen: Tab,
+      navigationOptions: {
+        drawerIcon: <Icon name='check' size={24} />
+      }
+    },
     Single1: {
       screen: createStackNavigator({
         Single1: { screen: Single1 }
