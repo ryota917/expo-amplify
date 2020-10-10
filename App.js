@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Amplify from '@aws-amplify/core';
 import { withAuthenticator } from 'aws-amplify-react-native';
-import config from './aws-exports';
+//aws-exportsを読み込めないので暫定的にコメントアウト
+//import config from './aws-exports';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -17,7 +18,18 @@ import Stack2 from './screens/Stack2';
 import Tab1 from './screens/Tab1';
 import Tab2 from './screens/Tab2';
 
-Amplify.configure(config);
+//aws-exportsを読み込めないので暫定的に直接記入
+Amplify.configure({
+    "aws_project_region": "ap-northeast-1",
+    "aws_appsync_graphqlEndpoint": "https://lpysywb5rnamtdmuojjypxxkri.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+    "aws_appsync_region": "ap-northeast-1",
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+    "aws_cognito_identity_pool_id": "ap-northeast-1:62bd8c1c-2157-4e62-9cda-67ca440caa9a",
+    "aws_cognito_region": "ap-northeast-1",
+    "aws_user_pools_id": "ap-northeast-1_krUoox3yW",
+    "aws_user_pools_web_client_id": "rruh53etit2lj1h760u11nfb",
+    "oauth": {}
+});
 
 //stack
 const Stack = createStackNavigator(
