@@ -1,97 +1,66 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getRoom = /* GraphQL */ `
-  query GetRoom($id: ID!) {
-    getRoom(id: $id) {
+export const getItem = /* GraphQL */ `
+  query GetItem($id: ID!) {
+    getItem(id: $id) {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
     }
   }
 `;
-export const listRooms = /* GraphQL */ `
-  query ListRooms(
-    $filter: ModelRoomFilterInput
+export const listItems = /* GraphQL */ `
+  query ListItems(
+    $filter: ModelItemFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
       }
       nextToken
     }
   }
 `;
-export const getMessage = /* GraphQL */ `
-  query GetMessage($id: ID!) {
-    getMessage(id: $id) {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listMessages = /* GraphQL */ `
-  query ListMessages(
-    $filter: ModelMessageFilterInput
+export const searchItems = /* GraphQL */ `
+  query SearchItems(
+    $filter: SearchableItemFilterInput
+    $sort: SearchableItemSortInput
     $limit: Int
     $nextToken: String
   ) {
-    listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    searchItems(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        content
-        when
-        roomId
-        owner
-        room {
-          id
-          title
-          avatar
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
       }
       nextToken
+      total
     }
   }
 `;

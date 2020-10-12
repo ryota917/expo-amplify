@@ -1,157 +1,58 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createRoom = /* GraphQL */ `
-  mutation CreateRoom(
-    $input: CreateRoomInput!
-    $condition: ModelRoomConditionInput
+export const createItem = /* GraphQL */ `
+  mutation CreateItem(
+    $input: CreateItemInput!
+    $condition: ModelItemConditionInput
   ) {
-    createRoom(input: $input, condition: $condition) {
+    createItem(input: $input, condition: $condition) {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
       createdAt
       updatedAt
     }
   }
 `;
-export const updateRoom = /* GraphQL */ `
-  mutation UpdateRoom(
-    $input: UpdateRoomInput!
-    $condition: ModelRoomConditionInput
+export const updateItem = /* GraphQL */ `
+  mutation UpdateItem(
+    $input: UpdateItemInput!
+    $condition: ModelItemConditionInput
   ) {
-    updateRoom(input: $input, condition: $condition) {
+    updateItem(input: $input, condition: $condition) {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteRoom = /* GraphQL */ `
-  mutation DeleteRoom(
-    $input: DeleteRoomInput!
-    $condition: ModelRoomConditionInput
+export const deleteItem = /* GraphQL */ `
+  mutation DeleteItem(
+    $input: DeleteItemInput!
+    $condition: ModelItemConditionInput
   ) {
-    deleteRoom(input: $input, condition: $condition) {
+    deleteItem(input: $input, condition: $condition) {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createMessage = /* GraphQL */ `
-  mutation CreateMessage(
-    $input: CreateMessageInput!
-    $condition: ModelMessageConditionInput
-  ) {
-    createMessage(input: $input, condition: $condition) {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateMessage = /* GraphQL */ `
-  mutation UpdateMessage(
-    $input: UpdateMessageInput!
-    $condition: ModelMessageConditionInput
-  ) {
-    updateMessage(input: $input, condition: $condition) {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteMessage = /* GraphQL */ `
-  mutation DeleteMessage(
-    $input: DeleteMessageInput!
-    $condition: ModelMessageConditionInput
-  ) {
-    deleteMessage(input: $input, condition: $condition) {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
       createdAt
       updatedAt
     }

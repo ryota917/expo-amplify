@@ -1,139 +1,49 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateRoom = /* GraphQL */ `
-  subscription OnCreateRoom {
-    onCreateRoom {
+export const onCreateItem = /* GraphQL */ `
+  subscription OnCreateItem {
+    onCreateItem {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateRoom = /* GraphQL */ `
-  subscription OnUpdateRoom {
-    onUpdateRoom {
+export const onUpdateItem = /* GraphQL */ `
+  subscription OnUpdateItem {
+    onUpdateItem {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteRoom = /* GraphQL */ `
-  subscription OnDeleteRoom {
-    onDeleteRoom {
+export const onDeleteItem = /* GraphQL */ `
+  subscription OnDeleteItem {
+    onDeleteItem {
       id
-      title
-      avatar
-      messages {
-        items {
-          id
-          content
-          when
-          roomId
-          owner
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateMessage = /* GraphQL */ `
-  subscription OnCreateMessage {
-    onCreateMessage {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateMessage = /* GraphQL */ `
-  subscription OnUpdateMessage {
-    onUpdateMessage {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteMessage = /* GraphQL */ `
-  subscription OnDeleteMessage {
-    onDeleteMessage {
-      id
-      content
-      when
-      roomId
-      owner
-      room {
-        id
-        title
-        avatar
-        messages {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      name
+      description
+      color
+      size
+      status
+      season
+      image_url
       createdAt
       updatedAt
     }

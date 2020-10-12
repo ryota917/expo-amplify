@@ -26,7 +26,7 @@ enum Season {
   WINTER
 }
 
-type Item @model {
+type Item @model @searchable {
   id: ID!
   name: String!
   description: String!
@@ -34,4 +34,5 @@ type Item @model {
   size: Size
   status: Status
   season: Season
+  image_url: String!
 }
