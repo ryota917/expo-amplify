@@ -11,9 +11,6 @@ import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 //import screens
-import Single1 from './screens/Single1';
-import Stack1 from './screens/Stack1';
-import Stack2 from './screens/Stack2';
 import ItemTab from './screens/ItemTab';
 import CoordinateTab from './screens/CoordinateTab';
 import BoxTab from './screens/BoxTab'
@@ -42,13 +39,12 @@ Amplify.configure({
 //stack
 const Stack = createStackNavigator(
   {
-    Stack1: {screen: Stack1},
-    Stack2: {screen: Stack2},
+    ItemTab: {screen: ItemTab},
     ItemDetail: {screen: ItemDetail},
     SearchConditionModal: {screen: SearchConditionModal}
   },
   {
-    initialRouteName: 'Stack1'
+    initialRouteName: 'ItemTab'
   }
 );
 
@@ -86,23 +82,11 @@ const Tab = createBottomTabNavigator(
 //drawer
 const Drawer = createDrawerNavigator(
   {
-    Stacks: {
-      screen: Stack,
-      //ハンバーガメニューのアイコン
-      navigationOptions: {
-        drawerIcon: <Icon name='check' size={24} />
-      }
-    },
-    Tabs: {
+    'ホーム': {
       screen: Tab,
       navigationOptions: {
-        drawerIcon: <Icon name='check' size={24} />
+        drawerIcon: <Icon name='home' size={24} />
       }
-    },
-    Single1: {
-      screen: createStackNavigator({
-        Single1: { screen: Single1 }
-      })
     }
   },
   {
@@ -116,7 +100,7 @@ const Drawer = createDrawerNavigator(
           /> */}
           <Text>
             <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>
-              <Icon name="check" size={24} color={'#666'} />
+              <Icon name="sign-out" size={24} color={'#666'} />
             </View>
             <View style={{ width: 80, height: 47, justifyContent:'center'}}>
               <Text
@@ -129,7 +113,7 @@ const Drawer = createDrawerNavigator(
         </SafeAreaView>
       </View>
     ),
-    initialRouteName: "Tabs"
+    initialRouteName: "ホーム"
   }
 )
 

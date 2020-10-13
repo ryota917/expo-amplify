@@ -7,9 +7,7 @@ import * as Query from '../../src/graphql/queries'
 export default class SearchConditionModal extends React.Component {
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: '条件検索画面',
-        headerLeft:(
-            <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
-        ),
+        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
     render() {

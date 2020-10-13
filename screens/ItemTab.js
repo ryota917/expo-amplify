@@ -19,13 +19,9 @@ export default class ItemTab extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-    title: 'アイテム',
-    headerLeft:(
-        <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
-    ),
-    headerRight:(
-    <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
-    )
+        title: 'アイテム',
+        headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+        headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
     });
 
     componentDidMount() {

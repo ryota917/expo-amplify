@@ -13,15 +13,13 @@ export default class ItemDetail extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'アイテム詳細画面',
-        headerLeft:(
-            <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
-        ),
+        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
     render() {
         return(
             <View>
-                <Image source={this.state.item.image_url} style={styles.image}></Image>
+                <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image>
                 <Text>{this.state.item.name}</Text>
             </View>
         )

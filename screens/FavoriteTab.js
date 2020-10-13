@@ -9,14 +9,14 @@ export default class FavoriteTab extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         title: 'お気に入り',
-        headerLeft:(
-            <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>
-        ),
+        headerLeft:() => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
     });
 
     render() {
         return(
-            <Text>FavoriteTab</Text>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>アップデートをお待ちください。</Text>
+            </View>
         )
     }
 }

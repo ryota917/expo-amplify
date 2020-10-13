@@ -9,9 +9,7 @@ export default class BoxTab extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         title: 'ボックス',
-        headerLeft:(
-            <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>
-        ),
+        headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
     });
 
     render() {
