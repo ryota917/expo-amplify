@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as Query from '../src/graphql/queries'
 import { Image, Card, Button } from 'react-native-elements';
+import SearchConditionModal from './item/SearchConditionModal'
 //native-baseがエラーが出てコンパイルできないため一旦react-native-elementsを使うことにする
 //import { Container, Content, Card, CardItem } from 'native-base';
 //import axios from 'axios';
@@ -12,21 +13,26 @@ export default class Tab1 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: []
+            items: [],
+            isModalVisible: false
         }
     }
+
+    static navigationOptions = ({navigation}) => ({
+    title: 'アイテム',
+    headerLeft:(
+        <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
+    ),
+    headerRight:(
+    <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
+    )
+    });
 
     componentDidMount() {
         this.fetchItems();
     }
 
-    static navigationOptions = ({navigation}) => ({
-        title: 'アイテム',
-        headerLeft:(
-            <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>
-        ),
-    });
-
+    //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する
     fetchItems = async () => {
         try {
             const res = await API.graphql(graphqlOperation(Query.searchItems, {}))
@@ -39,18 +45,22 @@ export default class Tab1 extends React.Component {
 
     render() {
         return (
+            //iphoneXにも対応するViewの生成
+            //<SafeAreaView>
             <ScrollView style={{flex: 1}}>
                 {this.state.items.map((ele, i) => {
-                    return <Card>
+                    return <Card key={i}>
                         <Card.Title>{ele.name}</Card.Title>
                         <Card.Divider/>
-                        <View key={i} onPress={() => this.props.navigation.navigate('Hoge')}>
-                            <Image style={styles.image} source={{ uri: ele.image_url }}/>
+                        <Card.Image style={styles.image} source={{ uri: ele.image_url }} />
+                        <View key={i}>
                             <Text>{ele.size}</Text>
+                            <Button title='press me for detail' onPress={() => this.props.navigation.navigate('ItemDetail', { item: ele })}/>
                         </View>
                     </Card>
                 })}
             </ScrollView>
+            //</SafeAreaView>
         );
     }
 }

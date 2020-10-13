@@ -17,6 +17,8 @@ import Stack1 from './screens/Stack1';
 import Stack2 from './screens/Stack2';
 import Tab1 from './screens/Tab1';
 import Tab2 from './screens/Tab2';
+import ItemDetail from './screens/item/ItemDetail'
+import SearchConditionModal from './screens/item/SearchConditionModal'
 
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
@@ -28,7 +30,11 @@ Amplify.configure({
     "aws_cognito_region": "ap-northeast-1",
     "aws_user_pools_id": "ap-northeast-1_krUoox3yW",
     "aws_user_pools_web_client_id": "rruh53etit2lj1h760u11nfb",
-    "oauth": {}
+    "oauth": {},
+    //No credentials, applicationId or regionを回避
+    Analytics: {
+      disabled: true,
+    }
 });
 
 //stack
@@ -36,6 +42,8 @@ const Stack = createStackNavigator(
   {
     Stack1: {screen: Stack1},
     Stack2: {screen: Stack2},
+    ItemDetail: {screen: ItemDetail},
+    SearchConditionModal: {screen: SearchConditionModal}
   },
   {
     initialRouteName: 'Stack1'
