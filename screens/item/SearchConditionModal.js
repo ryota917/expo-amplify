@@ -8,7 +8,7 @@ export default class SearchConditionModal extends React.Component {
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: '条件検索画面',
         headerLeft:(
-            <Icon name="angle-left" size={28} onPress={()=>{navigate('Tab1')}} style={{paddingLeft:20}}/>
+            <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
         ),
     });
 

@@ -1,24 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Amplify from '@aws-amplify/core';
+import { StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
+import { Amplify, Auth } from 'aws-amplify';
 import { withAuthenticator } from 'aws-amplify-react-native';
 //aws-exportsを読み込めないので暫定的にコメントアウト
 //import config from './aws-exports';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 //import screens
 import Single1 from './screens/Single1';
-import Single2 from './screens/Single2';
 import Stack1 from './screens/Stack1';
 import Stack2 from './screens/Stack2';
-import Tab1 from './screens/Tab1';
-import Tab2 from './screens/Tab2';
+import ItemTab from './screens/ItemTab';
+import CoordinateTab from './screens/CoordinateTab';
+import BoxTab from './screens/BoxTab'
+import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/SearchConditionModal'
+
 
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
@@ -53,17 +55,29 @@ const Stack = createStackNavigator(
 //Tab
 const Tab = createBottomTabNavigator(
   {
-    Tab1: {
-      screen: createStackNavigator({ Tab1: { screen: Tab1 } }),
+    'アイテム': {
+      screen: createStackNavigator({ ItemTab: { screen: ItemTab } }),
       //Tabのアイコン(FontAwesomeから取得)
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='home' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='tag' color={tintColor} />
       }
     },
-    Tab2: {
-      screen: createStackNavigator({ Tab2: { screen: Tab2 } }),
+    'コーデ': {
+      screen: createStackNavigator({ CoordinateTab: { screen: CoordinateTab } }),
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='cog' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='user' color={tintColor} />
+      }
+    },
+    'お気に入り': {
+      screen: createStackNavigator({ FavoriteTab: { screen: FavoriteTab }}),
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='heart' color={tintColor} />
+      }
+    },
+    'ボックス': {
+      screen: createStackNavigator({ BoxTab: { screen: BoxTab }}),
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='shopping-cart' color={tintColor} />
       }
     }
   }
@@ -89,15 +103,33 @@ const Drawer = createDrawerNavigator(
       screen: createStackNavigator({
         Single1: { screen: Single1 }
       })
-    },
-    Single2: {
-      screen: createStackNavigator({
-        Single2: { screen: Single2 }
-      })
     }
   },
   {
-    initialRouteName: 'Tabs'
+    contentComponent: (props) => (
+      <View style={{ flex: 1, marginTop: 40 }}>
+        <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+          <DrawerItems {...props} />
+          {/* <Button
+            title="Logout"
+            onPress={()=>alert('hoge')}
+          /> */}
+          <Text>
+            <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>
+              <Icon name="check" size={24} color={'#666'} />
+            </View>
+            <View style={{ width: 80, height: 47, justifyContent:'center'}}>
+              <Text
+                style={{ fontWeight: '700', color: '#111'}}
+                onPress={() => Auth.signOut()}
+              >ログアウト
+              </Text>
+            </View>
+          </Text>
+        </SafeAreaView>
+      </View>
+    ),
+    initialRouteName: "Tabs"
   }
 )
 
@@ -110,4 +142,4 @@ class App extends React.Component {
     }
 }
 
-export default withAuthenticator(App, { includeGreetings: true })
+export default withAuthenticator(App)

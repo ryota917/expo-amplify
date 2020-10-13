@@ -9,7 +9,7 @@ import SearchConditionModal from './item/SearchConditionModal'
 //import { Container, Content, Card, CardItem } from 'native-base';
 //import axios from 'axios';
 
-export default class Tab1 extends React.Component {
+export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

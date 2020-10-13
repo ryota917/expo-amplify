@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.7",
+    "a-theme-react": "0.0.5",
     "aws-amplify": "^3.3.2",
     "aws-amplify-react-native": "^4.2.7",
     "aws-sdk": "^2.770.0",

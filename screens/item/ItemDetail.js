@@ -14,7 +14,7 @@ export default class ItemDetail extends React.Component {
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'アイテム詳細画面',
         headerLeft:(
-            <Icon name="angle-left" size={28} onPress={()=>{navigate('Tab1')}} style={{paddingLeft:20}}/>
+            <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
         ),
     });
 
