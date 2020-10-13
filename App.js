@@ -36,8 +36,8 @@ Amplify.configure({
     }
 });
 
-//stack
-const Stack = createStackNavigator(
+//ItemTabのstack
+const ItemTabStack = createStackNavigator(
   {
     ItemTab: {screen: ItemTab},
     ItemDetail: {screen: ItemDetail},
@@ -52,8 +52,7 @@ const Stack = createStackNavigator(
 const Tab = createBottomTabNavigator(
   {
     'アイテム': {
-      screen: createStackNavigator({ ItemTab: { screen: ItemTab } }),
-      //Tabのアイコン(FontAwesomeから取得)
+      screen: ItemTabStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='tag' color={tintColor} />
       }

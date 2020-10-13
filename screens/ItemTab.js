@@ -14,7 +14,6 @@ export default class ItemTab extends React.Component {
         super(props);
         this.state = {
             items: [],
-            isModalVisible: false
         }
     }
 
