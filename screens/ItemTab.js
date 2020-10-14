@@ -3,8 +3,7 @@ import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as Query from '../src/graphql/queries'
-import { Image, Card, Button } from 'react-native-elements';
-import SearchConditionModal from './item/SearchConditionModal'
+import { Card, Button } from 'react-native-elements';
 //native-baseがエラーが出てコンパイルできないため一旦react-native-elementsを使うことにする
 //import { Container, Content, Card, CardItem } from 'native-base';
 //import axios from 'axios';

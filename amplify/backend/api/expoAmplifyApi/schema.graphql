@@ -35,4 +35,43 @@ type Item @model @searchable {
   status: Status
   season: Season
   image_url: String!
+  cartLogs: [ItemGroup] @connection(keyName: "byItem", fields: ["id"])
+}
+
+type ItemGroup
+  @model
+  @key(name: "byCartLog", fields: ["cartLogId"])
+  @key(name: "byItem", fields: ["itemId"])
+{
+    id: ID!
+    itemId: ID!
+    cartLogId: ID!
+    item: Item @connection(fields: ["itemId"])
+    cartLog: CartLog @connection(fields: ["cartLogId"])
+}
+
+type User @model {
+  id: ID!
+  name: String
+  email: String
+  cartId: ID!
+  cartLogId: ID!
+  cart: Cart @connection(fields: ["cartId"])
+  cartLogs: [CartLog] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type Cart @model {
+  id: ID!
+  userId: ID!
+  user: User @connection(fields: ["userId"])
+}
+
+type CartLog
+  @model
+  @key(name: "byUser", fields: ["userId"]) {
+  id: ID!
+  userId: ID!
+  createdAt: AWSDateTime!
+  user: User @connection(fields: ["userId"])
+  items: [ItemGroup] @connection(keyName: "byCartLog", fields: ["id"])
 }

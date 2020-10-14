@@ -16,7 +16,7 @@ import CoordinateTab from './screens/CoordinateTab';
 import BoxTab from './screens/BoxTab'
 import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
-import SearchConditionModal from './screens/item/SearchConditionModal'
+import SearchConditionModal from './screens/item/search/SearchConditionModal'
 
 
 //aws-exportsを読み込めないので暫定的に直接記入
@@ -93,10 +93,6 @@ const Drawer = createDrawerNavigator(
       <View style={{ flex: 1, marginTop: 40 }}>
         <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
           <DrawerItems {...props} />
-          {/* <Button
-            title="Logout"
-            onPress={()=>alert('hoge')}
-          /> */}
           <Text>
             <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>
               <Icon name="sign-out" size={24} color={'#666'} />
