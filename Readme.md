@@ -1,1 +1,2 @@
 ## pretapoモバイルアプリ
+comming soon
