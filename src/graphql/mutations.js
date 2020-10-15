@@ -15,6 +15,16 @@ export const createItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
@@ -44,6 +54,16 @@ export const updateItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
@@ -73,6 +93,16 @@ export const deleteItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
@@ -82,147 +112,6 @@ export const deleteItem = /* GraphQL */ `
           updatedAt
         }
         nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createItemGroup = /* GraphQL */ `
-  mutation CreateItemGroup(
-    $input: CreateItemGroupInput!
-    $condition: ModelItemGroupConditionInput
-  ) {
-    createItemGroup(input: $input, condition: $condition) {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      cartLog {
-        id
-        userId
-        createdAt
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-          createdAt
-          updatedAt
-        }
-        items {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateItemGroup = /* GraphQL */ `
-  mutation UpdateItemGroup(
-    $input: UpdateItemGroupInput!
-    $condition: ModelItemGroupConditionInput
-  ) {
-    updateItemGroup(input: $input, condition: $condition) {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      cartLog {
-        id
-        userId
-        createdAt
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-          createdAt
-          updatedAt
-        }
-        items {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteItemGroup = /* GraphQL */ `
-  mutation DeleteItemGroup(
-    $input: DeleteItemGroupInput!
-    $condition: ModelItemGroupConditionInput
-  ) {
-    deleteItemGroup(input: $input, condition: $condition) {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      cartLog {
-        id
-        userId
-        createdAt
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-          createdAt
-          updatedAt
-        }
-        items {
-          nextToken
-        }
-        updatedAt
       }
       createdAt
       updatedAt
@@ -239,7 +128,6 @@ export const createUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -248,12 +136,14 @@ export const createUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
+        items {
+          nextToken
+        }
       }
       cartLogs {
         items {
@@ -279,7 +169,6 @@ export const updateUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -288,12 +177,14 @@ export const updateUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
+        items {
+          nextToken
+        }
       }
       cartLogs {
         items {
@@ -319,7 +210,6 @@ export const deleteUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -328,12 +218,14 @@ export const deleteUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
+        items {
+          nextToken
+        }
       }
       cartLogs {
         items {
@@ -362,7 +254,6 @@ export const createCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -377,6 +268,16 @@ export const createCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -393,7 +294,6 @@ export const updateCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -408,6 +308,16 @@ export const updateCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -424,7 +334,6 @@ export const deleteCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -439,6 +348,16 @@ export const deleteCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -456,7 +375,6 @@ export const createCartLog = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -497,7 +415,6 @@ export const updateCartLog = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -538,7 +455,6 @@ export const deleteCartLog = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -561,6 +477,300 @@ export const deleteCartLog = /* GraphQL */ `
         }
         nextToken
       }
+      updatedAt
+    }
+  }
+`;
+export const createItemCart = /* GraphQL */ `
+  mutation CreateItemCart(
+    $input: CreateItemCartInput!
+    $condition: ModelItemCartConditionInput
+  ) {
+    createItemCart(input: $input, condition: $condition) {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateItemCart = /* GraphQL */ `
+  mutation UpdateItemCart(
+    $input: UpdateItemCartInput!
+    $condition: ModelItemCartConditionInput
+  ) {
+    updateItemCart(input: $input, condition: $condition) {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteItemCart = /* GraphQL */ `
+  mutation DeleteItemCart(
+    $input: DeleteItemCartInput!
+    $condition: ModelItemCartConditionInput
+  ) {
+    deleteItemCart(input: $input, condition: $condition) {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createItemCartLog = /* GraphQL */ `
+  mutation CreateItemCartLog(
+    $input: CreateItemCartLogInput!
+    $condition: ModelItemCartLogConditionInput
+  ) {
+    createItemCartLog(input: $input, condition: $condition) {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateItemCartLog = /* GraphQL */ `
+  mutation UpdateItemCartLog(
+    $input: UpdateItemCartLogInput!
+    $condition: ModelItemCartLogConditionInput
+  ) {
+    updateItemCartLog(input: $input, condition: $condition) {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteItemCartLog = /* GraphQL */ `
+  mutation DeleteItemCartLog(
+    $input: DeleteItemCartLogInput!
+    $condition: ModelItemCartLogConditionInput
+  ) {
+    deleteItemCartLog(input: $input, condition: $condition) {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
       updatedAt
     }
   }

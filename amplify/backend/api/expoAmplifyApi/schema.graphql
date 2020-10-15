@@ -1,3 +1,4 @@
+# 定数
 enum Color {
   RED
   YELLOW
@@ -26,6 +27,7 @@ enum Season {
   WINTER
 }
 
+# テーブル
 type Item @model @searchable {
   id: ID!
   name: String!
@@ -35,19 +37,8 @@ type Item @model @searchable {
   status: Status
   season: Season
   image_url: String!
-  cartLogs: [ItemGroup] @connection(keyName: "byItem", fields: ["id"])
-}
-
-type ItemGroup
-  @model
-  @key(name: "byCartLog", fields: ["cartLogId"])
-  @key(name: "byItem", fields: ["itemId"])
-{
-    id: ID!
-    itemId: ID!
-    cartLogId: ID!
-    item: Item @connection(fields: ["itemId"])
-    cartLog: CartLog @connection(fields: ["cartLogId"])
+  carts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
+  cartLogs: [ItemCartLog] @connection(keyName: "byItem", fields: ["id"])
 }
 
 type User @model {
@@ -55,7 +46,6 @@ type User @model {
   name: String
   email: String
   cartId: ID!
-  cartLogId: ID!
   cart: Cart @connection(fields: ["cartId"])
   cartLogs: [CartLog] @connection(keyName: "byUser", fields: ["id"])
   createdAt: AWSDateTime!
@@ -66,6 +56,9 @@ type Cart @model {
   id: ID!
   userId: ID!
   user: User @connection(fields: ["userId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  items: [ItemCart] @connection(keyName: "byCart", fields: ["id"])
 }
 
 type CartLog
@@ -75,5 +68,31 @@ type CartLog
   userId: ID!
   createdAt: AWSDateTime!
   user: User @connection(fields: ["userId"])
-  items: [ItemGroup] @connection(keyName: "byCartLog", fields: ["id"])
+  items: [ItemCartLog] @connection(keyName: "byCartLog", fields: ["id"])
 }
+
+# 中間テーブル
+type ItemCart
+  @model
+  @key(name: "byItem", fields: ["itemId"])
+  @key(name: "byCart", fields: ["cartId"])
+{
+    id: ID!
+    itemId: ID!
+    cartId: ID!
+    item: Item @connection(fields: ["itemId"])
+    cart: Cart @connection(fields: ["cartId"])
+}
+
+
+type ItemCartLog
+  @model
+  @key(name: "byItem", fields: ["itemId"])
+  @key(name: "byCartLog", fields: ["cartLogId"])
+  {
+    id: ID!
+    itemId: ID!
+    cartLogId: ID!
+    item: Item @connection(fields: ["itemId"])
+    cartLog: CartLog @connection(fields: ["cartLogId"])
+  }

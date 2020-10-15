@@ -12,6 +12,16 @@ export const onCreateItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
@@ -38,6 +48,16 @@ export const onUpdateItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
@@ -64,6 +84,16 @@ export const onDeleteItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
@@ -79,138 +109,6 @@ export const onDeleteItem = /* GraphQL */ `
     }
   }
 `;
-export const onCreateItemGroup = /* GraphQL */ `
-  subscription OnCreateItemGroup {
-    onCreateItemGroup {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      cartLog {
-        id
-        userId
-        createdAt
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-          createdAt
-          updatedAt
-        }
-        items {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateItemGroup = /* GraphQL */ `
-  subscription OnUpdateItemGroup {
-    onUpdateItemGroup {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      cartLog {
-        id
-        userId
-        createdAt
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-          createdAt
-          updatedAt
-        }
-        items {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteItemGroup = /* GraphQL */ `
-  subscription OnDeleteItemGroup {
-    onDeleteItemGroup {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      cartLog {
-        id
-        userId
-        createdAt
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-          createdAt
-          updatedAt
-        }
-        items {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
@@ -218,7 +116,6 @@ export const onCreateUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -227,12 +124,14 @@ export const onCreateUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
+        items {
+          nextToken
+        }
       }
       cartLogs {
         items {
@@ -255,7 +154,6 @@ export const onUpdateUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -264,12 +162,14 @@ export const onUpdateUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
+        items {
+          nextToken
+        }
       }
       cartLogs {
         items {
@@ -292,7 +192,6 @@ export const onDeleteUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -301,12 +200,14 @@ export const onDeleteUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
+        items {
+          nextToken
+        }
       }
       cartLogs {
         items {
@@ -332,7 +233,6 @@ export const onCreateCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -347,6 +247,16 @@ export const onCreateCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -360,7 +270,6 @@ export const onUpdateCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -375,6 +284,16 @@ export const onUpdateCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -388,7 +307,6 @@ export const onDeleteCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -403,6 +321,16 @@ export const onDeleteCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -417,7 +345,6 @@ export const onCreateCartLog = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -455,7 +382,6 @@ export const onUpdateCartLog = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -493,7 +419,6 @@ export const onDeleteCartLog = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
@@ -516,6 +441,282 @@ export const onDeleteCartLog = /* GraphQL */ `
         }
         nextToken
       }
+      updatedAt
+    }
+  }
+`;
+export const onCreateItemCart = /* GraphQL */ `
+  subscription OnCreateItemCart {
+    onCreateItemCart {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateItemCart = /* GraphQL */ `
+  subscription OnUpdateItemCart {
+    onUpdateItemCart {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteItemCart = /* GraphQL */ `
+  subscription OnDeleteItemCart {
+    onDeleteItemCart {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateItemCartLog = /* GraphQL */ `
+  subscription OnCreateItemCartLog {
+    onCreateItemCartLog {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateItemCartLog = /* GraphQL */ `
+  subscription OnUpdateItemCartLog {
+    onUpdateItemCartLog {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteItemCartLog = /* GraphQL */ `
+  subscription OnDeleteItemCartLog {
+    onDeleteItemCartLog {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
       updatedAt
     }
   }

@@ -24,21 +24,34 @@ export default class ItemTab extends React.Component {
     });
 
     componentDidMount() {
-        this.syncUserToDynamo();
+        this.syncUserAndCartToDynamo();
         this.fetchItems();
     }
 
     //App.js 153TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
-    syncUserToDynamo = async () => {
+    syncUserAndCartToDynamo = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
-        console.log(currentUser);
-        const dynamoUser = await API.graphql(graphqlOperation(gqlMutations.createUser, {
-            input: {
-                id: currentUser.username,
-                email: currentUser.attributes.email
-            }
-        }))
-        console.log(dynamoUser)
+        const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUser.username}))
+        const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
+        if(!dynamoUser.data.getUser) {
+            console.log('新規ユーザーデータを作成します')
+            await API.graphql(graphqlOperation(gqlMutations.createUser, {
+                input: {
+                    id: currentUser.username,
+                    email: currentUser.attributes.email,
+                    cartId: currentUser.username,
+                }
+            }))
+        }
+        if(!dynamoCart.data.getCart) {
+            console.log('新規ユーザーのカートデータを作成します')
+            await API.graphql(graphqlOperation(gqlMutations.createCart, {
+                input: {
+                    id: currentUser.username,
+                    userId: currentUser.username
+                }
+            }))
+        }
     }
 
     //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する

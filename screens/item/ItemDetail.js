@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Button } from 'react-native-elements';
 import * as gqlMutations from '../../src/graphql/mutations'
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -17,9 +18,10 @@ export default class ItemDetail extends React.Component {
         headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
-    saveItemCart = () => {
+    saveItemToCart = async () => {
+        const currentUser = Auth.currentAuthenticatedUser()
         console.log('カートに入れるボタンが押されました')
-        
+        //多対多のリレーションは中間テーブルデータの生成で実現可能(item, cartの更新処理は不要)
         //スマホ版専用のアラートなのでWebブラウザのsimulatorではAlertが出ない
         Alert.alert(
             'Button pressed',
@@ -32,7 +34,7 @@ export default class ItemDetail extends React.Component {
             <View>
                 <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image>
                 <Text>{this.state.item.name}</Text>
-                <Button icon={<Icon name='shopping-cart' size={30} color='white'/>} title='カートに入れる' onPress={this.saveItemCart}/>
+                <Button icon={<Icon name='shopping-cart' size={30} color='white'/>} title='カートに入れる' onPress={this.saveItemToCart}/>
             </View>
         )
     }

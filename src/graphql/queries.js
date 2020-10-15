@@ -12,14 +12,28 @@ export const getItem = /* GraphQL */ `
       status
       season
       image_url
+      carts {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       cartLogs {
         items {
           id
           itemId
           cartLogId
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -39,75 +53,14 @@ export const listItems = /* GraphQL */ `
         status
         season
         image_url
+        carts {
+          nextToken
+        }
         cartLogs {
           nextToken
         }
-      }
-      nextToken
-    }
-  }
-`;
-export const getItemGroup = /* GraphQL */ `
-  query GetItemGroup($id: ID!) {
-    getItemGroup(id: $id) {
-      id
-      itemId
-      cartLogId
-      item {
-        id
-        name
-        description
-        color
-        size
-        status
-        season
-        image_url
-        cartLogs {
-          nextToken
-        }
-      }
-      cartLog {
-        id
-        userId
-        user {
-          id
-          name
-          email
-          cartId
-          cartLogId
-        }
-        items {
-          nextToken
-        }
-      }
-    }
-  }
-`;
-export const listItemGroups = /* GraphQL */ `
-  query ListItemGroups(
-    $filter: ModelItemGroupFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listItemGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        itemId
-        cartLogId
-        item {
-          id
-          name
-          description
-          color
-          size
-          status
-          season
-          image_url
-        }
-        cartLog {
-          id
-          userId
-        }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -120,7 +73,6 @@ export const getUser = /* GraphQL */ `
       name
       email
       cartId
-      cartLogId
       cart {
         id
         userId
@@ -129,16 +81,26 @@ export const getUser = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
         }
       }
       cartLogs {
         items {
           id
           userId
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -154,14 +116,17 @@ export const listUsers = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
+          createdAt
+          updatedAt
         }
         cartLogs {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -177,14 +142,29 @@ export const getCart = /* GraphQL */ `
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
+          createdAt
+          updatedAt
         }
         cartLogs {
           nextToken
         }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      items {
+        items {
+          id
+          itemId
+          cartId
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
     }
   }
@@ -204,7 +184,13 @@ export const listCarts = /* GraphQL */ `
           name
           email
           cartId
-          cartLogId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
         }
       }
       nextToken
@@ -216,28 +202,35 @@ export const getCartLog = /* GraphQL */ `
     getCartLog(id: $id) {
       id
       userId
+      createdAt
       user {
         id
         name
         email
         cartId
-        cartLogId
         cart {
           id
           userId
+          createdAt
+          updatedAt
         }
         cartLogs {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       items {
         items {
           id
           itemId
           cartLogId
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      updatedAt
     }
   }
 `;
@@ -251,16 +244,183 @@ export const listCartLogs = /* GraphQL */ `
       items {
         id
         userId
+        createdAt
         user {
           id
           name
           email
           cartId
-          cartLogId
+          createdAt
+          updatedAt
         }
         items {
           nextToken
         }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getItemCart = /* GraphQL */ `
+  query GetItemCart($id: ID!) {
+    getItemCart(id: $id) {
+      id
+      itemId
+      cartId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userId
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        items {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listItemCarts = /* GraphQL */ `
+  query ListItemCarts(
+    $filter: ModelItemCartFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listItemCarts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        itemId
+        cartId
+        item {
+          id
+          name
+          description
+          color
+          size
+          status
+          season
+          image_url
+          createdAt
+          updatedAt
+        }
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getItemCartLog = /* GraphQL */ `
+  query GetItemCartLog($id: ID!) {
+    getItemCartLog(id: $id) {
+      id
+      itemId
+      cartLogId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        carts {
+          nextToken
+        }
+        cartLogs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      cartLog {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        items {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listItemCartLogs = /* GraphQL */ `
+  query ListItemCartLogs(
+    $filter: ModelItemCartLogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listItemCartLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        itemId
+        cartLogId
+        item {
+          id
+          name
+          description
+          color
+          size
+          status
+          season
+          image_url
+          createdAt
+          updatedAt
+        }
+        cartLog {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -288,9 +448,14 @@ export const searchItems = /* GraphQL */ `
         status
         season
         image_url
+        carts {
+          nextToken
+        }
         cartLogs {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       nextToken
       total

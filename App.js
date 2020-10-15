@@ -175,7 +175,7 @@ export default withAuthenticator(App)
 /*
 <Authenticator
 theme={customeTheme}
-onStateChange=
+onStateChange=signedUpの時にUserとCart作成可能?
 >
 <CustomeSignUp override={'SignUp'}
 </Authenticator>
