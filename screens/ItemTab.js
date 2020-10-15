@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { API, graphqlOperation } from 'aws-amplify';
-import * as Query from '../src/graphql/queries'
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import * as gqlQueries from '../src/graphql/queries'
 import { Card, Button } from 'react-native-elements';
 //native-baseがエラーが出てコンパイルできないため一旦react-native-elementsを使うことにする
 //import { Container, Content, Card, CardItem } from 'native-base';
@@ -28,8 +28,12 @@ export default class ItemTab extends React.Component {
 
     //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する
     fetchItems = async () => {
+        const user = await Auth.currentSession()
+        const userInfo = await Auth.currentAuthenticatedUser()
+        console.log(user);
+        console.log(userInfo);
         try {
-            const res = await API.graphql(graphqlOperation(Query.searchItems, {}))
+            const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, {}))
             console.log(res)
             this.setState({items: res.data.searchItems.items})
         } catch(e) {

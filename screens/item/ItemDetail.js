@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Button } from 'react-native-elements';
+import * as gqlMutations from '../../src/graphql/mutations'
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -17,7 +18,8 @@ export default class ItemDetail extends React.Component {
     });
 
     saveItemCart = () => {
-        console.log('押されました')
+        console.log('カートに入れるボタンが押されました')
+        
         //スマホ版専用のアラートなのでWebブラウザのsimulatorではAlertが出ない
         Alert.alert(
             'Button pressed',

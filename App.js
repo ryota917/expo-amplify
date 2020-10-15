@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
-import { withAuthenticator } from 'aws-amplify-react-native';
+import { withAuthenticator, AmplifyTheme, Authenticator, SignUp, SignIn } from 'aws-amplify-react-native';
 //aws-exportsを読み込めないので暫定的にコメントアウト
 //import config from './aws-exports';
 import { createAppContainer } from 'react-navigation';
@@ -9,6 +9,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { API, graphqlOperation } from 'aws-amplify'
+import * as gqlMutations from './src/graphql/mutations' // create, update, delete
 
 //import screens
 import ItemTab from './screens/ItemTab';
@@ -17,7 +19,6 @@ import BoxTab from './screens/BoxTab'
 import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/search/SearchConditionModal'
-
 
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
@@ -112,13 +113,69 @@ const Drawer = createDrawerNavigator(
   }
 )
 
-class App extends React.Component {
-    render() {
-      const Layout = createAppContainer(Drawer);
-      return (
-        <Layout/>
-      );
+//ユーザープール作成後にはカスタム不可能みたい
+const signUpConfig = {
+  header: '新規登録',
+  signUpFields: [
+    {
+      label: 'Email',
+      key: 'email',
+      required: true,
+      displayOrder: 2,
+      type: 'string'
+    },
+    {
+      label: 'Password',
+      key: 'password',
+      required: true,
+      displayOrder: 2,
+      type: 'password'
     }
+  ]
 }
 
-export default withAuthenticator(App)
+const customTheme = {
+  ...AmplifyTheme,
+  button: { backgroundColor: 'red', height: 100 },
+  signInButtonIcon: { display: "none" }
+}
+
+class CustomSignUp extends SignUp {
+  signUp() {
+    console.log('カスタムsignupです')
+    const { username, password, email, phone_number } = this.inputs;
+    Auth.signUp(username, password, email, phone_number)
+    .then(() => this.changeState('confirmgSignUp', username))
+    .catch(err => this.error(err));
+  }
+}
+
+//TODO: UI画面デザイン修正, SignUp時にUserデータをDynamoに同期させるようにAuthenticatorをカスタム(時間がかかるので放置します)
+class App extends React.Component {
+  /*
+  saveUserToDynamo = async () => {
+    const user = await API.graphql(
+      graphqlOperation(gqlMutations.createUser, {
+        input: {
+
+        }
+      })
+    )
+  }
+  */
+
+  render() {
+    const Layout = createAppContainer(Drawer);
+    return (
+      <Authenticator
+        // theme={customTheme}
+        // onStateChange={(authState, e) => console.log(authState+e)}
+      >
+        {/* <CustomSignUp override={'SignUp'}/> */}
+        <Layout/>
+      </Authenticator>
+      );
+    }
+  }
+
+export default App; //withAuthenticator(App, false, [AuthCustom], null, customTheme, signUpConfig)

@@ -2,7 +2,10 @@ import React from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Card, Button } from 'react-native-elements';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify'
+import * as gqlQueries from '../src/graphql/queries' // read
+import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
+import * as gqlSubscriptions from '../src/graphql/subscriptions' // 監視
 
 export default class BoxTab extends React.Component {
     constructor(props) {
@@ -23,7 +26,7 @@ export default class BoxTab extends React.Component {
 
     fetchCartItems = async () => {
         try {
-            const res = await API.graphql(graphqlOperation(Query.searchItems, {}))
+            const res = await API.graphql(graphqlOperation(gqlQuery.searchItems, {}))
             console.log(res)
             this.setState({cartItems: res.data.searchItems.items})
         } catch(e) {
