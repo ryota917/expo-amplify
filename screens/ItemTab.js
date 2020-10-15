@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries'
+import * as gqlQueries from '../src/graphql/queries' // read
+import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { Card, Button } from 'react-native-elements';
 //native-baseがエラーが出てコンパイルできないため一旦react-native-elementsを使うことにする
 //import { Container, Content, Card, CardItem } from 'native-base';
@@ -23,15 +24,25 @@ export default class ItemTab extends React.Component {
     });
 
     componentDidMount() {
+        this.syncUserToDynamo();
         this.fetchItems();
+    }
+
+    //App.js 153TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
+    syncUserToDynamo = async () => {
+        const currentUser = await Auth.currentAuthenticatedUser()
+        console.log(currentUser);
+        const dynamoUser = await API.graphql(graphqlOperation(gqlMutations.createUser, {
+            input: {
+                id: currentUser.username,
+                email: currentUser.attributes.email
+            }
+        }))
+        console.log(dynamoUser)
     }
 
     //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する
     fetchItems = async () => {
-        const user = await Auth.currentSession()
-        const userInfo = await Auth.currentAuthenticatedUser()
-        console.log(user);
-        console.log(userInfo);
         try {
             const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, {}))
             console.log(res)

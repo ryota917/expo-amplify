@@ -152,7 +152,6 @@ class CustomSignUp extends SignUp {
 
 //TODO: UI画面デザイン修正, SignUp時にUserデータをDynamoに同期させるようにAuthenticatorをカスタム(時間がかかるので放置します)
 class App extends React.Component {
-  /*
   saveUserToDynamo = async () => {
     const user = await API.graphql(
       graphqlOperation(gqlMutations.createUser, {
@@ -162,20 +161,22 @@ class App extends React.Component {
       })
     )
   }
-  */
 
   render() {
     const Layout = createAppContainer(Drawer);
     return (
-      <Authenticator
-        // theme={customTheme}
-        // onStateChange={(authState, e) => console.log(authState+e)}
-      >
-        {/* <CustomSignUp override={'SignUp'}/> */}
         <Layout/>
-      </Authenticator>
-      );
+      )
     }
-  }
+}
 
-export default App; //withAuthenticator(App, false, [AuthCustom], null, customTheme, signUpConfig)
+export default withAuthenticator(App)
+
+/*
+<Authenticator
+theme={customeTheme}
+onStateChange=
+>
+<CustomeSignUp override={'SignUp'}
+</Authenticator>
+*/
