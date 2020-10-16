@@ -7,7 +7,7 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import * as gqlSubscriptions from '../src/graphql/subscriptions' // 監視
 
-export default class BoxTab extends React.Component {
+export default class CartTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,6 +24,11 @@ export default class BoxTab extends React.Component {
         this.fetchItemCart()
     }
 
+    componentDidUpdate() {
+        console.log('updated')
+    }
+
+    //Cartに入っているアイテムを取得
     fetchItemCart = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         try {
@@ -43,6 +48,20 @@ export default class BoxTab extends React.Component {
         }
     }
 
+    //Cartに入っているアイテムを削除
+    deleteItemFromCart = async (ele) => {
+        const currentUser = await Auth.currentAuthenticatedUser()
+        const res = await API.graphql(graphqlOperation(gqlMutations.deleteItemCart, {
+            input: {
+                id: currentUser.username + ele.id
+            }
+        }))
+        console.log('カートから削除したアイテム情報 '+ res)
+        //削除したアイテムをstateから削除(再レンダリングしなくてもアイテムが消えるように)
+        const newArray = this.state.itemCart.filter(ele => !(ele.id === res.data.deleteItemCart.itemId))
+        this.setState({itemCart: newArray})
+    }
+
     render() {
         return(
         <ScrollView style={{flex: 1}}>
@@ -53,8 +72,9 @@ export default class BoxTab extends React.Component {
                     <Card.Image style={styles.image} source={{ uri: ele.image_url }} />
                     <View key={i}>
                         <Text>{ele.size}</Text>
-                        <Button title='press me for detail' style={styles.rentalButton} onPress={() => this.props.navigation.navigate('ItemDetail', { item: ele })}/>
-                        <Button title='delete' />
+                        {/* 詳細ボタンはCartTab用に別で作る(カート保存ボタンとかの場合わけが面倒くさいので別ファイル作った方が早い) */}
+                        {/* <Button title='press me for detail' style={styles.rentalButton} onPress={() => this.props.navigation.navigate('ItemDetail', { item: ele })}/> */}
+                        <Button title='delete' onPress={() => this.deleteItemFromCart(ele)}/>
                     </View>
                 </Card>
             })}

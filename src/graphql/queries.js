@@ -32,6 +32,16 @@ export const getItem = /* GraphQL */ `
         }
         nextToken
       }
+      favoriteUser {
+        items {
+          id
+          itemId
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -57,6 +67,9 @@ export const listItems = /* GraphQL */ `
           nextToken
         }
         itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
           nextToken
         }
         createdAt
@@ -99,6 +112,16 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
+      favoriteItem {
+        items {
+          id
+          itemId
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -125,6 +148,9 @@ export const listUsers = /* GraphQL */ `
         cartLogs {
           nextToken
         }
+        favoriteItem {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -149,6 +175,9 @@ export const getCart = /* GraphQL */ `
           updatedAt
         }
         cartLogs {
+          nextToken
+        }
+        favoriteItem {
           nextToken
         }
         createdAt
@@ -217,6 +246,9 @@ export const getCartLog = /* GraphQL */ `
         cartLogs {
           nextToken
         }
+        favoriteItem {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -281,6 +313,9 @@ export const getItemCart = /* GraphQL */ `
           nextToken
         }
         itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
           nextToken
         }
         createdAt
@@ -365,6 +400,9 @@ export const getItemCartLog = /* GraphQL */ `
         itemCartLogs {
           nextToken
         }
+        favoriteUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -426,6 +464,96 @@ export const listItemCartLogs = /* GraphQL */ `
     }
   }
 `;
+export const getItemFavorite = /* GraphQL */ `
+  query GetItemFavorite($id: ID!) {
+    getItemFavorite(id: $id) {
+      id
+      itemId
+      userId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        itemCarts {
+          nextToken
+        }
+        itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        email
+        cartId
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        cartLogs {
+          nextToken
+        }
+        favoriteItem {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listItemFavorites = /* GraphQL */ `
+  query ListItemFavorites(
+    $filter: ModelItemFavoriteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listItemFavorites(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        itemId
+        userId
+        item {
+          id
+          name
+          description
+          color
+          size
+          status
+          season
+          image_url
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          cartId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const searchItems = /* GraphQL */ `
   query SearchItems(
     $filter: SearchableItemFilterInput
@@ -452,6 +580,9 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
           nextToken
         }
         createdAt
@@ -537,6 +668,51 @@ export const searchItemCartLogs = /* GraphQL */ `
         cartLog {
           id
           userId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchItemFavorites = /* GraphQL */ `
+  query SearchItemFavorites(
+    $filter: SearchableItemFavoriteFilterInput
+    $sort: SearchableItemFavoriteSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchItemFavorites(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        itemId
+        userId
+        item {
+          id
+          name
+          description
+          color
+          size
+          status
+          season
+          image_url
+          createdAt
+          updatedAt
+        }
+        user {
+          id
+          name
+          email
+          cartId
           createdAt
           updatedAt
         }

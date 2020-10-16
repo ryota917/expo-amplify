@@ -18,9 +18,6 @@ export default class ItemDetail extends React.Component {
         headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
-    componentDidMount() {
-    }
-
     saveItemToCart = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         console.log('カートに入れるボタンが押されました')

@@ -15,7 +15,7 @@ import * as gqlMutations from './src/graphql/mutations' // create, update, delet
 //import screens
 import ItemTab from './screens/ItemTab';
 import CoordinateTab from './screens/CoordinateTab';
-import BoxTab from './screens/BoxTab'
+import CartTab from './screens/CartTab'
 import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/search/SearchConditionModal'
@@ -37,7 +37,7 @@ Amplify.configure({
     }
 });
 
-//ItemTabのstack
+//ItemTabのStack
 const ItemTabStack = createStackNavigator(
   {
     ItemTab: {screen: ItemTab},
@@ -48,6 +48,16 @@ const ItemTabStack = createStackNavigator(
     initialRouteName: 'ItemTab'
   }
 );
+
+//CartTabのStack
+const CartTabStack = createStackNavigator(
+  {
+    CartTab: {screen: CartTab}
+  },
+  {
+    initialRouteName: 'CartTab'
+  }
+)
 
 //Tab
 const Tab = createBottomTabNavigator(
@@ -70,8 +80,8 @@ const Tab = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='heart' color={tintColor} />
       }
     },
-    'ボックス': {
-      screen: createStackNavigator({ BoxTab: { screen: BoxTab }}),
+    'カート': {
+      screen: CartTabStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='shopping-cart' color={tintColor} />
       }

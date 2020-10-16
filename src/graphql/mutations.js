@@ -35,6 +35,16 @@ export const createItem = /* GraphQL */ `
         }
         nextToken
       }
+      favoriteUser {
+        items {
+          id
+          itemId
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -69,6 +79,16 @@ export const updateItem = /* GraphQL */ `
           id
           itemId
           cartLogId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      favoriteUser {
+        items {
+          id
+          itemId
+          userId
           createdAt
           updatedAt
         }
@@ -113,6 +133,16 @@ export const deleteItem = /* GraphQL */ `
         }
         nextToken
       }
+      favoriteUser {
+        items {
+          id
+          itemId
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -148,6 +178,16 @@ export const createUser = /* GraphQL */ `
       cartLogs {
         items {
           id
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      favoriteItem {
+        items {
+          id
+          itemId
           userId
           createdAt
           updatedAt
@@ -195,6 +235,16 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
+      favoriteItem {
+        items {
+          id
+          itemId
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -236,6 +286,16 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      favoriteItem {
+        items {
+          id
+          itemId
+          userId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -261,6 +321,9 @@ export const createCart = /* GraphQL */ `
           updatedAt
         }
         cartLogs {
+          nextToken
+        }
+        favoriteItem {
           nextToken
         }
         createdAt
@@ -303,6 +366,9 @@ export const updateCart = /* GraphQL */ `
         cartLogs {
           nextToken
         }
+        favoriteItem {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -341,6 +407,9 @@ export const deleteCart = /* GraphQL */ `
           updatedAt
         }
         cartLogs {
+          nextToken
+        }
+        favoriteItem {
           nextToken
         }
         createdAt
@@ -384,6 +453,9 @@ export const createCartLog = /* GraphQL */ `
         cartLogs {
           nextToken
         }
+        favoriteItem {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -422,6 +494,9 @@ export const updateCartLog = /* GraphQL */ `
           updatedAt
         }
         cartLogs {
+          nextToken
+        }
+        favoriteItem {
           nextToken
         }
         createdAt
@@ -464,6 +539,9 @@ export const deleteCartLog = /* GraphQL */ `
         cartLogs {
           nextToken
         }
+        favoriteItem {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -503,6 +581,9 @@ export const createItemCart = /* GraphQL */ `
           nextToken
         }
         itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
           nextToken
         }
         createdAt
@@ -554,6 +635,9 @@ export const updateItemCart = /* GraphQL */ `
         itemCartLogs {
           nextToken
         }
+        favoriteUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -601,6 +685,9 @@ export const deleteItemCart = /* GraphQL */ `
           nextToken
         }
         itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
           nextToken
         }
         createdAt
@@ -652,6 +739,9 @@ export const createItemCartLog = /* GraphQL */ `
         itemCartLogs {
           nextToken
         }
+        favoriteUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -699,6 +789,9 @@ export const updateItemCartLog = /* GraphQL */ `
           nextToken
         }
         itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
           nextToken
         }
         createdAt
@@ -750,6 +843,9 @@ export const deleteItemCartLog = /* GraphQL */ `
         itemCartLogs {
           nextToken
         }
+        favoriteUser {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -768,6 +864,171 @@ export const deleteItemCartLog = /* GraphQL */ `
         itemCartLogs {
           nextToken
         }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createItemFavorite = /* GraphQL */ `
+  mutation CreateItemFavorite(
+    $input: CreateItemFavoriteInput!
+    $condition: ModelItemFavoriteConditionInput
+  ) {
+    createItemFavorite(input: $input, condition: $condition) {
+      id
+      itemId
+      userId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        itemCarts {
+          nextToken
+        }
+        itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        email
+        cartId
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        cartLogs {
+          nextToken
+        }
+        favoriteItem {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateItemFavorite = /* GraphQL */ `
+  mutation UpdateItemFavorite(
+    $input: UpdateItemFavoriteInput!
+    $condition: ModelItemFavoriteConditionInput
+  ) {
+    updateItemFavorite(input: $input, condition: $condition) {
+      id
+      itemId
+      userId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        itemCarts {
+          nextToken
+        }
+        itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        email
+        cartId
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        cartLogs {
+          nextToken
+        }
+        favoriteItem {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteItemFavorite = /* GraphQL */ `
+  mutation DeleteItemFavorite(
+    $input: DeleteItemFavoriteInput!
+    $condition: ModelItemFavoriteConditionInput
+  ) {
+    deleteItemFavorite(input: $input, condition: $condition) {
+      id
+      itemId
+      userId
+      item {
+        id
+        name
+        description
+        color
+        size
+        status
+        season
+        image_url
+        itemCarts {
+          nextToken
+        }
+        itemCartLogs {
+          nextToken
+        }
+        favoriteUser {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        name
+        email
+        cartId
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        cartLogs {
+          nextToken
+        }
+        favoriteItem {
+          nextToken
+        }
+        createdAt
         updatedAt
       }
       createdAt

@@ -28,7 +28,7 @@ export default class ItemTab extends React.Component {
         this.fetchItems();
     }
 
-    //App.js 153TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
+    //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
     syncUserAndCartToDynamo = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUser.username}))

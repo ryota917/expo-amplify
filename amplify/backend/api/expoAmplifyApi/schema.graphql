@@ -111,5 +111,5 @@ type ItemFavorite
    itemId: ID!
    userId: ID!
    item: Item @connection(fields: ["itemId"])
-   user: User @connection(fields: ["user"])
+   user: User @connection(fields: ["userId"])
  }
