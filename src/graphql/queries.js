@@ -12,7 +12,7 @@ export const getItem = /* GraphQL */ `
       status
       season
       image_url
-      carts {
+      itemCarts {
         items {
           id
           itemId
@@ -22,7 +22,7 @@ export const getItem = /* GraphQL */ `
         }
         nextToken
       }
-      cartLogs {
+      itemCartLogs {
         items {
           id
           itemId
@@ -53,10 +53,10 @@ export const listItems = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -86,7 +86,7 @@ export const getUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -156,7 +156,7 @@ export const getCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      items {
+      itemCarts {
         items {
           id
           itemId
@@ -189,7 +189,7 @@ export const listCarts = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -220,7 +220,7 @@ export const getCartLog = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      items {
+      itemCartLogs {
         items {
           id
           itemId
@@ -253,7 +253,7 @@ export const listCartLogs = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        items {
+        itemCartLogs {
           nextToken
         }
         updatedAt
@@ -277,10 +277,10 @@ export const getItemCart = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -299,7 +299,7 @@ export const getItemCart = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -359,10 +359,10 @@ export const getItemCartLog = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -380,7 +380,7 @@ export const getItemCartLog = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        items {
+        itemCartLogs {
           nextToken
         }
         updatedAt
@@ -448,11 +448,97 @@ export const searchItems = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchItemCarts = /* GraphQL */ `
+  query SearchItemCarts(
+    $filter: SearchableItemCartFilterInput
+    $sort: SearchableItemCartSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchItemCarts(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        itemId
+        cartId
+        item {
+          id
+          name
+          description
+          color
+          size
+          status
+          season
+          image_url
+          createdAt
+          updatedAt
+        }
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchItemCartLogs = /* GraphQL */ `
+  query SearchItemCartLogs(
+    $filter: SearchableItemCartLogFilterInput
+    $sort: SearchableItemCartLogSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchItemCartLogs(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        itemId
+        cartLogId
+        item {
+          id
+          name
+          description
+          color
+          size
+          status
+          season
+          image_url
+          createdAt
+          updatedAt
+        }
+        cartLog {
+          id
+          userId
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt

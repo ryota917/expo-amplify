@@ -12,7 +12,7 @@ export const onCreateItem = /* GraphQL */ `
       status
       season
       image_url
-      carts {
+      itemCarts {
         items {
           id
           itemId
@@ -22,7 +22,7 @@ export const onCreateItem = /* GraphQL */ `
         }
         nextToken
       }
-      cartLogs {
+      itemCartLogs {
         items {
           id
           itemId
@@ -48,7 +48,7 @@ export const onUpdateItem = /* GraphQL */ `
       status
       season
       image_url
-      carts {
+      itemCarts {
         items {
           id
           itemId
@@ -58,7 +58,7 @@ export const onUpdateItem = /* GraphQL */ `
         }
         nextToken
       }
-      cartLogs {
+      itemCartLogs {
         items {
           id
           itemId
@@ -84,7 +84,7 @@ export const onDeleteItem = /* GraphQL */ `
       status
       season
       image_url
-      carts {
+      itemCarts {
         items {
           id
           itemId
@@ -94,7 +94,7 @@ export const onDeleteItem = /* GraphQL */ `
         }
         nextToken
       }
-      cartLogs {
+      itemCartLogs {
         items {
           id
           itemId
@@ -129,7 +129,7 @@ export const onCreateUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -167,7 +167,7 @@ export const onUpdateUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -205,7 +205,7 @@ export const onDeleteUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -247,7 +247,7 @@ export const onCreateCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      items {
+      itemCarts {
         items {
           id
           itemId
@@ -284,7 +284,7 @@ export const onUpdateCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      items {
+      itemCarts {
         items {
           id
           itemId
@@ -321,7 +321,7 @@ export const onDeleteCart = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      items {
+      itemCarts {
         items {
           id
           itemId
@@ -357,7 +357,7 @@ export const onCreateCartLog = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      items {
+      itemCartLogs {
         items {
           id
           itemId
@@ -394,7 +394,7 @@ export const onUpdateCartLog = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      items {
+      itemCartLogs {
         items {
           id
           itemId
@@ -431,7 +431,7 @@ export const onDeleteCartLog = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      items {
+      itemCartLogs {
         items {
           id
           itemId
@@ -460,10 +460,10 @@ export const onCreateItemCart = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -482,7 +482,7 @@ export const onCreateItemCart = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -506,10 +506,10 @@ export const onUpdateItemCart = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -528,7 +528,7 @@ export const onUpdateItemCart = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -552,10 +552,10 @@ export const onDeleteItemCart = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -574,7 +574,7 @@ export const onDeleteItemCart = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        items {
+        itemCarts {
           nextToken
         }
       }
@@ -598,10 +598,10 @@ export const onCreateItemCartLog = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -619,7 +619,7 @@ export const onCreateItemCartLog = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        items {
+        itemCartLogs {
           nextToken
         }
         updatedAt
@@ -644,10 +644,10 @@ export const onUpdateItemCartLog = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -665,7 +665,7 @@ export const onUpdateItemCartLog = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        items {
+        itemCartLogs {
           nextToken
         }
         updatedAt
@@ -690,10 +690,10 @@ export const onDeleteItemCartLog = /* GraphQL */ `
         status
         season
         image_url
-        carts {
+        itemCarts {
           nextToken
         }
-        cartLogs {
+        itemCartLogs {
           nextToken
         }
         createdAt
@@ -711,7 +711,7 @@ export const onDeleteItemCartLog = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        items {
+        itemCartLogs {
           nextToken
         }
         updatedAt

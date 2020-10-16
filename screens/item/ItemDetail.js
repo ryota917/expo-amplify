@@ -18,10 +18,20 @@ export default class ItemDetail extends React.Component {
         headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
+    componentDidMount() {
+    }
+
     saveItemToCart = async () => {
-        const currentUser = Auth.currentAuthenticatedUser()
+        const currentUser = await Auth.currentAuthenticatedUser()
         console.log('カートに入れるボタンが押されました')
         //多対多のリレーションは中間テーブルデータの生成で実現可能(item, cartの更新処理は不要)
+        await API.graphql(graphqlOperation(gqlMutations.createItemCart, {
+            input: {
+                id: currentUser.username + this.state.item["id"],
+                itemId: this.state.item["id"],
+                cartId: currentUser.username
+            }
+        }))
         //スマホ版専用のアラートなのでWebブラウザのsimulatorではAlertが出ない
         Alert.alert(
             'Button pressed',
