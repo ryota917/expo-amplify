@@ -21,11 +21,8 @@ export default class CartTab extends React.Component {
     });
 
     componentDidMount() {
-        this.fetchItemCart()
-    }
-
-    componentDidUpdate() {
-        console.log('updated')
+        //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
+        this.props.navigation.addListener('didFocus', () => this.fetchItemCart())
     }
 
     //Cartに入っているアイテムを取得

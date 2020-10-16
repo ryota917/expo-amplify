@@ -25,7 +25,8 @@ export default class ItemTab extends React.Component {
 
     componentDidMount() {
         this.syncUserAndCartToDynamo();
-        this.fetchItems();
+        //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
+        this.props.navigation.addListener('didFocus', () => this.fetchItems())
     }
 
     //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
