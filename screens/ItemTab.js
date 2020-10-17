@@ -15,8 +15,8 @@ export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchCondition: {},
-            items: [],
+            searchCondition: [{color: ''}, {size: ''}, {season: ''}],
+            items: []
         }
     }
 
@@ -29,7 +29,11 @@ export default class ItemTab extends React.Component {
     componentDidMount() {
         this.syncUserAndCartToDynamo();
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
-        this.props.navigation.addListener('didFocus', () => this.fetchItems())
+        this.props.navigation.addListener('didFocus', async () => {
+            //stateが更新されるのとawaitしないと前のstateで表示される
+            await this.updateSearchState()
+            this.fetchItems()
+        })
     }
 
     //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
@@ -58,10 +62,19 @@ export default class ItemTab extends React.Component {
         }
     }
 
+    //検索条件を更新
+    updateSearchState = () => {
+        //検索画面から検索条件を取得
+        if(this.props.navigation.state.params?.searchCondition) {
+            this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
+        }
+    }
+
+    //検索クエリ生成
     searchQuery = () => {
-        const validCategories = this.state.searchCondition.filter(ele => Object.values(ele)[0] )
-        console.log(validCategories)
-        const limitNum = this.state.searchCondition.length
+        const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
+        console.log(condition)
+        const limitNum = condition.length
         console.log(limitNum)
         switch(limitNum) {
             case 3:
@@ -71,52 +84,57 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 season: {
-                                    eq: this.state.searchCondition.season
+                                    eq: condition[2].season
                                 }
                             },
                             size: {
-                                eq: this.state.searchCondition.size
+                                eq: condition[1].size
                             }
                         },
                         color: {
-                            eq: this.state.searchCondition.color
+                            eq: condition[0].color
                         }
                     }
                 }
                 break;
             case 2:
                 console.log('2つ')
+                const key1 = Object.keys(condition[0])
+                const key2 = Object.keys(condition[1])
                 return {
                     filter: {
                         and: {
-                            Object.keys(): {
-                                eq: this.state.searchCondition.size
+                            [key1]: {
+                                eq: condition[0][key1]
                             }
                         },
-                        color: {
-                            eq: this.state.searchCondition.color
+                        [key2]: {
+                            eq: condition[1][key2]
                         }
                     }
                 }
                 break;
             case 1:
                 console.log('1つ')
+                const key = Object.keys(condition[0])
+                return {
+                    filter: {
+                        [key]: {
+                            eq: condition[0][key]
+                        }
+                    }
+                }
                 break;
-            default:
-                console.log('デフォルト')
+            case 0:
+                console.log('デフォルトです')
+                return {}
         }
     }
 
     //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する
     fetchItems = async () => {
-        //検索画面から検索条件を取得
-        if(this.props.navigation.state.params?.searchCondition) {
-            this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
-        }
-        const validCategories = this.state.searchCondition.filter(ele => Object.values(ele)[0] )
-        console.log(validCategories)
-        /*
-        const query = this.searchQuery
+        const query = this.searchQuery()
+        console.log(query)
         try {
             const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
             console.log(res)
@@ -124,15 +142,8 @@ export default class ItemTab extends React.Component {
         } catch(e) {
             console.log(e);
         }
-        */
     }
-/*
-    filter: {
-        cartId: {
-            eq: currentUser.username
-        }
-    }
-    */
+
     render() {
         return (
             //iphoneXにも対応するViewの生成

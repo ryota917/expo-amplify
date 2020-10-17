@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Picker } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as Query from '../../src/graphql/queries';
-import { COLOR } from './Color';
 import { Button } from 'react-native-elements'
 
 export default class SearchConditionModal extends React.Component {
