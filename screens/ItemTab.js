@@ -9,10 +9,12 @@ import { Card, Button } from 'react-native-elements';
 //import { Container, Content, Card, CardItem } from 'native-base';
 //import axios from 'axios';
 
+const RENTAL_NUM = 4
 export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchCondition: {},
             items: [],
         }
     }
@@ -31,6 +33,18 @@ export default class ItemTab extends React.Component {
 
     //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
     syncUserAndCartToDynamo = async () => {
+        await API.graphql(graphqlOperation(gqlMutations.createItem, {
+            input: {
+                _color: "GREEN",
+                _season: "SUMMER",
+                _size: "LARGE",
+                _status: "RENTAL",
+                description: "二つ目のアイテム",
+                id: "1",
+                image_url: "https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/parker_mens.webp",
+                name: "second",
+            }
+        }))
         const currentUser = await Auth.currentAuthenticatedUser()
         const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUser.username}))
         const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
@@ -57,6 +71,9 @@ export default class ItemTab extends React.Component {
 
     //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する
     fetchItems = async () => {
+        if(this.props.navigation.state.params?.searchCondition) {
+            this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
+        }
         try {
             const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, {}))
             console.log(res)
@@ -65,7 +82,13 @@ export default class ItemTab extends React.Component {
             console.log(e);
         }
     }
-
+/*
+    filter: {
+        cartId: {
+            eq: currentUser.username
+        }
+    }
+    */
     render() {
         return (
             //iphoneXにも対応するViewの生成

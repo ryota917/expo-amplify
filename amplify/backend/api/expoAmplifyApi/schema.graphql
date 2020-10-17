@@ -1,41 +1,12 @@
-# 定数
-enum Color {
-  RED
-  YELLOW
-  BLUE
-  GREEN
-  BLACK
-  WHITE
-}
-
-enum Size {
-  SMALL
-  MIDIUM
-  LARGE
-}
-
-enum Status {
-  RENTAL
-  CLEANING
-  SHIPPING
-}
-
-enum Season {
-  SPRING
-  SUMMER
-  AUTUMN
-  WINTER
-}
-
 # テーブル
 type Item @model @searchable {
   id: ID!
   name: String!
   description: String!
-  color: Color
-  size: Size
-  status: Status
-  season: Season
+  _color: String!
+  _size: String!
+  _status: String!
+  _season: String!
   image_url: String!
   itemCarts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
   itemCartLogs: [ItemCartLog] @connection(keyName: "byItem", fields: ["id"])
