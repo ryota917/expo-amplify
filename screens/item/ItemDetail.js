@@ -1,9 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Button } from 'react-native-elements';
+<<<<<<< HEAD
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
+=======
+import ImageSlider from "react-native-image-slider";
+import * as gqlMutations from '../../src/graphql/mutations';
+>>>>>>> 画像スライダを追加
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 
 export default class ItemDetail extends React.Component {
@@ -11,13 +16,16 @@ export default class ItemDetail extends React.Component {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
+<<<<<<< HEAD
             cartItems: []
+=======
+            urls: ["https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme.jpeg","https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme2.jpeg"]
+>>>>>>> 画像スライダを追加
         }
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
-        title: 'アイテム詳細画面',
-        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
+        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20, zindex:100}}/>
     });
 
     componentDidMount() {
@@ -49,21 +57,52 @@ export default class ItemDetail extends React.Component {
         );
     }
 
+    handleClick = index => console.log(index)
+
     render() {
+        // debugger;
+        // console.table(this.state);
         return(
             <View>
-                <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image>
-                <Text>{this.state.item.name}</Text>
-                <Button icon={<Icon name='shopping-cart' size={30} color='white'/>} title='カートに入れる' onPress={this.saveItemToCart}/>
-            </View>
+                <Text style={{position:'absolute', zindex:10000}}>{"<"}</Text>
+                <ScrollView>
+                    {/* <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image> */}
+                    <ImageSlider
+                        loopBothSide
+                        images={this.state.urls}
+                        customSlide={({ index, item, style, width }) => (
+                            // It's important to put style here because it's got offset inside
+                            <View key={index} style={[style, styles.customSlide]}>
+                                <Image source={{ uri: item }} style={styles.customImage} onPress={this.handleClick}/>
+                            </View>
+                        )}
+                        // onPress={()=>console.log(index)}
+                        />
+                    <Text>{"Brand Name"}</Text>
+                    <Text>{this.state.item.name}</Text>
+                    {/* 身丈，着丈，袖丈ってどうやって表現したらいい？ */}
+                    {/* importの{}の意味 */}
+                    <Text>{"状態"}</Text>
+                   <Text>{"説明"}</Text>
+                   <Text>{"説明"}</Text>
+                   <Text>{"他のアイテム"}</Text>
+
+                    </ScrollView>
+                    <Button icon={<Icon name='shopping-cart' size={30} color='white'/>} title='カートに入れる' onPress={()=>console.log(index)}/>
+                </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    image: {
+    customImage: {
         width: 400,
         height: 400,
         overflow: 'hidden'
-    }
+    },
+    customSlide: {
+        backgroundColor: 'green',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 })
