@@ -7,10 +7,10 @@ export const getItem = /* GraphQL */ `
       id
       name
       description
-      _color
-      _size
-      _status
-      _season
+      color
+      size
+      status
+      season
       image_url
       itemCarts {
         items {
@@ -58,10 +58,10 @@ export const listItems = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -304,10 +304,10 @@ export const getItemCart = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -358,10 +358,10 @@ export const listItemCarts = /* GraphQL */ `
           id
           name
           description
-          _color
-          _size
-          _status
-          _season
+          color
+          size
+          status
+          season
           image_url
           createdAt
           updatedAt
@@ -389,10 +389,10 @@ export const getItemCartLog = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -443,10 +443,10 @@ export const listItemCartLogs = /* GraphQL */ `
           id
           name
           description
-          _color
-          _size
-          _status
-          _season
+          color
+          size
+          status
+          season
           image_url
           createdAt
           updatedAt
@@ -474,10 +474,10 @@ export const getItemFavorite = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -531,10 +531,10 @@ export const listItemFavorites = /* GraphQL */ `
           id
           name
           description
-          _color
-          _size
-          _status
-          _season
+          color
+          size
+          status
+          season
           image_url
           createdAt
           updatedAt
@@ -571,10 +571,10 @@ export const searchItems = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -614,10 +614,10 @@ export const searchItemCarts = /* GraphQL */ `
           id
           name
           description
-          _color
-          _size
-          _status
-          _season
+          color
+          size
+          status
+          season
           image_url
           createdAt
           updatedAt
@@ -657,10 +657,10 @@ export const searchItemCartLogs = /* GraphQL */ `
           id
           name
           description
-          _color
-          _size
-          _status
-          _season
+          color
+          size
+          status
+          season
           image_url
           createdAt
           updatedAt
@@ -700,10 +700,10 @@ export const searchItemFavorites = /* GraphQL */ `
           id
           name
           description
-          _color
-          _size
-          _status
-          _season
+          color
+          size
+          status
+          season
           image_url
           createdAt
           updatedAt

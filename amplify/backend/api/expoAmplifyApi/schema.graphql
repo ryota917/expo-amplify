@@ -3,10 +3,10 @@ type Item @model @searchable {
   id: ID!
   name: String!
   description: String!
-  _color: String!
-  _size: String!
-  _status: String!
-  _season: String!
+  color: String!
+  size: String!
+  status: String!
+  season: String!
   image_url: String!
   itemCarts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
   itemCartLogs: [ItemCartLog] @connection(keyName: "byItem", fields: ["id"])

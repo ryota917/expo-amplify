@@ -10,9 +10,7 @@ export default class SearchConditionModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedColor: 'ALL',
-            selectedSize: 'ALL',
-            selectedSeason: 'ALL'
+            searchCondition: [{color: ''}, {size: ''}, {season: ''}]
         }
     }
     static navigationOptions = ({navigation: { navigate }}) => ({
@@ -21,8 +19,7 @@ export default class SearchConditionModal extends React.Component {
     });
 
     searchWithCondition = async () => {
-        console.log(this.state)
-        this.props.navigation.navigate('ItemTab', { searchCondition: this.state })
+        this.props.navigation.navigate('ItemTab', { searchCondition: this.state.searchCondition })
     }
 
     render() {
@@ -33,10 +30,10 @@ export default class SearchConditionModal extends React.Component {
                 itemStyle={{ color: 'blue'}}
                 selectedValue={this.state.selectedColor}
                 onValueChange={(value) => {
-                    this.setState({ selectedColor: value});
+                    this.setState({ searchCondition: [{color: value}]});
                 }}
                 >
-                    <Picker.Item lable='全て' value='ALL'/>
+                    <Picker.Item lable='全て' value=''/>
                     <Picker.Item label='赤' value='RED'/>
                     <Picker.Item label='青' value='BLUE'/>
                     <Picker.Item label='黒' value='BLACK'/>
@@ -47,10 +44,10 @@ export default class SearchConditionModal extends React.Component {
                 itemStyle={{ color: 'blue'}}
                 selectedValue={this.state.selectedSeason}
                 onValueChange={(value) => {
-                    this.setState({ selectedSeason: value});
+                    this.setState({ searchCondition: [{season: value}]});
                 }}
                 >
-                    <Picker.Item lable='全て' value='ALL'/>
+                    <Picker.Item lable='全て' value=''/>
                     <Picker.Item label='春' value='SPRING'/>
                     <Picker.Item label='夏' value='SUMMER'/>
                 </Picker>
@@ -58,12 +55,12 @@ export default class SearchConditionModal extends React.Component {
                 <Picker
                 style={{ width: 200, backgroundColor: '#ffffff', marginTop: 20}}
                 itemStyle={{ color: 'blue'}}
-                selectedValue={this.state.selectedSize}
+                selectedValue={this.state.size}
                 onValueChange={(value) => {
-                    this.setState({ selectedSize: value});
+                    this.setState({ searchCondition: [{size: value}]});
                 }}
                 >
-                    <Picker.Item lable='全て' value='ALL'/>
+                    <Picker.Item lable='全て' value=''/>
                     <Picker.Item label='S' value='SMALL'/>
                     <Picker.Item label='M' value='MIDIUM'/>
                     <Picker.Item label='LL' value='LARGE'/>

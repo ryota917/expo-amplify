@@ -7,10 +7,10 @@ export const onCreateItem = /* GraphQL */ `
       id
       name
       description
-      _color
-      _size
-      _status
-      _season
+      color
+      size
+      status
+      season
       image_url
       itemCarts {
         items {
@@ -53,10 +53,10 @@ export const onUpdateItem = /* GraphQL */ `
       id
       name
       description
-      _color
-      _size
-      _status
-      _season
+      color
+      size
+      status
+      season
       image_url
       itemCarts {
         items {
@@ -99,10 +99,10 @@ export const onDeleteItem = /* GraphQL */ `
       id
       name
       description
-      _color
-      _size
-      _status
-      _season
+      color
+      size
+      status
+      season
       image_url
       itemCarts {
         items {
@@ -533,10 +533,10 @@ export const onCreateItemCart = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -582,10 +582,10 @@ export const onUpdateItemCart = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -631,10 +631,10 @@ export const onDeleteItemCart = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -680,10 +680,10 @@ export const onCreateItemCartLog = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -729,10 +729,10 @@ export const onUpdateItemCartLog = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -778,10 +778,10 @@ export const onDeleteItemCartLog = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -827,10 +827,10 @@ export const onCreateItemFavorite = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -879,10 +879,10 @@ export const onUpdateItemFavorite = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken
@@ -931,10 +931,10 @@ export const onDeleteItemFavorite = /* GraphQL */ `
         id
         name
         description
-        _color
-        _size
-        _status
-        _season
+        color
+        size
+        status
+        season
         image_url
         itemCarts {
           nextToken

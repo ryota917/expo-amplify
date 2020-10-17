@@ -10,6 +10,7 @@ import { Card, Button } from 'react-native-elements';
 //import axios from 'axios';
 
 const RENTAL_NUM = 4
+
 export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
@@ -33,18 +34,6 @@ export default class ItemTab extends React.Component {
 
     //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
     syncUserAndCartToDynamo = async () => {
-        await API.graphql(graphqlOperation(gqlMutations.createItem, {
-            input: {
-                _color: "GREEN",
-                _season: "SUMMER",
-                _size: "LARGE",
-                _status: "RENTAL",
-                description: "二つ目のアイテム",
-                id: "1",
-                image_url: "https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/parker_mens.webp",
-                name: "second",
-            }
-        }))
         const currentUser = await Auth.currentAuthenticatedUser()
         const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUser.username}))
         const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
@@ -69,18 +58,73 @@ export default class ItemTab extends React.Component {
         }
     }
 
+    searchQuery = () => {
+        const validCategories = this.state.searchCondition.filter(ele => Object.values(ele)[0] )
+        console.log(validCategories)
+        const limitNum = this.state.searchCondition.length
+        console.log(limitNum)
+        switch(limitNum) {
+            case 3:
+                console.log('3つ')
+                return {
+                    filter: {
+                        and: {
+                            and: {
+                                season: {
+                                    eq: this.state.searchCondition.season
+                                }
+                            },
+                            size: {
+                                eq: this.state.searchCondition.size
+                            }
+                        },
+                        color: {
+                            eq: this.state.searchCondition.color
+                        }
+                    }
+                }
+                break;
+            case 2:
+                console.log('2つ')
+                return {
+                    filter: {
+                        and: {
+                            Object.keys(): {
+                                eq: this.state.searchCondition.size
+                            }
+                        },
+                        color: {
+                            eq: this.state.searchCondition.color
+                        }
+                    }
+                }
+                break;
+            case 1:
+                console.log('1つ')
+                break;
+            default:
+                console.log('デフォルト')
+        }
+    }
+
     //propsでアイテム情報が渡ってきた場合はそれをstateにそれ以外の時は全てのアイテムを取得する
     fetchItems = async () => {
+        //検索画面から検索条件を取得
         if(this.props.navigation.state.params?.searchCondition) {
             this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
         }
+        const validCategories = this.state.searchCondition.filter(ele => Object.values(ele)[0] )
+        console.log(validCategories)
+        /*
+        const query = this.searchQuery
         try {
-            const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, {}))
+            const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
             console.log(res)
             this.setState({items: res.data.searchItems.items})
         } catch(e) {
             console.log(e);
         }
+        */
     }
 /*
     filter: {
