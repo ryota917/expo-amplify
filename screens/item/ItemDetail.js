@@ -2,13 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Button } from 'react-native-elements';
-<<<<<<< HEAD
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
-=======
 import ImageSlider from "react-native-image-slider";
 import * as gqlMutations from '../../src/graphql/mutations';
->>>>>>> 画像スライダを追加
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 
 export default class ItemDetail extends React.Component {
@@ -16,11 +13,7 @@ export default class ItemDetail extends React.Component {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
-<<<<<<< HEAD
-            cartItems: []
-=======
             urls: ["https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme.jpeg","https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme2.jpeg"]
->>>>>>> 画像スライダを追加
         }
     }
 
