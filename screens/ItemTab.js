@@ -5,10 +5,6 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { ListItem, Card, Button } from 'react-native-elements';
-import InfiniteScroll from 'react-infinite-scroller';
-//native-baseがエラーが出てコンパイルできないため一旦react-native-elementsを使うことにするk
-//import { Container, Content, Card, CardItem } from 'native-base';
-//import axios from 'axios';
 
 const RENTAL_NUM = 4
 const ITEMS_PER_PAGE = 50
@@ -27,7 +23,7 @@ export default class ItemTab extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        headerTitle: (props) => (
+        headerTitle: () => (
             <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 220, paddingTop: 10, resizeMode: 'contain' }}/>
         ),
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,

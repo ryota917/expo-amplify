@@ -4,8 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as Query from '../../src/graphql/queries';
 import { Button } from 'react-native-elements'
+import Fab from '@material-ui/core/Fab'
+import { withStyles } from '@material-ui/core/styles'
 
-export default class SearchConditionModal extends React.Component {
+class SearchConditionModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,22 +66,23 @@ export default class SearchConditionModal extends React.Component {
                     <Picker.Item label='M' value='MIDIUM'/>
                     <Picker.Item label='LL' value='LARGE'/>
                 </Picker>
-                <Button style={styles.button} onPress={this.searchWithCondition} title='検索'/>
+                {/* Floating Action Button by Material UI */}
+                <View style={styles.fabView} >
+                <Fab variant='extended' onPress={() => console.log('pushpush!')}>
+                    <Text style={{ color: '#7389D9', fontWeight: 'bold' }}>検索する</Text>
+                </Fab>
+                </View>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    button:{
-        marginTop: 20
-    },
-    floatingButon: {
-        margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 20,
-        left: 'auto',
-        position: 'fixed'
+    fabView: {
+        position: 'fixed',
+        right: 10,
+        bottom: 10
     }
 })
+
+export default SearchConditionModal;
