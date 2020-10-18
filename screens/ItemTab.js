@@ -226,45 +226,23 @@ export default class ItemTab extends React.Component {
         const { canLoad, items, isLoading } = this.state
         return (
                 <FlatList
+                    style={{ flexDirection: 'row' }}
                     //onRefresh={() => {}}
                     data={items}
                     renderItem={({ item }) => (
-                        <View>
-                            <Text>{item.id} {item.name}</Text>
-                            <Image source={{ uri: item.image_url }} style={{ width: 300, height: 300 }}/>
-                        </View>
+                        <Card containerStyle={{ padding: 0 }} wrapperStyle={{ padding: 0 }} >
+                            <Card.Image source={{ uri: item.image_url }} style={{ width: 100, height: 100 }} />
+                            <Card.Title style={{ fontSize: 18 }} >{item.name}</Card.Title>
+                        </Card>
+                        //<View>
+                          //  <Text>{item.id} {item.name}</Text>
+                            //<Image source={{ uri: item.image_url }} style={{ width: 300, height: 300 }}/>
+                        //</View>
                     )}
                     onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
                     onEndReachedThreshold={1}
                     ListFooterComponent={canLoad ? activityIndicator : null}
                 />
-            /*
-            <ScrollView style={{ flex: 1 }}>
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={this.loadItems.bind(this)}
-                hasMore={this.state.hasMoreItems}
-                loader={<div className='loader' key={0}>Loading ...</div>}
-            >
-                {this.state.items}
-            </InfiniteScroll>
-            </ScrollView>
-            //iphoneXにも対応するViewの生成
-            //<SafeAreaView>
-            /*
-            <ScrollView horizontal={true} style={styles.scrollView}>
-                {this.state.items.map((ele, i) => {
-                    return <View key={i} style={styles.view}>
-                    <Card key={i} wrapperStyle={{ padding: 0 }} containerStyle={{ padding: 0 }}>
-                        <Card.Image style={styles.image} source={{ uri: ele.image_url }} />
-                            //{ <Button title='press me for detail' onPress={() => this.props.navigation.navigate('ItemDetail', { item: ele })}/> }
-                        <Card.Title style={styles.cardTitle}>{ele.name}</Card.Title>
-                    </Card>
-                    </View>
-                })}
-                </ScrollView>
-               */
-            //</SafeAreaView>
         );
     }
 }
