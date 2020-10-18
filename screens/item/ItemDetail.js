@@ -57,8 +57,7 @@ export default class ItemDetail extends React.Component {
         // console.table(this.state);
         return(
             <View>
-                <Text style={{position:'absolute', zindex:10000}}>{"<"}</Text>
-                <ScrollView>
+                <ScrollView  >
                     {/* <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image> */}
                     <ImageSlider
                         loopBothSide
@@ -69,20 +68,18 @@ export default class ItemDetail extends React.Component {
                                 <Image source={{ uri: item }} style={styles.customImage} onPress={this.handleClick}/>
                             </View>
                         )}
-                        // onPress={()=>console.log(index)}
-                        />
-                    <Text>{"Brand Name"}</Text>
-                    <Text>{this.state.item.name}</Text>
+                    />
+                    <Text style={styles.brandName}>{"Brand Name"}</Text>
+                    <Text style={styles.itemName}>{this.state.item.name}</Text>
                     {/* 身丈，着丈，袖丈ってどうやって表現したらいい？ */}
                     {/* importの{}の意味 */}
                     <Text>{"状態"}</Text>
-                   <Text>{"説明"}</Text>
-                   <Text>{"説明"}</Text>
-                   <Text>{"他のアイテム"}</Text>
-
-                    </ScrollView>
-                    <Button icon={<Icon name='shopping-cart' size={30} color='white'/>} title='カートに入れる' onPress={()=>console.log(index)}/>
-                </View>
+                    <Text>{"説明"}</Text>
+                    <Text>{"説明"}</Text>
+                    <Text>{"他のアイテム"}</Text>
+                </ScrollView>
+                <Button color="lavender" icon={<Icon name='shopping-cart' size={30} color="white"/>} title='カートに入れる' onPress={()=>console.log(index)} style={styles.cartButton}/>
+            </View>
         )
     }
 }
@@ -90,12 +87,57 @@ export default class ItemDetail extends React.Component {
 const styles = StyleSheet.create({
     customImage: {
         width: 400,
-        height: 400,
-        overflow: 'hidden'
+        height: 512,
+        // overflow: 'hidden'
     },
     customSlide: {
-        backgroundColor: 'green',
+        backgroundColor: 'gray',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    brandName: {
+        // position: "absolute",
+        // width: 95,
+        height: 23,
+        left: 41,
+        top: 587,
+
+        fontFamily: "Arial",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: 20,
+        lineHeight: 23,
+        /* identical to box height */
+
+        display: "flex",
+        alignItems: "flex-end",
+
+        color: "#7389D9",
+    },
+    itemName: {
+        // position: "absolute",
+        // width: "162px",
+        height: 26,
+        left: 41,
+        top: 615,
+        fontFamily: "Noto Sans JP",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: "18px",
+        lineHeight: "26px",
+        /* identical to box height */
+
+        display: "flex",
+        alignItems: "flex-end",
+
+        color: "#333333",
+    },
+    cartButton: {
+        // position: "absolute",
+        width: 281,
+        height: 55,
+        // left: 23,
+        // borderRadius: 27,
+        // top: 1283,
+    }
 })
