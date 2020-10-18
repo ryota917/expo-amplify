@@ -27,9 +27,8 @@ export default class ItemTab extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        title: '',
-        headerBackground: (
-            <Image source={{ uri: '' }} style={{ width: 5, height: 5, paddingLeft: 300, paddingTop: 100 }} />
+        headerTitle: (props) => (
+            <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 220, paddingTop: 10, resizeMode: 'contain' }}/>
         ),
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
         headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>

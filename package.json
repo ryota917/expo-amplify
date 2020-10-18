@@ -26,6 +26,7 @@
     "react-dom": "16.13.1",
     "react-infinite-scroller": "^1.2.4",
     "react-native": "^0.63.3",
+    "react-native-action-button": "^2.8.5",
     "react-native-crypto": "^2.2.0",
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "~1.7.0",
