@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as Query from '../../src/graphql/queries';
 import { Button } from 'react-native-elements'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
 
 export default class SearchConditionModal extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class SearchConditionModal extends React.Component {
         }
     }
     static navigationOptions = ({navigation: { navigate }}) => ({
-        title: '条件検索画面',
+        title: 'さがす',
         headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
@@ -65,6 +66,9 @@ export default class SearchConditionModal extends React.Component {
                     <Picker.Item label='LL' value='LARGE'/>
                 </Picker>
                 <Button style={styles.button} onPress={this.searchWithCondition} title='検索'/>
+                <FloatingActionButton style={styles.floatingButton}>
+                    <ContentAdd />
+                </FloatingActionButton>
             </View>
         );
     }
@@ -73,5 +77,13 @@ export default class SearchConditionModal extends React.Component {
 const styles = StyleSheet.create({
     button:{
         marginTop: 20
+    },
+    floatingButon: {
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 20,
+        left: 'auto',
+        position: 'fixed'
     }
 })

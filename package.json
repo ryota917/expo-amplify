@@ -8,13 +8,14 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@aws-amplify/cli": "^4.29.8",
+    "@aws-amplify/cli": "^4.30.0",
+    "@material-ui/core": "^4.11.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.7",
     "a-theme-react": "0.0.5",
-    "aws-amplify": "^3.3.2",
+    "aws-amplify": "^3.3.4",
     "aws-amplify-react-native": "^4.2.7",
-    "aws-sdk": "^2.770.0",
+    "aws-sdk": "^2.773.0",
     "axios": "^0.20.0",
     "crypto": "^1.0.1",
     "expo": "~39.0.2",
@@ -36,15 +37,15 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-web": "~0.13.12",
+    "react-native-web": "^0.13.18",
     "react-navigation": "^4.4.2",
     "react-navigation-drawer": "^2.5.2",
     "react-navigation-stack": "^2.8.4",
     "react-navigation-tabs": "^2.9.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.11.5"
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1"
   },
   "private": true
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -12,6 +12,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 const RENTAL_NUM = 4
 const ITEMS_PER_PAGE = 50
+const ITEM_WIDTH = Dimensions.get('window').width;
 
 export default class ItemTab extends React.Component {
     constructor(props) {
@@ -26,7 +27,10 @@ export default class ItemTab extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        title: 'アイテム',
+        title: '',
+        headerBackground: (
+            <Image source={{ uri: '' }} style={{ width: 5, height: 5, paddingLeft: 300, paddingTop: 100 }} />
+        ),
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
         headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
     });
@@ -225,41 +229,45 @@ export default class ItemTab extends React.Component {
         const activityIndicator = <ActivityIndicator animating size='large'/>
         const { canLoad, items, isLoading } = this.state
         return (
-                <FlatList
-                    style={{ flexDirection: 'row' }}
-                    //onRefresh={() => {}}
-                    data={items}
-                    renderItem={({ item }) => (
-                        <Card containerStyle={{ padding: 0 }} wrapperStyle={{ padding: 0 }} >
-                            <Card.Image source={{ uri: item.image_url }} style={{ width: 100, height: 100 }} />
-                            <Card.Title style={{ fontSize: 18 }} >{item.name}</Card.Title>
-                        </Card>
-                        //<View>
-                          //  <Text>{item.id} {item.name}</Text>
-                            //<Image source={{ uri: item.image_url }} style={{ width: 300, height: 300 }}/>
-                        //</View>
-                    )}
-                    onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
-                    onEndReachedThreshold={1}
-                    ListFooterComponent={canLoad ? activityIndicator : null}
-                />
+            <FlatList
+                //onRefresh={() => {}}
+                //style={styles.container}
+                data={items}
+                numColoms={3}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        {/* <Card containerStyle={{ padding: 0 }} wrapperStyle={{ padding: 0 }} > */}
+                            {/* <Card.Image source={{ uri: item.image_url }} style={styles.image} /> */}
+                            {/* <Card.Title style={{ fontSize: 10 }} >{item.name}</Card.Title> */}
+                        {/* </Card> */}
+                        <Image source={{ uri: item.image_url }} style={styles.image} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} />
+                    </View>
+                )}
+                onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
+                onEndReachedThreshold={1}
+                ListFooterComponent={canLoad ? activityIndicator : null}
+            />
         );
     }
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
-        flexDirection: 'row',
+    container: {
+        flex: 1,
+        marginVertical: -10,
+        marginHorizontal: -10
     },
-    view: {
-        width: 130,
-        height: 120,
+    item: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        margin: 1
     },
     image: {
-        width: 100,
-        height: 100,
-    },
-    cardTitle: {
-        fontSize: 12
+        width: ITEM_WIDTH/3 - 10,
+        height: ITEM_WIDTH/3 - 10,
+        margin: 1,
+        resizeMode: 'cover'
     }
 })
