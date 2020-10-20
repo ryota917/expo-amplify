@@ -14,7 +14,7 @@ export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchCondition: [{color: ''}, {size: ''}, {season: ''}],
+            searchCondition: [{color: ''}, {category: ''}, {rank: ''}],
             items: [],
             nextToken: '',
             canLoad: true,
