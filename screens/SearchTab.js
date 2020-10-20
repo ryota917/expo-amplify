@@ -23,7 +23,7 @@ class SearchConditionModal extends React.Component {
     }
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'さがす',
-        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
+        //headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
     searchWithCondition = () => {
@@ -85,7 +85,6 @@ class SearchConditionModal extends React.Component {
 
     render() {
         return (
-            <View>
             <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
                     {/* 色条件 */}
                     <Button
@@ -319,25 +318,29 @@ class SearchConditionModal extends React.Component {
                             />
                         </View>
                     }
+                    {/* Floating Action Button by Material UI */}
+                    <View style={styles.fabView} >
+                    <Fab variant='extended'>
+                        <Button
+                            title='検索する'
+                            buttonStyle={{ backgroundColor: 'transparent' }}
+                            titleStyle={{ color: '#7389D9'}}
+                            onPress={this.searchWithCondition}
+                        />
+                    </Fab>
+                    </View>
             </ScrollView>
-            {/* Floating Action Button by Material UI */}
-            {/* <View style={styles.fabView} > */}
-                <Fab variant='extended'>
-                    <Button
-                        title='検索する'
-                        bu
-                        buttonStyle={{ backgroundColor: 'transparent' }}
-                        titleStyle={{ color: '#7389D9'}}
-                        onPress={this.searchWithCondition}
-                    />
-                </Fab>
-            {/* </View> */}
-            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    fabView: {
+        position: 'absolute',
+        right: 30,
+        bottom: 30,
+        zIndex: 10
+    }
 })
 
 export default SearchConditionModal;

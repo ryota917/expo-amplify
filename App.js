@@ -20,6 +20,7 @@ import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/search/SearchConditionModal'
 import ConfirmPage from "./screens/ConfirmPage"
+import SearchTab from './screens/SearchTab'
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
     "aws_project_region": "ap-northeast-1",
@@ -49,6 +50,16 @@ const ItemTabStack = createStackNavigator(
   }
 );
 
+//SearchTabのStack
+const SearchTabStack = createStackNavigator(
+  {
+    SearchTab: { screen: SearchTab}
+  },
+  {
+    initialRouteName: 'SearchTab'
+  }
+)
+
 //CartTabのStack
 const CartTabStack = createStackNavigator(
   {
@@ -67,6 +78,12 @@ const Tab = createBottomTabNavigator(
       screen: ItemTabStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='tag' color={tintColor} />
+      }
+    },
+    '検索': {
+      screen: SearchTabStack,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='search' color={tintColor} />
       }
     },
     'コーデ': {
