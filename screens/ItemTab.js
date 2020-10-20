@@ -241,7 +241,7 @@ export default class ItemTab extends React.Component {
                             {/* <Card.Image source={{ uri: item.image_url }} style={styles.image} /> */}
                             {/* <Card.Title style={{ fontSize: 10 }} >{item.name}</Card.Title> */}
                         {/* </Card> */}
-                        <Image source={{ uri: item.image_url }} style={styles.image} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} />
+                        <Image source={{ uri: item.image_url }} style={styles.image} onClick={() => this.props.navigation.navigate('ItemDetail', { item: item })} />
                     </View>
                 )}
                 onEndReached={(canLoad && !isLoading) ? this.startLoading : null}

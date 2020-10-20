@@ -5,8 +5,9 @@ import { Image, Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import ImageSlider from "react-native-image-slider";
-import * as gqlMutations from '../../src/graphql/mutations';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -56,7 +57,7 @@ export default class ItemDetail extends React.Component {
         // debugger;
         // console.table(this.state);
         return(
-            <View>
+            <View style={{flex: 1, backgroundColor: "glay"}}>
                 <ScrollView  >
                     {/* <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image> */}
                     <ImageSlider
@@ -71,8 +72,17 @@ export default class ItemDetail extends React.Component {
                     />
                     <Text style={styles.brandName}>{"Brand Name"}</Text>
                     <Text style={styles.itemName}>{this.state.item.name}</Text>
-                    {/* 身丈，着丈，袖丈ってどうやって表現したらいい？ */}
-                    {/* importの{}の意味 */}
+                    <View style={{flexDirection: "row", backgroundColor:"gray", height:hp("9%")}}>
+                        <View style={{flex: 0.1, backgroundColor: "gray"}}></View>
+                        <View style={{flex: 0.2, backgroundColor: "red"}}></View>
+                        <View style={{flex: 0.4, flexDirection:"column",justifyContent:"space-around",marginLeft:wp("3%")}}>
+                            <Text>{"①着丈 000cm"}</Text>
+                            <Text>{"②身丈 000cm"}</Text>
+                            <Text>{"③袖丈 000cm"}</Text>
+                        </View>
+                        <View style={{flex: 0.4, backgroundColor:"gray"}}></View>
+                    </View>
+
                     <Text>{"状態"}</Text>
                     <Text>{"説明"}</Text>
                     <Text>{"説明"}</Text>
@@ -94,14 +104,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'gray',
         alignItems: 'center',
         justifyContent: 'center',
+        height: hp("63%"),
     },
     brandName: {
         // position: "absolute",
         // width: 95,
         height: 23,
         left: 41,
-        top: 587,
-
+        // top: 587,
+        marginTop: hp("3.8%"),
+        marginLeft: wp("11%"),
         fontFamily: "Arial",
         fontStyle: "normal",
         fontWeight: "normal",
@@ -118,18 +130,16 @@ const styles = StyleSheet.create({
         // position: "absolute",
         // width: "162px",
         height: 26,
-        left: 41,
-        top: 615,
+        marginTop: hp("0.6%"),
+        marginLeft: wp("11%"),
+        // left: 41,
+        // top: 615,
         fontFamily: "Noto Sans JP",
         fontStyle: "normal",
         fontWeight: "normal",
-        fontSize: "18px",
-        lineHeight: "26px",
+        fontSize: 18,
+        lineHeight: 26,
         /* identical to box height */
-
-        display: "flex",
-        alignItems: "flex-end",
-
         color: "#333333",
     },
     cartButton: {

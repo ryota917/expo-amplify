@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as Query from '../../src/graphql/queries';
 import { Button } from 'react-native-elements'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
+// import FloatingActionButton from 'material-ui/FloatingActionButton'
 
 export default class SearchConditionModal extends React.Component {
     constructor(props) {
