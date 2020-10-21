@@ -50,16 +50,6 @@ const ItemTabStack = createStackNavigator(
   }
 );
 
-//SearchTabのStack
-const SearchTabStack = createStackNavigator(
-  {
-    SearchTab: { screen: SearchTab}
-  },
-  {
-    initialRouteName: 'SearchTab'
-  }
-)
-
 //CartTabのStack
 const CartTabStack = createStackNavigator(
   {
@@ -78,12 +68,6 @@ const Tab = createBottomTabNavigator(
       screen: ItemTabStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='tag' color={tintColor} />
-      }
-    },
-    '検索': {
-      screen: SearchTabStack,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='search' color={tintColor} />
       }
     },
     'コーデ': {

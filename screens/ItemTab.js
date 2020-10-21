@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -170,7 +170,6 @@ export default class ItemTab extends React.Component {
 
     fetchSearchQuery = () => {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
-        console.log(condition)
         const limitNum = condition.length
         switch(limitNum) {
             case 4:
@@ -260,7 +259,6 @@ export default class ItemTab extends React.Component {
     flatLoad = async () => {
         console.log('flatLoad 開始')
         const query = await this.fetchSearchQuery()
-        console.log(query)
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
         console.log(res)
         const canLoad = !!(res.data.searchItems.nextToken)
@@ -298,13 +296,14 @@ export default class ItemTab extends React.Component {
                 columnWrapperStyle={{ flex: 1, margin: 3, marginBottom: 6 }}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} >
-                            <Card.Image source={{ uri: item.image_url }} style={styles.image} />
-                            <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
-                        </Card>
-                        {/* <Image source={{ uri: item.image_url }} style={styles.image} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} /> */}
-                    </View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}>
+                        <View style={styles.item} >
+                            <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})} >
+                                <Card.Image source={{ uri: item.image_url }} style={styles.image} />
+                                <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
+                            </Card>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
                 onEndReachedThreshold={1}
