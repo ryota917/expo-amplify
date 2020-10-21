@@ -331,7 +331,6 @@ class SearchConditionModal extends React.Component {
                         onPress={this.searchWithCondition}
                     />
                 </Fab>
-            {/* </View> */}
             </View>
         );
     }

@@ -20,7 +20,6 @@ import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/search/SearchConditionModal'
 import ConfirmPage from "./screens/ConfirmPage"
-import SearchTab from './screens/SearchTab'
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
     "aws_project_region": "ap-northeast-1",
