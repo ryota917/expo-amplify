@@ -90,24 +90,29 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 and: {
-                                    [key41]: {
-                                        eq: condition[0][key41]
+                                    and: {
+                                        [key41]: {
+                                            eq: condition[0][key41]
+                                        }
+                                    },
+                                    [key42]: {
+                                        eq: condition[1][key42]
                                     }
                                 },
-                                [key42]: {
-                                    eq: condition[1][key42]
+                                [key43]: {
+                                    eq: condition[2][key43]
                                 }
                             },
-                            [key43]: {
-                                eq: condition[2][key43]
+                            [key44]: {
+                                eq: condition[3][key44]
                             }
                         },
-                        [key44]: {
-                            eq: condition[3][key44]
-                        },
-                        limit: 9,
-                        nextTokeN: this.state.nextToken
-                    }
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 9,
+                    nextTokeN: this.state.nextToken
                 }
             case 3:
                 const key31 = Object.keys(condition[0])
@@ -117,16 +122,21 @@ export default class ItemTab extends React.Component {
                     filter: {
                         and: {
                             and: {
-                                [key31]: {
-                                    eq: condition[0][key31]
+                                and: {
+                                    [key31]: {
+                                        eq: condition[0][key31]
+                                    }
+                                },
+                                [key32]: {
+                                    eq: condition[1][key32]
                                 }
                             },
-                            [key32]: {
-                                eq: condition[1][key32]
+                            [key33]: {
+                                eq: condition[2][key33]
                             }
                         },
-                        [key33]: {
-                            eq: condition[2][key33]
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
                     limit: 9,
@@ -139,12 +149,17 @@ export default class ItemTab extends React.Component {
                 return {
                     filter: {
                         and: {
-                            [key21]: {
-                                eq: condition[0][key1]
+                            and: {
+                                [key21]: {
+                                    eq: condition[0][key1]
+                                }
+                            },
+                            [key22]: {
+                                eq: condition[1][key2]
                             }
                         },
-                        [key22]: {
-                            eq: condition[1][key2]
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
                     limit: 9,
@@ -153,10 +168,15 @@ export default class ItemTab extends React.Component {
                 break;
             case 1:
                 const key = Object.keys(condition[0])
-                return {
+                return{
                     filter: {
-                        [key]: {
-                            eq: condition[0][key]
+                        and: {
+                            [key]: {
+                                eq: condition[0][key]
+                            },
+                            status: {
+                                eq: 'WAITING'
+                            }
                         }
                     },
                     limit: 9,
@@ -164,7 +184,15 @@ export default class ItemTab extends React.Component {
                 }
                 break;
             case 0:
-                return { limit: 10, nextToken: this.state.nextToken }
+                return {
+                    filter: {
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 10,
+                    nextToken: this.state.nextToken
+                }
         }
     }
 
@@ -182,23 +210,28 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 and: {
-                                    [key41]: {
-                                        eq: condition[0][key41]
+                                    and: {
+                                        [key41]: {
+                                            eq: condition[0][key41]
+                                        }
+                                    },
+                                    [key42]: {
+                                        eq: condition[1][key42]
                                     }
                                 },
-                                [key42]: {
-                                    eq: condition[1][key42]
+                                [key43]: {
+                                    eq: condition[2][key43]
                                 }
                             },
-                            [key43]: {
-                                eq: condition[2][key43]
+                            [key44]: {
+                                eq: condition[3][key44]
                             }
                         },
-                        [key44]: {
-                            eq: condition[3][key44]
-                        },
-                        limit: 9
-                    }
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 9,
                 }
             case 3:
                 const key31 = Object.keys(condition[0])
@@ -208,19 +241,24 @@ export default class ItemTab extends React.Component {
                     filter: {
                         and: {
                             and: {
-                                [key31]: {
-                                    eq: condition[0][key31]
+                                and: {
+                                    [key31]: {
+                                        eq: condition[0][key31]
+                                    }
+                                },
+                                [key32]: {
+                                    eq: condition[1][key32]
                                 }
                             },
-                            [key32]: {
-                                eq: condition[1][key32]
+                            [key33]: {
+                                eq: condition[2][key33]
                             }
                         },
-                        [key33]: {
-                            eq: condition[2][key33]
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
-                    limit: 9
+                    limit: 9,
                 }
                 break;
             case 2:
@@ -229,30 +267,47 @@ export default class ItemTab extends React.Component {
                 return {
                     filter: {
                         and: {
-                            [key21]: {
-                                eq: condition[0][key1]
+                            and: {
+                                [key21]: {
+                                    eq: condition[0][key1]
+                                }
+                            },
+                            [key22]: {
+                                eq: condition[1][key2]
                             }
                         },
-                        [key22]: {
-                            eq: condition[1][key2]
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
-                    limit: 9
+                    limit: 9,
                 }
                 break;
             case 1:
                 const key = Object.keys(condition[0])
-                return {
+                return{
                     filter: {
-                        [key]: {
-                            eq: condition[0][key]
+                        and: {
+                            [key]: {
+                                eq: condition[0][key]
+                            },
+                            status: {
+                                eq: 'WAITING'
+                            }
                         }
                     },
                     limit: 9
                 }
                 break;
             case 0:
-                return { limit: 10 }
+                return {
+                    filter: {
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 9
+                }
         }
     }
 

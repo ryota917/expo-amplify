@@ -42,6 +42,12 @@ export default class ItemDetail extends React.Component {
                 cartId: currentUser.username
             }
         }))
+        await API.graphql(graphqlOperation(gqlMutations.updateItem, {
+            input: {
+                id: this.state.item["id"],
+                status: 'CARTING'
+            }
+        }))
         //スマホ版専用のアラートなのでWebブラウザのsimulatorではAlertが出ない
         Alert.alert(
             'Button pressed',

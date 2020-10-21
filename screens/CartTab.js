@@ -7,13 +7,13 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import * as gqlSubscriptions from '../src/graphql/subscriptions' // 監視
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Fab from '@material-ui/core/Fab'
 
 export default class CartTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            itemCart: []
+            itemCart: [],
+            cartSize: 0
         }
     }
 
@@ -41,27 +41,37 @@ export default class CartTab extends React.Component {
             console.log(res)
             const itemArray = []
             res.data.searchItemCarts.items.forEach(obj => itemArray.push(obj.item))
-            this.setState({itemCart: itemArray})
+            this.setState({itemCart: itemArray, cartSize: res.data.searchItemCarts.items.length })
         } catch(e) {
             console.log(e);
         }
     }
 
     //Cartに入っているアイテムを削除
-    deleteItemFromCart = async (ele) => {
+    deleteItemFromCart = async (deleteItem) => {
+        console.log(deleteItem)
         const currentUser = await Auth.currentAuthenticatedUser()
-        const res = await API.graphql(graphqlOperation(gqlMutations.deleteItemCart, {
+        await API.graphql(graphqlOperation(gqlMutations.updateItem, {
             input: {
-                id: currentUser.username + ele.id
+                id: deleteItem.id,
+                status: 'WAITING'
             }
         }))
-        console.log('カートから削除したアイテム情報 '+ res)
+        const res = await API.graphql(graphqlOperation(gqlMutations.deleteItemCart, {
+            input: {
+                id: currentUser.username + deleteItem.id
+            }
+        }))
+        console.log('カートから削除したアイテム')
+        console.log(res)
         //削除したアイテムをstateから削除(再レンダリングしなくてもアイテムが消えるように)
         const newArray = this.state.itemCart.filter(ele => !(ele.id === res.data.deleteItemCart.itemId))
-        this.setState({itemCart: newArray})
+        this.setState({itemCart: newArray, cartSize: this.state.cartSize - 1})
     }
 
     render() {
+        //カートにアイテムが4つ入っているか
+        const isCartFilled = true //!!(this.state.cartSize === 4)
         return(
             <View style={styles.container}>
                 <FlatList
@@ -70,27 +80,27 @@ export default class CartTab extends React.Component {
                     style={styles.flatList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.touchableOpacity} onPress={() => console.log(item)}>
+                        <TouchableOpacity style={styles.touchableOpacity} onPress={() =>  console.log('test')}>
                             <Card containerStyle={{borderColor: 'white'}} wrapperStyle={{ height: wp('27%')}}>
                                 <Card.Image source={{ uri: item.image_url }} style={styles.image} />
                                 <Card.Title style={styles.brand}>ブランド</Card.Title>
                                 <Card.Title style={styles.name}>{item.name}</Card.Title>
                                 <Card.Title style={styles.category}>アウター</Card.Title>
                                 <Card.Title style={styles.rank}>Sランク</Card.Title>
-                                <Icon name='trash-o' size={28} style={styles.trashButton} onPress={this.deleteItemFromCart} />
+                                <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
                             </Card>
                         </TouchableOpacity>
                     )}
                 />
-                <View style={styles.rentalButtonView}>
-                    <Fab variant='extended'>
+                <View style={styles.rental}>
+                    <View style={styles.rentalButtonView}>
                         <Button
-                            title='レンタル手続きへ→'
-                            buttonStyle={{ backgroundColor: 'transparent' }}
-                            titleStyle={{ color: '#7389D9', fontSize: 18 }}
-                            onPress={this.searchWithCondition}
+                            title='レンタル手続きへ →'
+                            buttonStyle={{ borderRadius: 30, width: wp('50%'), height: hp('6%'), backgroundColor: isCartFilled ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255)' }}
+                            titleStyle={{ color: '#7389D9', fontSize: 18, fontWeight: 'bold' }}
+                            onPress={() => console.log('rentaltest')}
                         />
-                    </Fab>
+                    </View>
                 </View>
             </View>
         )
@@ -99,10 +109,10 @@ export default class CartTab extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#E5E5E5'
     },
     flatList: {
-    },
-    touchableOpacity: {
+        height: hp('80%')
     },
     image: {
         width: wp('27%'),
@@ -133,11 +143,21 @@ const styles = StyleSheet.create({
     trashButton: {
         color: '#7389D9',
         marginLeft: wp('78%'),
-        marginTop: -wp('9%'),
+        marginTop: -wp('9%')
+    },
+    rental: {
+        height: hp('10%')
     },
     rentalButtonView: {
+        position: 'absolute',
+        right: wp('5%'),
+        bottom: hp('6%'),
+        shadowColor: 'black',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 0.6,
+        shadowRadius: 20,
+        borderRadius: 30,
         width: wp('50%'),
-        marginLeft: wp('45%'),
-        marginTop: wp('10%')
+        height: hp('6%')
     }
 })
