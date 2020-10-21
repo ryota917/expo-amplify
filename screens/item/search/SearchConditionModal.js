@@ -85,8 +85,8 @@ class SearchConditionModal extends React.Component {
 
     render() {
         return (
-            <View>
-            <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1, backgroundColor: 'white' }} contentContainerStyle={{ paddingBottom: 40}} >
                     {/* 色条件 */}
                     <Button
                         icon={
@@ -123,9 +123,9 @@ class SearchConditionModal extends React.Component {
                                     <Icon name='circle' size={20} style={{ color: 'white', marginRight: wp('5%') }} />
                                 }
                                 title='ホワイト系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'WHITE') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'WHITE') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'WHITE')}
+                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'white') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
+                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'white') ? 'white' : 'black'}}
+                                onPress={this.selectColor.bind(this, 'white')}
                             />
                             <Button
                                 icon={
@@ -274,7 +274,6 @@ class SearchConditionModal extends React.Component {
                                 titleStyle={{ fontSize: 10, color: !!(this.state.selectedSize === 'XXL') ? 'white' : 'black'}}
                                 onPress={this.selectSize.bind(this, 'XXL')}
                             />
-
                         </View>
                     }
                     {/* ランク条件 */}
@@ -319,24 +318,32 @@ class SearchConditionModal extends React.Component {
                             />
                         </View>
                     }
-            </ScrollView>
-            {/* Floating Action Button by Material UI */}
-            {/* <View style={styles.fabView} > */}
-                <Fab variant='extended'>
+                </ScrollView>
+                <View style={styles.button}>
                     <Button
-                        title='検索する'
-                        bu
-                        buttonStyle={{ backgroundColor: 'transparent' }}
-                        titleStyle={{ color: '#7389D9'}}
+                        title='検索する →'
+                        buttonStyle={{ borderRadius: 30, width: wp('40%'), height: hp('6%'), backgroundColor: 'white' }}
+                        titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
                         onPress={this.searchWithCondition}
                     />
-                </Fab>
+                </View>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    button: {
+        flex: 1,
+        position: 'absolute',
+        bottom: hp('4%'),
+        right: wp('4%'),
+        shadowColor: 'black',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 0.6,
+        shadowRadius: 20,
+        borderRadius: 30,
+    }
 })
 
 export default SearchConditionModal;
