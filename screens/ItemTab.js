@@ -1,14 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { ListItem, Card, Button } from 'react-native-elements';
-import InfiniteScroll from 'react-infinite-scroller';
-//native-baseがエラーが出てコンパイルできないため一旦react-native-elementsを使うことにするk
-//import { Container, Content, Card, CardItem } from 'native-base';
-//import axios from 'axios';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 const RENTAL_NUM = 4
 const ITEMS_PER_PAGE = 50
@@ -18,7 +15,7 @@ export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchCondition: [{color: ''}, {size: ''}, {season: ''}],
+            searchCondition: [{color: ''}, {category: ''}, {size: ''}, {rank: ''}],
             items: [],
             nextToken: '',
             canLoad: true,
@@ -27,9 +24,8 @@ export default class ItemTab extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        title: '',
-        headerBackground: (
-            <Image source={{ uri: '' }} style={{ width: 5, height: 5, paddingLeft: 300, paddingTop: 100 }} />
+        headerTitle: () => (
+            <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
         ),
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
         headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
@@ -84,59 +80,119 @@ export default class ItemTab extends React.Component {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
         const limitNum = condition.length
         switch(limitNum) {
-            case 3:
+            case 4:
+                const key41 = Object.keys(condition[0])
+                const key42 = Object.keys(condition[1])
+                const key43 = Object.keys(condition[2])
+                const key44 = Object.keys(condition[3])
                 return {
                     filter: {
                         and: {
                             and: {
-                                season: {
-                                    eq: condition[2].season
+                                and: {
+                                    and: {
+                                        [key41]: {
+                                            eq: condition[0][key41]
+                                        }
+                                    },
+                                    [key42]: {
+                                        eq: condition[1][key42]
+                                    }
+                                },
+                                [key43]: {
+                                    eq: condition[2][key43]
                                 }
                             },
-                            size: {
-                                eq: condition[1].size
+                            [key44]: {
+                                eq: condition[3][key44]
                             }
                         },
-                        color: {
-                            eq: condition[0].color
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
-                    limit: 3,
+                    limit: 9,
+                    nextTokeN: this.state.nextToken
+                }
+            case 3:
+                const key31 = Object.keys(condition[0])
+                const key32 = Object.keys(condition[1])
+                const key33 = Object.keys(condition[2])
+                return {
+                    filter: {
+                        and: {
+                            and: {
+                                and: {
+                                    [key31]: {
+                                        eq: condition[0][key31]
+                                    }
+                                },
+                                [key32]: {
+                                    eq: condition[1][key32]
+                                }
+                            },
+                            [key33]: {
+                                eq: condition[2][key33]
+                            }
+                        },
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 9,
                     nextToken: this.state.nextToken
                 }
                 break;
             case 2:
-                const key1 = Object.keys(condition[0])
-                const key2 = Object.keys(condition[1])
+                const key21 = Object.keys(condition[0])
+                const key22 = Object.keys(condition[1])
                 return {
                     filter: {
                         and: {
-                            [key1]: {
-                                eq: condition[0][key1]
+                            and: {
+                                [key21]: {
+                                    eq: condition[0][key1]
+                                }
+                            },
+                            [key22]: {
+                                eq: condition[1][key2]
                             }
                         },
-                        [key2]: {
-                            eq: condition[1][key2]
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
-                    limit: 3,
+                    limit: 9,
                     nextToken: this.state.nextToken
                 }
                 break;
             case 1:
                 const key = Object.keys(condition[0])
-                return {
+                return{
                     filter: {
-                        [key]: {
-                            eq: condition[0][key]
+                        and: {
+                            [key]: {
+                                eq: condition[0][key]
+                            },
+                            status: {
+                                eq: 'WAITING'
+                            }
                         }
                     },
-                    limit: 3,
+                    limit: 9,
                     nextToken: this.state.nextToken
                 }
                 break;
             case 0:
-                return { limit: 10, nextToken: this.state.nextToken }
+                return {
+                    filter: {
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 10,
+                    nextToken: this.state.nextToken
+                }
         }
     }
 
@@ -144,56 +200,114 @@ export default class ItemTab extends React.Component {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
         const limitNum = condition.length
         switch(limitNum) {
-            case 3:
+            case 4:
+                const key41 = Object.keys(condition[0])
+                const key42 = Object.keys(condition[1])
+                const key43 = Object.keys(condition[2])
+                const key44 = Object.keys(condition[3])
                 return {
                     filter: {
                         and: {
                             and: {
-                                season: {
-                                    eq: condition[2].season
+                                and: {
+                                    and: {
+                                        [key41]: {
+                                            eq: condition[0][key41]
+                                        }
+                                    },
+                                    [key42]: {
+                                        eq: condition[1][key42]
+                                    }
+                                },
+                                [key43]: {
+                                    eq: condition[2][key43]
                                 }
                             },
-                            size: {
-                                eq: condition[1].size
+                            [key44]: {
+                                eq: condition[3][key44]
                             }
                         },
-                        color: {
-                            eq: condition[0].color
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
-                    limit: 3
+                    limit: 9,
                 }
-                break;
-            case 2:
-                const key1 = Object.keys(condition[0])
-                const key2 = Object.keys(condition[1])
+            case 3:
+                const key31 = Object.keys(condition[0])
+                const key32 = Object.keys(condition[1])
+                const key33 = Object.keys(condition[2])
                 return {
                     filter: {
                         and: {
-                            [key1]: {
-                                eq: condition[0][key1]
+                            and: {
+                                and: {
+                                    [key31]: {
+                                        eq: condition[0][key31]
+                                    }
+                                },
+                                [key32]: {
+                                    eq: condition[1][key32]
+                                }
+                            },
+                            [key33]: {
+                                eq: condition[2][key33]
                             }
                         },
-                        [key2]: {
-                            eq: condition[1][key2]
+                        status: {
+                            eq: 'WAITING'
                         }
                     },
-                    limit: 3
+                    limit: 9,
+                }
+                break;
+            case 2:
+                const key21 = Object.keys(condition[0])
+                const key22 = Object.keys(condition[1])
+                return {
+                    filter: {
+                        and: {
+                            and: {
+                                [key21]: {
+                                    eq: condition[0][key1]
+                                }
+                            },
+                            [key22]: {
+                                eq: condition[1][key2]
+                            }
+                        },
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 9,
                 }
                 break;
             case 1:
                 const key = Object.keys(condition[0])
-                return {
+                return{
                     filter: {
-                        [key]: {
-                            eq: condition[0][key]
+                        and: {
+                            [key]: {
+                                eq: condition[0][key]
+                            },
+                            status: {
+                                eq: 'WAITING'
+                            }
                         }
                     },
-                    limit: 3
+                    limit: 9
                 }
                 break;
             case 0:
-                return { limit: 10 }
+                return {
+                    filter: {
+                        status: {
+                            eq: 'WAITING'
+                        }
+                    },
+                    limit: 9
+                }
         }
     }
 
@@ -231,18 +345,20 @@ export default class ItemTab extends React.Component {
         return (
             <FlatList
                 //onRefresh={() => {}}
-                //style={styles.container}
+                style={styles.container}
                 data={items}
-                numColoms={3}
+                numColumns={3}
+                columnWrapperStyle={{ flex: 1, margin: 3, marginBottom: 6 }}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        {/* <Card containerStyle={{ padding: 0 }} wrapperStyle={{ padding: 0 }} > */}
-                            {/* <Card.Image source={{ uri: item.image_url }} style={styles.image} /> */}
-                            {/* <Card.Title style={{ fontSize: 10 }} >{item.name}</Card.Title> */}
-                        {/* </Card> */}
-                        <Image source={{ uri: item.image_url }} style={styles.image} onClick={() => this.props.navigation.navigate('ItemDetail', { item: item })} />
-                    </View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}>
+                        <View style={styles.item} >
+                            <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})} >
+                                <Card.Image source={{ uri: item.image_url }} style={styles.image} />
+                                <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
+                            </Card>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
                 onEndReachedThreshold={1}
@@ -254,20 +370,16 @@ export default class ItemTab extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginVertical: -10,
-        marginHorizontal: -10
+        margin: -5,
+        backgroundColor: '#E5E5E5'
     },
     item: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: hp('25%'),
+        alignItems: 'flex-start',
         flex: 1,
-        margin: 1
     },
     image: {
-        width: ITEM_WIDTH/3 - 10,
-        height: ITEM_WIDTH/3 - 10,
-        margin: 1,
-        resizeMode: 'cover'
+        width: wp('32%'),
+        height: hp('20%'),
     }
 })

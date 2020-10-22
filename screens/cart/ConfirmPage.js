@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Button, Card } from 'react-native';
-import send_message from "../src/messaging/slack"
+import send_message from "../../src/messaging/slack"
 
 export default class ConfirmPage extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            items: props.navigation.state.params.items,
+            items: props.navigation.state.params.item,
             user_name: "test user" // TODO: cognitoから取ってくる．
         };
     }
