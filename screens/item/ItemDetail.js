@@ -6,8 +6,40 @@ import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import ImageSlider from "react-native-image-slider";
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {figmaHp, figmaWp } from '../../src/utils/figmaResponsiveWrapper'
 
+class BookMark extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isBookMarked: this._isBookMarked(),
+            bookMarkedIcon: require("./bookmark/black.png"),
+            notBookMarkedIcon: require("./bookmark/white.png"),
+            // TODO: ブックマークアイコンの画像の読み込み
+        }
+    }
+
+    _isBookMarked = itemId => {
+        // TODO: itemIdからユーザーがブックマークしているかどうかを判別
+        return true
+    }
+
+    _iconName = () => {
+        return this.state.isBookMarked ? this.state.bookMarkedIcon : this.state.notBookMarkedIcon
+    }
+
+    handleClick = () => {
+        this.setState((state)=>({isBookMarked : !state.isBookMarked}));
+    }
+
+    render(){
+        return(
+            <View>
+                <Icon name={this._iconName()} size={34} style={{marginTop: hp.responsive(49)}}/>
+            </View>
+        )
+    }
+}
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -51,7 +83,7 @@ export default class ItemDetail extends React.Component {
         );
     }
 
-    handleClick = index => console.log(index)
+    // handleClick = index => console.log(index)
 
     render() {
         // debugger;
@@ -70,84 +102,108 @@ export default class ItemDetail extends React.Component {
                             </View>
                         )}
                     />
-                    <Text style={styles.brandName}>{"Brand Name"}</Text>
-                    <Text style={styles.itemName}>{this.state.item.name}</Text>
-                    <View style={{flexDirection: "row", backgroundColor:"gray", height:hp("9%")}}>
-                        <View style={{flex: 0.1, backgroundColor: "gray"}}></View>
-                        <View style={{flex: 0.2, backgroundColor: "red"}}></View>
-                        <View style={{flex: 0.4, flexDirection:"column",justifyContent:"space-around",marginLeft:wp("3%")}}>
+                    <View style={{flexDirection:"row"}}>
+                        <View style={{flexDirection:"column",width:wp.responsive(280)}}>
+                            <Text style={styles.brandName}>{"Brand Name"}</Text>
+                            <Text style={styles.itemName}>{this.state.item.name}</Text>
+                            <Text style={styles.categoryName}>{"カテゴリ"}</Text>
+                        </View>
+                        <BookMark style={{marginRight:wp.responsive(40)}}/>
+                    </View>
+                        <View style={{flexDirection: "row",height:hp.responsive("9%"),marginTop:hp.responsive(25)}}>
+                        <View style={{flex: 0.1}}></View>
+                        <View style={{flex: 0.2, backgroundColor: "red",marginLeft:wp.responsive(41),marginRight:wp.responsive(33)}}></View>
+                        <View style={{flex: 0.4, flexDirection:"column",justifyContent:"space-around",marginLeft:wp.responsive("3%")}}>
                             <Text>{"①着丈 000cm"}</Text>
                             <Text>{"②身丈 000cm"}</Text>
                             <Text>{"③袖丈 000cm"}</Text>
                         </View>
-                        <View style={{flex: 0.4, backgroundColor:"gray"}}></View>
-                    </View>
+                        <View style={{flex: 0.4}}>
 
-                    <Text>{"状態"}</Text>
-                    <Text>{"説明"}</Text>
-                    <Text>{"説明"}</Text>
-                    <Text>{"他のアイテム"}</Text>
+                        </View>
+                    </View>
+                    <View style={{marginTop:hp.responsive(25)}}>
+                    {/* <View style={styles.itemState.area}> */}
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={{fontFamily: "Noto Sans JP", fontSize: 16,marginLeft:41}}>{"状態"}</Text>
+                            <View style={{backgroundColor: "gray", marginLeft:wp.responsive(14)}}>
+                                <Text style={{color: "white", fontFamily: "Noto Sans JP", fontSize: 16}}>{"Sランク"}</Text>
+                            </View>
+                        </View>
+                        <Text style={{marginLeft:wp.responsive(87), marginTop:hp.responsive(10), width:248, fontFamily: "Noto Sans JP", fontSize: 14}}>{"状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細"}</Text>
+                    </View>
+                    <View style={{ marginTop:hp.responsive(25)}}>
+                        <Text style={{fontFamily: "Noto Sans JP", fontSize: 16,marginLeft:41}}>{"説明"}</Text>
+                        <Text style={{marginLeft:wp.responsive(41), marginTop:hp.responsive(10),marginBottom:hp.responsive(51),width:248, fontFamily: "Noto Sans JP", fontSize: 14}}>{"状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細"}</Text>
+                    </View>
                 </ScrollView>
-                <Button color="lavender" icon={<Icon name='shopping-cart' size={30} color="white"/>} title='カートに入れる' onPress={()=>console.log(index)} style={styles.cartButton}/>
+                <Button color="lavender" icon={<Icon name='shopping-cart' size={30} color="white"/>} title='カートに入れる' onPress={()=>console.log(index)} style={styles.cartButton} color="#7389D9"/>
             </View>
         )
     }
 }
 
+const hp = new figmaHp(812);
+const wp = new figmaWp(375);
+
 const styles = StyleSheet.create({
     customImage: {
-        width: 400,
-        height: 512,
+        width: wp.responsive(400),
+        height: hp.responsive(512),
         // overflow: 'hidden'
     },
     customSlide: {
         backgroundColor: 'gray',
         alignItems: 'center',
         justifyContent: 'center',
-        height: hp("63%"),
+        height: hp.responsive("63%"),
     },
     brandName: {
-        // position: "absolute",
-        // width: 95,
         height: 23,
         left: 41,
-        // top: 587,
-        marginTop: hp("3.8%"),
-        marginLeft: wp("11%"),
+        marginTop: hp.responsive("3.8%"),
+        marginLeft: wp.responsive("11%"),
         fontFamily: "Arial",
         fontStyle: "normal",
         fontWeight: "normal",
         fontSize: 20,
         lineHeight: 23,
-        /* identical to box height */
-
         display: "flex",
         alignItems: "flex-end",
 
         color: "#7389D9",
     },
     itemName: {
-        // position: "absolute",
-        // width: "162px",
         height: 26,
-        marginTop: hp("0.6%"),
-        marginLeft: wp("11%"),
-        // left: 41,
-        // top: 615,
+        marginTop: hp.responsive("0.6%"),
+        marginLeft: wp.responsive("11%"),
         fontFamily: "Noto Sans JP",
         fontStyle: "normal",
         fontWeight: "normal",
         fontSize: 18,
         lineHeight: 26,
-        /* identical to box height */
         color: "#333333",
     },
+    itemState:{
+        area:{
+            height: hp.responsive(145),
+            backgroundColor: "black"
+
+        },
+    },
+    categoryName:{
+        marginTop: hp.responsive(15),
+        fontWeight: 400,
+        fontFamily: "Noto Sans JP",
+        fontSize: 11,
+        marginLeft: wp.responsive(43),
+    },
     cartButton: {
-        // position: "absolute",
-        width: 281,
-        height: 55,
-        // left: 23,
-        // borderRadius: 27,
-        // top: 1283,
+        marginLeft: wp.responsive(40),
+        marginBottom: hp.responsive(51),
+        color: "#7389D9",
+        width: wp.responsive(281),
+        height: wp.responsive(55),
+        borderRadius: 28,
     }
 })
