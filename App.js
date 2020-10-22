@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
+import { Image, StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
 import { withAuthenticator, AmplifyTheme, Authenticator, SignUp, SignIn } from 'aws-amplify-react-native';
 //aws-exportsを読み込めないので暫定的にコメントアウト
@@ -8,19 +8,21 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { API, graphqlOperation } from 'aws-amplify'
 import * as gqlMutations from './src/graphql/mutations' // create, update, delete
+import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 //import screens
 import ItemTab from './screens/ItemTab';
-import CoordinateTab from './screens/CoordinateTab';
 import CartTab from './screens/CartTab'
 import FavoriteTab from './screens/FavoriteTab'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/search/SearchConditionModal'
 import ConfirmPage from "./screens/cart/ConfirmPage"
 import CartItemDetail from './screens/cart/CartItemDetail'
+import ConsultTab from './screens/ConsultTab'
+import ProfilePage from './screens/ProfilePage'
 
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
@@ -63,31 +65,46 @@ const CartTabStack = createStackNavigator(
   }
 )
 
+const ConsultTabStack = createStackNavigator(
+  {
+    ConsultTab: {screen: ConsultTab}
+  },
+  {
+    initialRouteName: 'ConsultTab'
+  }
+)
+
+const ProfileStack = createStackNavigator(
+  {
+    ProfileStack: {screen: ProfilePage}
+  }
+)
+
 //Tab
 const Tab = createBottomTabNavigator(
   {
     'アイテム': {
       screen: ItemTabStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='tag' color={tintColor} />
-      }
-    },
-    'コーデ': {
-      screen: createStackNavigator({ CoordinateTab: { screen: CoordinateTab } }),
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='user' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='view-grid' color={tintColor} />
       }
     },
     'お気に入り': {
       screen: createStackNavigator({ FavoriteTab: { screen: FavoriteTab }}),
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='heart' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='bookmark-minus' color={tintColor} />
       }
     },
     'カート': {
       screen: CartTabStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='shopping-cart' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='cart' color={tintColor} />
+      }
+    },
+    '相談': {
+      screen: ConsultTabStack,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
       }
     }
   }
@@ -96,34 +113,34 @@ const Tab = createBottomTabNavigator(
 //drawer
 const Drawer = createDrawerNavigator(
   {
-    'ホーム': {
-      screen: Tab,
+    '登録情報を編集': {
+      screen: ProfileStack,
       navigationOptions: {
-        drawerIcon: <Icon name='home' size={24} />
+        drawerIcon: <Icon name='account-circle' size={24}  color='white'/>,
       }
-    }
+    },
+    'ホーム': { screen: Tab }
   },
   {
     contentComponent: (props) => (
-      <View style={{ flex: 1, marginTop: 40 }}>
-        <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-          <DrawerItems {...props} />
+      <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
+        <Image source={require('./assets/logo.png')} style={{ width: wp('30%'), height: hp('20%'), marginLeft: wp('20%') }} />
+          <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white' activeBackgroundColor='black'/>
           <Text>
             <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>
-              <Icon name="sign-out" size={24} color={'#666'} />
+              <Icon name="logout" size={24} color={'white'} />
             </View>
             <View style={{ width: 80, height: 47, justifyContent:'center'}}>
               <Text
-                style={{ fontWeight: '700', color: '#111'}}
+                style={{ fontWeight: '700', color: 'white'}}
                 onPress={() => Auth.signOut()}
               >ログアウト
               </Text>
             </View>
           </Text>
-        </SafeAreaView>
       </View>
     ),
-    initialRouteName: "ホーム"
+    initialRouteName: "ホーム",
   }
 )
 

@@ -71,7 +71,7 @@ export default class CartTab extends React.Component {
 
     render() {
         //カートにアイテムが4つ入っているか
-        const isCartFilled = true //!!(this.state.cartSize === 4)
+        const isCartFilled = !!(this.state.cartSize === 4)
         return(
             <View style={styles.container}>
                 <FlatList
@@ -96,8 +96,8 @@ export default class CartTab extends React.Component {
                     <View style={styles.rentalButtonView}>
                         <Button
                             title='レンタル手続きへ →'
-                            buttonStyle={{ borderRadius: 30, width: wp('50%'), height: hp('6%'), backgroundColor: isCartFilled ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255)' }}
-                            titleStyle={{ color: '#7389D9', fontSize: 18, fontWeight: 'bold' }}
+                            buttonStyle={{ borderRadius: 30, width: wp('50%'), height: hp('6%'), backgroundColor: isCartFilled ? 'white' : 'transparent' }}
+                            titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
                             onPress={() => console.log('rentaltest')}
                         />
                     </View>
