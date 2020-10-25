@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
-import { withAuthenticator, AmplifyTheme, Authenticator, SignUp, SignIn } from 'aws-amplify-react-native';
+import { withAuthenticator, AmplifyTheme, Authenticator, SignUp, SignIn, Loading, Greetings, ConfirmSignIn, RequireNewPassword, ConfirmSignUp, VerifyContact, ForgotPassword } from 'aws-amplify-react-native';
 //aws-exportsを読み込めないので暫定的にコメントアウト
 //import config from './aws-exports';
 import { createAppContainer } from 'react-navigation';
@@ -23,6 +23,10 @@ import ConfirmPage from "./screens/cart/ConfirmPage"
 import CartItemDetail from './screens/cart/CartItemDetail'
 import ConsultTab from './screens/ConsultTab'
 import ProfilePage from './screens/ProfilePage'
+
+//import Authentication Page
+import Signin from './Signin'
+import Signup from './Signup'
 
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
@@ -144,70 +148,15 @@ const Drawer = createDrawerNavigator(
   }
 )
 
-//ユーザープール作成後にはカスタム不可能みたい
-const signUpConfig = {
-  header: '新規登録',
-  signUpFields: [
-    {
-      label: 'Email',
-      key: 'email',
-      required: true,
-      displayOrder: 2,
-      type: 'string'
-    },
-    {
-      label: 'Password',
-      key: 'password',
-      required: true,
-      displayOrder: 2,
-      type: 'password'
-    }
-  ]
-}
-
-const customTheme = {
-  ...AmplifyTheme,
-  button: { backgroundColor: 'red', height: 100 },
-  signInButtonIcon: { display: "none" }
-}
-
-class CustomSignUp extends SignUp {
-  signUp() {
-    console.log('カスタムsignupです')
-    const { username, password, email, phone_number } = this.inputs;
-    Auth.signUp(username, password, email, phone_number)
-    .then(() => this.changeState('confirmgSignUp', username))
-    .catch(err => this.error(err));
-  }
-}
-
 //TODO: UI画面デザイン修正, SignUp時にUserデータをDynamoに同期させるようにAuthenticatorをカスタム(時間がかかるので放置します)
 class App extends React.Component {
-  saveUserToDynamo = async () => {
-    const user = await API.graphql(
-      graphqlOperation(gqlMutations.createUser, {
-        input: {
-
-        }
-      })
-    )
-  }
 
   render() {
     const Layout = createAppContainer(Drawer);
-    return (
-        <Layout/>
+      return (
+        <Layout />
       )
     }
 }
 
-export default withAuthenticator(App)
-
-/*
-<Authenticator
-theme={customeTheme}
-onStateChange=signedUpの時にUserとCart作成可能?
->
-<CustomeSignUp override={'SignUp'}
-</Authenticator>
-*/
+export default withAuthenticator(App, false, [<Signin />, <Signup />, <Loading />])

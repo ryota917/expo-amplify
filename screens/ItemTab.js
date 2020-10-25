@@ -33,11 +33,11 @@ export default class ItemTab extends React.Component {
 
     componentDidMount = async () => {
         this.syncUserAndCartToDynamo();
+        this.flatLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
         await this.props.navigation.addListener('didFocus', async () => {
             //stateが更新されるのとawaitしないと前のstateで表示される
             await this.updateSearchState()
-            //this.fetchItemsInf()
             this.flatLoad()
         })
     }
@@ -45,6 +45,7 @@ export default class ItemTab extends React.Component {
     //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
     syncUserAndCartToDynamo = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
+        console.log(currentUser)
         const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUser.username}))
         const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
         if(!dynamoUser.data.getUser) {
@@ -371,7 +372,8 @@ export default class ItemTab extends React.Component {
 const styles = StyleSheet.create({
     container: {
         margin: -5,
-        backgroundColor: '#E5E5E5'
+        backgroundColor: '#E5E5E5',
+        width: wp('100%')
     },
     item: {
         height: hp('25%'),

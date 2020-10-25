@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as Query from '../../src/graphql/queries';
 import { ListItem, Button } from 'react-native-elements'
-import Fab from '@material-ui/core/Fab'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 

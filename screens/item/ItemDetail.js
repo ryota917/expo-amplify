@@ -13,8 +13,6 @@ class BookMark extends React.Component {
         super(props);
         this.state = {
             isBookMarked: this._isBookMarked(),
-            bookMarkedIcon: require("./bookmark/black.png"),
-            notBookMarkedIcon: require("./bookmark/white.png"),
             // TODO: ブックマークアイコンの画像の読み込み
         }
     }
@@ -112,9 +110,8 @@ export default class ItemDetail extends React.Component {
                         <View style={{flexDirection:"column",width:wp.responsive(280)}}>
                             <Text style={styles.brandName}>{"Brand Name"}</Text>
                             <Text style={styles.itemName}>{this.state.item.name}</Text>
-                            <Text style={styles.categoryName}>{"カテゴリ"}</Text>
+                            <Text>{"カテゴリ"}</Text>
                         </View>
-                        <BookMark style={{marginRight:wp.responsive(40)}}/>
                     </View>
                         <View style={{flexDirection: "row",height:hp.responsive("9%"),marginTop:hp.responsive(25)}}>
                         <View style={{flex: 0.1}}></View>
@@ -123,6 +120,7 @@ export default class ItemDetail extends React.Component {
                             <Text>{"①着丈 000cm"}</Text>
                             <Text>{"②身丈 000cm"}</Text>
                             <Text>{"③袖丈 000cm"}</Text>
+                            <Button onPress={this.saveItemToCart}/>
                         </View>
                         <View style={{flex: 0.4}}>
 
@@ -190,20 +188,19 @@ const styles = StyleSheet.create({
         lineHeight: 26,
         color: "#333333",
     },
-    itemState:{
-        area:{
-            height: hp.responsive(145),
-            backgroundColor: "black"
-
-        },
-    },
-    categoryName:{
-        marginTop: hp.responsive(15),
-        fontWeight: 400,
-        fontFamily: "Noto Sans JP",
-        fontSize: 11,
-        marginLeft: wp.responsive(43),
-    },
+    //itemState:{
+        //area:{
+            //height: hp.responsive(145),
+            //backgroundColor: "black"
+        //},
+    //},
+    //categoryName:{
+        //marginTop: hp.responsive(15),
+        //fontWeight: 400,
+        //fontFamily: "Noto Sans JP",
+        //fontSize: 11,
+        //marginLeft: wp.responsive(43),
+    //},
     cartButton: {
         marginLeft: wp.responsive(40),
         marginBottom: hp.responsive(51),

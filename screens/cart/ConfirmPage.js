@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button, Card } from 'react-native';
-import send_message from "../../src/messaging/slack"
+//import send_message from "../../src/messaging/slack"
 
 export default class ConfirmPage extends React.Component{
     constructor(props){
@@ -11,7 +11,7 @@ export default class ConfirmPage extends React.Component{
         };
     }
     confirmAction = () => {
-        send_message(this.message_content());
+        //send_message(this.message_content());
         this.props.navigation.navigate("ItemTab");
     };
     message_content = () =>{
