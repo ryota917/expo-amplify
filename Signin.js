@@ -5,13 +5,15 @@ import Signup from './Signup'
 import { Loading } from 'aws-amplify-react-native'
 import { Input, Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import Modal from 'react-native-modal'
 
 export default class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            isForgotPasswordModalVisible: false
         }
     }
 
@@ -26,16 +28,57 @@ export default class Signin extends React.Component {
         }
     }
 
+    onPressConfirmSignin = async () => {
+        const { email, password } = this.state
+        const verificationCode = this.props.authData
+        try{
+            const userData = await Auth.signIn(email, password)
+            const confirmUser = await Auth.confirmSignIn(userData, verificationCode)
+            console.log(confirmUser)
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
     navigateSignup = () => {
         this.props.onStateChange('signUp', 'testtest')
     }
 
+    navigateForgotPassword = () => {
+        this.props.onStateChange('forgotPassword')
+        this.toggleModal()
+    }
+
+    toggleModal = () => {
+        this.setState({ isForgotPasswordModalVisible: !this.state.isForgotPasswordModalVisible })
+    }
+
+
     render() {
-        if(this.props.authState !== 'signIn') {
+        if(this.props.authState !== 'signIn' && this.props.authState !== 'confirmSignIn') {
             return null;
         } else {
             return(
                 <View style={styles.container}>
+                    <Modal isVisible={this.state.isForgotPasswordModalVisible}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>パスワードの再発行を行いますか？</Text>
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title='戻る'
+                                    onPress={this.toggleModal}
+                                    buttonStyle={{}}
+                                    titleStyle={{}}
+                                />
+                                <Button
+                                    title='再発行へ'
+                                    onPress={this.navigateForgotPassword}
+                                    buttonStyle={{}}
+                                    titleStyle={{}}
+                                />
+                            </View>
+                        </View>
+                    </Modal>
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.formContainer}>
                             <View>
@@ -58,7 +101,7 @@ export default class Signin extends React.Component {
                                 <View style={styles.toForgotPassworButton}>
                                     <Button
                                         title='パスワードを忘れた方はこちら'
-                                        onPress={this.navigateSignup}
+                                        onPress={this.toggleModal}
                                         buttonStyle={{ backgroundColor: 'white'}}
                                         titleStyle={{ color: '#7389D9', fontWeight: 'bold', fontSize: 16 }}
                                     />
@@ -74,14 +117,14 @@ export default class Signin extends React.Component {
                             </View>
                         </View>
                     </ScrollView>
-                        <View style={styles.nextButton}>
-                            <Button
-                                title='next →'
-                                buttonStyle={{ borderRadius: 30, width: wp('30%'), height: hp('6%'), backgroundColor: 'white' }}
-                                titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
-                                onPress={this.onPressSignin}
-                            />
-                        </View>
+                    <View style={styles.nextButton}>
+                        <Button
+                            title='next →'
+                            buttonStyle={{ borderRadius: 30, width: wp('30%'), height: hp('6%'), backgroundColor: 'white' }}
+                            titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
+                            onPress={(this.props.authState === 'signIn') ? this.onPressSignin : this.onPressConfirmSignin}
+                        />
+                    </View>
                 </View>
             )
         }
@@ -94,6 +137,20 @@ const styles = StyleSheet.create({
         height: hp('100%'),
         top: hp('5%')
         //justifyContent: 'center'
+    },
+    modalView: {
+        backgroundColor: 'white',
+        width: wp('70%'),
+        height: hp('30%'),
+        left: wp('10%'),
+        //alignItems: 'center',
+        borderRadius: 15
+    },
+    modalText: {
+
+    },
+    modalButtonView: {
+        flexDirection: 'row'
     },
     scrollView: {
         flex: 1,

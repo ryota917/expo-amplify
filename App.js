@@ -1,7 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
-import { withAuthenticator, AmplifyTheme, Authenticator, SignUp, SignIn, Loading, Greetings, ConfirmSignIn, RequireNewPassword, ConfirmSignUp, VerifyContact, ForgotPassword } from 'aws-amplify-react-native';
+import {
+  withAuthenticator, Loading, VerifyContact } from 'aws-amplify-react-native';
 //aws-exportsを読み込めないので暫定的にコメントアウト
 //import config from './aws-exports';
 import { createAppContainer } from 'react-navigation';
@@ -27,6 +28,9 @@ import ProfilePage from './screens/ProfilePage'
 //import Authentication Page
 import Signin from './Signin'
 import Signup from './Signup'
+import SignupConfirmation from './SignupConfirmation'
+import ForgotPassword from './ForgotPassword'
+import ResetPassword from './ResetPassword'
 
 //aws-exportsを読み込めないので暫定的に直接記入
 Amplify.configure({
@@ -159,4 +163,14 @@ class App extends React.Component {
     }
 }
 
-export default withAuthenticator(App, false, [<Signin />, <Signup />, <Loading />])
+export default withAuthenticator(App, false,
+  [
+    <Signin />,
+    <Signup />,
+    <SignupConfirmation />,
+    <ForgotPassword />,
+    <ResetPassword />,
+    <VerifyContact />,
+    <Loading />
+  ]
+)

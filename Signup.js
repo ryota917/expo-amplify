@@ -53,8 +53,9 @@ export default class Signin extends React.Component {
                 password
             )
             console.log(signupUser)
+            this.props.onStateChange('confirmSignUp', email)
         } catch(error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -164,7 +165,7 @@ export default class Signin extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    contaienr: {
+    container: {
         width: wp('100%'),
         height: hp('100%'),
     },
