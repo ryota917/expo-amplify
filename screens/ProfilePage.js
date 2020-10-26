@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ProfileForm from './profile/profileForm'
 
 export default class ProfilePage extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export default class ProfilePage extends React.Component {
     render() {
         return(
             <View>
-                <Text>プロフィール</Text>
+                <ProfileForm/>
             </View>
         )
     }
