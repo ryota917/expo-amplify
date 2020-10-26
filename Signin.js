@@ -61,21 +61,23 @@ export default class Signin extends React.Component {
             return(
                 <View style={styles.container}>
                     <Modal isVisible={this.state.isForgotPasswordModalVisible}>
-                        <View style={styles.modalView}>
-                            <Text style={styles.modalText}>パスワードの再発行を行いますか？</Text>
-                            <View style={styles.modalButtonView}>
-                                <Button
-                                    title='戻る'
-                                    onPress={this.toggleModal}
-                                    buttonStyle={{}}
-                                    titleStyle={{}}
-                                />
-                                <Button
-                                    title='再発行へ'
-                                    onPress={this.navigateForgotPassword}
-                                    buttonStyle={{}}
-                                    titleStyle={{}}
-                                />
+                        <View style={styles.modalContainerView}>
+                            <View style={styles.modalInnerView}>
+                                <Text style={styles.modalText}>パスワードの再発行を行いますか？</Text>
+                                <View style={styles.modalButtonView}>
+                                    <Button
+                                        title='戻る'
+                                        onPress={this.toggleModal}
+                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#333333' }}
+                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                    />
+                                    <Button
+                                        title='再発行へ'
+                                        onPress={this.navigateForgotPassword}
+                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </Modal>
@@ -138,16 +140,22 @@ const styles = StyleSheet.create({
         top: hp('5%')
         //justifyContent: 'center'
     },
-    modalView: {
+    modalContainerView: {
         backgroundColor: 'white',
         width: wp('70%'),
         height: hp('30%'),
         left: wp('10%'),
-        //alignItems: 'center',
+        textAlign: 'center',
         borderRadius: 15
     },
+    modalInnerView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     modalText: {
-
+        marginBottom: hp('2%'),
+        fontWeight: '500'
     },
     modalButtonView: {
         flexDirection: 'row'

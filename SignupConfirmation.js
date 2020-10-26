@@ -48,11 +48,11 @@ export default class Signin extends React.Component {
         } else {
             return(
                 <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Icon name='angle-left' size={50} onPress={this.navigateSignIn}/>
+                        <Text>確認コード入力</Text>
+                    </View>
                     <View style={styles.innerContainer}>
-                        <View style={styles.header}>
-                            <Icon name='angle-left' size={50} onPress={this.navigateSignIn}/>
-                            <Text>確認コード入力</Text>
-                        </View>
                         <View style={styles.formContainer}>
                             <View style={styles.formView}>
                                 <Input onChangeText={val => this.setState({ verificationCode: val })} />
@@ -93,6 +93,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        left: wp('7%'),
+        top: wp('3%'),
+        height: hp('8%')
+    },
+    headerText: {
+        fontSize: 18,
+        marginLeft: wp('5%')
     },
     formContainer: {
     },

@@ -35,24 +35,28 @@ export default class Signin extends React.Component {
             return null;
         } else {
             return(
-                <View>
-                    <View>
-                        <View style={styles.header}>
-                            <Icon name='angle-left' size={50} onPress={this.navigateSignin}/>
-                            <Text>パスワードの再設定</Text>
-                        </View>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Icon name='angle-left' size={50} onPress={this.navigateSignin}/>
+                        <Text style={styles.headerText}>パスワードの再設定</Text>
+                    </View>
+                    <View style={styles.innerContainer}>
                         <View>
-                            <Text>メールアドレスを入力して確認コードを発行してください。</Text>
                             <View>
-                                <Text>メールアドレス</Text>
+                                <Text style={styles.alertText}>メールアドレスを入力して{"\n"}確認コードを発行してください。</Text>
+                            </View>
+                            <View style={styles.formView}>
+                                <Text style={styles.formText}>メールアドレス</Text>
                                 <Input
                                     onChangeText={val => this.setState({ email: val })}
                                 />
                             </View>
-                            <Button
-                                title='送信'
-                                onPress={this.onPressForgotPasswordButton}
-                            />
+                            <View>
+                                <Button
+                                    title='送信'
+                                    onPress={this.onPressForgotPasswordButton}
+                                />
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -61,4 +65,33 @@ export default class Signin extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        width: wp('100%'),
+        height: hp('100%')
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        left: wp('7%'),
+        top: wp('3%'),
+        height: hp('8%')
+    },
+    headerText: {
+        fontSize: 18,
+        marginLeft: wp('5%')
+    },
+    innerContainer: {
+        width: wp('70%'),
+        height: hp('100%'),
+        left: wp('12%'),
+        top: hp('4%')
+    },
+    alertText: {
+        marginBottom: hp('8%')
+    },
+    formView: {
+    },
+    formText: {
+    }
+})

@@ -66,7 +66,9 @@ export default class Signin extends React.Component {
         } else {
             return(
                 <View style={styles.container}>
-                    <Icon name='angle-left' size={40} onPress={this.navigateSignin} style={styles.backIcon}/>
+                    <View style={styles.header}>
+                        <Icon name='angle-left' size={40} onPress={this.navigateSignin} style={styles.backIcon}/>
+                    </View>
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.formContainer}>
                             <View>
@@ -168,6 +170,13 @@ const styles = StyleSheet.create({
     container: {
         width: wp('100%'),
         height: hp('100%'),
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        left: wp('7%'),
+        top: wp('3%'),
+        height: hp('8%')
     },
     backIcon: {
         left: wp('10%')
