@@ -24,6 +24,6 @@ function get_parcent(val, screenVal){
     if(typeof(val) === "string"){
         return val
     }
-    const parcent = val / screenVal;
+    const parcent = val*100 / screenVal;
     return String(parcent) + "%"
 }
