@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileForm from './profile/profileForm'
 import {figmaHp, figmaWp} from "../src/utils/figmaResponsiveWrapper"
 
-export default class ProfilePage extends React.Component {
+export default class ProfileEditPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,7 +39,7 @@ export default class ProfilePage extends React.Component {
                         userInfo={this.state}
                         handleFormChange={(stateName, val) => {this.setState({[stateName]: val})}}
                     />
-                    <Button title="情報を変更する→"/>
+                    <Button title="情報を変更する→" onPress={()=>this.props.navigation.navigate("ProfileConfirmStack", {userInfo: this.state})}/>
                     {/* TODO: 情報の更新 */}
                     <TextInput defaultValue={this.state.password} secureTextEntry={true} onChangeText={password => this.setState({"password":password})}/>
                     <Button title="パスワードを変更する→"/>
