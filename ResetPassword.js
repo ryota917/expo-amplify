@@ -43,15 +43,15 @@ export default class ResetPassword extends React.Component {
             return null;
         } else {
             return(
-                <View>
-                    <View>
-                        <View style={styles.header}>
-                            <Icon name='angle-left' size={50} onPress={this.navigateSignin}/>
-                            <Text>新しいパスワードの設定</Text>
-                        </View>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Icon name='angle-left' size={50} onPress={this.navigateSignin}/>
+                        <Text style={styles.headerText}>新しいパスワードの設定</Text>
+                    </View>
+                    <View style={styles.innerContainer}>
                         <View>
-                            <View>
-                                <Text>確認コード</Text>
+                            <View style={styles.formView}>
+                                <Text style={styles.formText}>確認コード</Text>
                                 <Input
                                     onChangeText={val => this.setState({ verificationCode: val })}
                                 />
@@ -61,8 +61,8 @@ export default class ResetPassword extends React.Component {
                                     {/* onPress={this.onPressResendConfirmationmail} */}
                                 {/* /> */}
                             {/* </View> */}
-                            <View>
-                                <Text>新しいパスワード</Text>
+                            <View style={styles.formView}>
+                                <Text style={styles.formText}>新しいパスワード</Text>
                                 <Input
                                     onChangeText={val => this.setState({ newPassword: val })}
                                     secureTextEntry={true}
@@ -82,4 +82,31 @@ export default class ResetPassword extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        width: wp('100%'),
+        height: hp('100%')
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        left: wp('7%'),
+        top: wp('3%'),
+        height: hp('8%')
+    },
+    headerText: {
+        fontSize: 18,
+        marginLeft: wp('5%')
+    },
+    innerContainer: {
+        width: wp('70%'),
+        height: hp('100%'),
+        left: wp('12%'),
+        top: hp('4%')
+    },
+    formView: {
+
+    },
+    formText: {
+    }
+})
