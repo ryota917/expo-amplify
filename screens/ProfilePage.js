@@ -38,7 +38,6 @@ export default class ProfilePage extends React.Component {
                         editable={true}
                         userInfo={this.state}
                         handleFormChange={(stateName, val) => {this.setState({[stateName]: val})}}
-                        handleChangeSexSelect={selectedSexName => this.setState({userSex: selectedSexName})}
                     />
                     <Button title="情報を変更する→"/>
                     {/* TODO: 情報の更新 */}
