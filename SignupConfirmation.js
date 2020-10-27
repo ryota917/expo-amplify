@@ -22,12 +22,12 @@ export default class Signin extends React.Component {
     }
 
     onPressConfirmationSignup = async () => {
+        console.log(this.props.authData)
         const { verificationCode } = this.state
-        const email = this.props.authData
+        const authData = this.props.authData
         try{
-            const auth = await Auth.confirmSignUp(email, verificationCode)
-            console.log(auth)
-            this.props.onStateChange('confirmSignIn', verificationCode)
+            const auth = await Auth.confirmSignUp(authData.email, verificationCode)
+            this.props.onStateChange('confirmSignIn', {authData, verificationCode})
         } catch(error) {
             console.error(error)
         }

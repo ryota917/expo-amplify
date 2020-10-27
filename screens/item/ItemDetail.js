@@ -7,12 +7,14 @@ import * as gqlMutations from '../../src/graphql/mutations'
 import ImageSlider from "react-native-image-slider";
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import {figmaHp, figmaWp } from '../../src/utils/figmaResponsiveWrapper'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 class BookMark extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             isBookMarked: this._isBookMarked(),
+            currentUserEmail: ''
             // TODO: ブックマークアイコンの画像の読み込み
         }
     }
@@ -44,7 +46,8 @@ export default class ItemDetail extends React.Component {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
-            urls: ["https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme.jpeg","https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme2.jpeg"]
+            urls: ["https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme.jpeg","https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme2.jpeg"],
+            currentUserEmail: ''
         }
     }
 
@@ -53,30 +56,37 @@ export default class ItemDetail extends React.Component {
     });
 
     componentDidMount() {
-        this.props.navigation.addListener('didFocus', () => this.fetchCartData())
+        this.props.navigation.addListener('didFocus', () => {
+            this.fetchCartData()
+        })
     }
 
     fetchCartData = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
-        const res = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
+        const currentUserEmail = currentUser.attributes.email
+        console.log(currentUser)
+        const res = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail }))
         console.log(res)
-        this.setState({ cartItems: res.data.getCart.itemCarts.items })
+        this.setState({
+            cartItems: res.data.getCart.itemCarts.items,
+            currentUserEmail: currentUserEmail
+        })
     }
 
     saveItemToCart = async () => {
-        const currentUser = await Auth.currentAuthenticatedUser()
+        const { currentUserEmail, item } = this.state
         console.log('カートに入れるボタンが押されました')
         //多対多のリレーションは中間テーブルデータの生成で実現可能(item, cartの更新処理は不要)
         await API.graphql(graphqlOperation(gqlMutations.createItemCart, {
             input: {
-                id: currentUser.username + this.state.item["id"],
-                itemId: this.state.item["id"],
-                cartId: currentUser.username
+                id: currentUserEmail + this.state.item["id"],
+                itemId: item["id"],
+                cartId: currentUserEmail
             }
         }))
         await API.graphql(graphqlOperation(gqlMutations.updateItem, {
             input: {
-                id: this.state.item["id"],
+                id: item["id"],
                 status: 'CARTING'
             }
         }))
@@ -87,126 +97,99 @@ export default class ItemDetail extends React.Component {
         );
     }
 
-    // handleClick = index => console.log(index)
+    saveItemToFavorite = async () => {
+        const { currentUserEmail, item } = this.state
+        console.log('お気に入りボタンが押されました')
+        await API.graphql(graphqlOperation(gqlMutations.createItemFavorite, {
+            input: {
+                id: currentUserEmail + item["id"],
+                itemId: item["id"],
+                userId: currentUserEmail
+            }
+        }))
+        Alert.alert(
+            'Favorite added!',
+        )
+    }
 
     render() {
-        // debugger;
-        // console.table(this.state);
         return(
-            <View style={{flex: 1, backgroundColor: "glay"}}>
-                <ScrollView  >
-                    {/* <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image> */}
-                    <ImageSlider
-                        loopBothSide
-                        images={this.state.urls}
-                        customSlide={({ index, item, style, width }) => (
-                            // It's important to put style here because it's got offset inside
-                            <View key={index} style={[style, styles.customSlide]}>
-                                <Image source={{ uri: item }} style={styles.customImage} onPress={this.handleClick}/>
+            <View style={styles.container}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.innerContainer}>
+                        <View style={styles.imagesView}>
+                            <Image />
+                        </View>
+                        <View style={styles.titleView}>
+                            <View style={styles.brandView}>
+                                <Text style={styles.brandText}>ブランド名</Text>
                             </View>
-                        )}
-                    />
-                    <View style={{flexDirection:"row"}}>
-                        <View style={{flexDirection:"column",width:wp.responsive(280)}}>
-                            <Text style={styles.brandName}>{"Brand Name"}</Text>
-                            <Text style={styles.itemName}>{this.state.item.name}</Text>
-                            <Text>{"カテゴリ"}</Text>
+                            <View style={styles.nameView}>
+                                <Text style={styles.nameText}>アイテム名</Text>
+                            </View>
+                            <View style={styles.categoryView}>
+                                <Text style={styles.categoryText}>カテゴリ</Text>
+                            </View>
+                            <Icon name='search'/>
                         </View>
-                    </View>
-                        <View style={{flexDirection: "row",height:hp.responsive("9%"),marginTop:hp.responsive(25)}}>
-                        <View style={{flex: 0.1}}></View>
-                        <View style={{flex: 0.2, backgroundColor: "red",marginLeft:wp.responsive(41),marginRight:wp.responsive(33)}}></View>
-                        <View style={{flex: 0.4, flexDirection:"column",justifyContent:"space-around",marginLeft:wp.responsive("3%")}}>
-                            <Text>{"①着丈 000cm"}</Text>
-                            <Text>{"②身丈 000cm"}</Text>
-                            <Text>{"③袖丈 000cm"}</Text>
-                            <Button onPress={this.saveItemToCart}/>
-                        </View>
-                        <View style={{flex: 0.4}}>
-
-                        </View>
-                    </View>
-                    <View style={{marginTop:hp.responsive(25)}}>
-                    {/* <View style={styles.itemState.area}> */}
-                        <View style={{flexDirection: "row"}}>
-                            <Text style={{fontFamily: "Noto Sans JP", fontSize: 16,marginLeft:41}}>{"状態"}</Text>
-                            <View style={{backgroundColor: "gray", marginLeft:wp.responsive(14)}}>
-                                <Text style={{color: "white", fontFamily: "Noto Sans JP", fontSize: 16}}>{"Sランク"}</Text>
+                        <View style={styles.sizeView}>
+                            <View style={styles.sizePictureView}>
+                                {/* <Image/> */}
+                            </View>
+                            <View style={styles.sizeTextView}>
+                                <Text style={styles.sizeText}>①着丈 00cm</Text>
+                                <Text style={styles.sizeText}>②身幅 99cm</Text>
+                                <Text style={styles.sizeText}>③袖幅 002cm</Text>
                             </View>
                         </View>
-                        <Text style={{marginLeft:wp.responsive(87), marginTop:hp.responsive(10), width:248, fontFamily: "Noto Sans JP", fontSize: 14}}>{"状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細"}</Text>
-                    </View>
-                    <View style={{ marginTop:hp.responsive(25)}}>
-                        <Text style={{fontFamily: "Noto Sans JP", fontSize: 16,marginLeft:41}}>{"説明"}</Text>
-                        <Text style={{marginLeft:wp.responsive(41), marginTop:hp.responsive(10),marginBottom:hp.responsive(51),width:248, fontFamily: "Noto Sans JP", fontSize: 14}}>{"状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細状態の詳細"}</Text>
+                        <View style={styles.stateView}>
+                            <Text style={styles.stateTitleText}>状態</Text>
+                            <Text style={styles.stateRankText}>Sランク</Text>
+                            <Text style={styles.stateDescriptionText}>商品の状態説明が入りますううううううううううううううううううううううううううううううう</Text>
+                        </View>
+                        <View style={styles.descriptionView}>
+                            <Text style={styles.descriptionTitleText}>説明</Text>
+                            <Text style={styles.descriptionText}>アイテムの説明が入りますすすうううううううううううううううううううううううううううう</Text>
+                        </View>
                     </View>
                 </ScrollView>
-                <Button color="lavender" icon={<Icon name='shopping-cart' size={30} color="white"/>} title='カートに入れる' onPress={()=>console.log(index)} style={styles.cartButton} color="#7389D9"/>
+                <View style={styles.footerView}>
+                    <View style={styles.footerInnerView}>
+                        <Button
+                            icon={
+                                <Icon name='search' size={15} style={{ color: 'white' }}  />
+                            }
+                            title="カートに入れる"
+                            titleStyle='white'
+                            buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
+                        />
+                    </View>
+                </View>
             </View>
         )
     }
 }
 
-const hp = new figmaHp(812);
-const wp = new figmaWp(375);
 
 const styles = StyleSheet.create({
-    customImage: {
-        width: wp.responsive(400),
-        height: hp.responsive(512),
-        // overflow: 'hidden'
+    container: {
+        width: wp('100%'),
+        height: hp('100%')
     },
-    customSlide: {
-        backgroundColor: 'gray',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: hp.responsive("63%"),
+    scrollView: {
+        width: wp('100%'),
+        flex: 1
     },
-    brandName: {
-        height: 23,
-        left: 41,
-        marginTop: hp.responsive("3.8%"),
-        marginLeft: wp.responsive("11%"),
-        fontFamily: "Arial",
-        fontStyle: "normal",
-        fontWeight: "normal",
-        fontSize: 20,
-        lineHeight: 23,
-        display: "flex",
-        alignItems: "flex-end",
-
-        color: "#7389D9",
+    innerContainer: {
+        width: wp('80%'),
+        alignItems: 'center'
     },
-    itemName: {
-        height: 26,
-        marginTop: hp.responsive("0.6%"),
-        marginLeft: wp.responsive("11%"),
-        fontFamily: "Noto Sans JP",
-        fontStyle: "normal",
-        fontWeight: "normal",
-        fontSize: 18,
-        lineHeight: 26,
-        color: "#333333",
+    footerView: {
+        height: hp('20%'),
+        bottom: hp('7%')
     },
-    //itemState:{
-        //area:{
-            //height: hp.responsive(145),
-            //backgroundColor: "black"
-        //},
-    //},
-    //categoryName:{
-        //marginTop: hp.responsive(15),
-        //fontWeight: 400,
-        //fontFamily: "Noto Sans JP",
-        //fontSize: 11,
-        //marginLeft: wp.responsive(43),
-    //},
-    cartButton: {
-        marginLeft: wp.responsive(40),
-        marginBottom: hp.responsive(51),
-        color: "#7389D9",
-        width: wp.responsive(281),
-        height: wp.responsive(55),
-        borderRadius: 28,
+    footerInnerView: {
+        flex: 1,
+        alignItems: 'center'
     }
 })
