@@ -26,15 +26,19 @@ export default class ItemDetail extends React.Component {
 
     fetchCartData = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
-        const res = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
+        const currentUserEmail = currentUser.attributes.email
+        const res = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail}))
         console.log(res)
-        this.setState({ cartItems: res.data.getCart.itemCarts.items })
+        this.setState({
+            cartItems: res.data.getCart.itemCarts.items,
+            currentUserEmail: currentUserEmail
+        })
     }
 
     render() {
         return(
             <View>
-                <Image source={{ uri: this.state.item.image_url }} style={styles.image}></Image>
+                <Image source={{ uri: this.state.item.imageUrls[0] }} style={styles.image}></Image>
                 <Text>{this.state.item.name}</Text>
             </View>
         )

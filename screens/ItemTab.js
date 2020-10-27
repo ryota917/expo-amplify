@@ -42,19 +42,27 @@ export default class ItemTab extends React.Component {
         })
     }
 
-    //App.js 153行目TODOをクリアするまで暫定的にここでSignUp時のUser登録処理を書く
+    //暫定対応
     syncUserAndCartToDynamo = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
+        const currentUserEmail = currentUser.attributes.email
         console.log(currentUser)
-        const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUser.username}))
-        const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUser.username}))
+        const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUserEmail}))
+        const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail}))
         if(!dynamoUser.data.getUser) {
             console.log('新規ユーザーデータを作成します')
             await API.graphql(graphqlOperation(gqlMutations.createUser, {
                 input: {
-                    id: currentUser.username,
-                    email: currentUser.attributes.email,
-                    cartId: currentUser.username,
+                    id: currentUserEmail,
+                    cartId: currentUserEmail,
+                    name: 'name',
+                    nameKana: 'fdf',
+                    phoneNumber: 'dff',
+                    address: 'dfasdf',
+                    postalCode: 'fdsa',
+                    height: 'dfafs',
+                    birthday: 'dfas',
+                    gender: 'afsdf'
                 }
             }))
         }
@@ -62,13 +70,12 @@ export default class ItemTab extends React.Component {
             console.log('新規ユーザーのカートデータを作成します')
             await API.graphql(graphqlOperation(gqlMutations.createCart, {
                 input: {
-                    id: currentUser.username,
-                    userId: currentUser.username
+                    id: currentUserEmail,
+                    userId: currentUserEmail
                 }
             }))
         }
     }
-
     //検索条件を更新
     updateSearchState = () => {
         //検索画面から検索条件を取得
@@ -355,7 +362,7 @@ export default class ItemTab extends React.Component {
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}>
                         <View style={styles.item} >
                             <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})} >
-                                <Card.Image source={{ uri: item.image_url }} style={styles.image} />
+                                <Card.Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
                                 <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
                             </Card>
                         </View>

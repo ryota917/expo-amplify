@@ -10,6 +10,7 @@
   "dependencies": {
     "@aws-amplify/cli": "^4.30.0",
     "@material-ui/core": "^4.11.0",
+    "@react-native-community/datetimepicker": "^3.0.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.7",
     "@react-navigation/drawer": "^5.9.3",
@@ -32,6 +33,7 @@
     "react-native": "^0.63.3",
     "react-native-action-button": "^2.8.5",
     "react-native-crypto": "^2.2.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-image-slider": "^2.0.3",

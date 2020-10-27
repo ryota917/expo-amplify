@@ -1,23 +1,25 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native'
-import { Auth } from 'aws-amplify';
+import { StyleSheet, Text, View, TextInput, ScrollView, Picker } from 'react-native'
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { Input, Button, CheckBox } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 export default class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
+            nameKana: '',
             email: '',
             password: '',
             postalCode: '',
             address: '',
             phoneNumber: '',
             gender: '',
-            birthday: '',
-            height: '',
+            birthday: new Date(),
+            height: '160',
         }
     }
 
@@ -46,14 +48,11 @@ export default class Signin extends React.Component {
 
     onPressSignup = async () => {
         console.log('サインアップが押されました')
-        const { name, email, password, phoneNumber, address, postalCode, height, birthday, gender } = this.state
+        const { name, nameKana, email, password, phoneNumber, address, postalCode, height, birthday, gender } = this.state
         try {
-            const signupUser = await Auth.signUp(
-                email,
-                password
-            )
-            console.log(signupUser)
-            this.props.onStateChange('confirmSignUp', email)
+            console.log('Cognitoにサインアップします')
+            await Auth.signUp(email, password)
+            this.props.onStateChange('confirmSignUp', {name, nameKana, email, phoneNumber, address, postalCode, height, birthday, gender})
         } catch(error) {
             console.error(error)
         }
@@ -79,6 +78,11 @@ export default class Signin extends React.Component {
                                     <Text style={styles.title}>お名前<Text style={styles.must}>必須</Text></Text>
                                     <Input
                                         onChangeText={val => this.setState({ name: val })}
+                                        placeholder='姓名(漢字)'
+                                    />
+                                    <Input
+                                        onChangeText={val => this.setState({ nameKana: val })}
+                                        placeholder='姓名(カナ)'
                                     />
                                 </View>
                                 <View style={styles.form}>
@@ -123,6 +127,12 @@ export default class Signin extends React.Component {
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.title}>生年月日</Text>
+                                    <DateTimePicker
+                                        style={{ width: wp('70%')}}
+                                        value={this.state.birthday}
+                                        mode={'date'}
+                                        onChange={(event, date) => this.setState({ birthday: date })}
+                                    />
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.title}>電話番号</Text>
@@ -139,6 +149,23 @@ export default class Signin extends React.Component {
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.title}>身長</Text>
+                                    <Picker
+                                        selectedValue={this.state.height}
+                                        onValueChange={value => this.setState({ height: value })}
+                                    >
+                                        <Picker.Item label='120' value='120' />
+                                        <Picker.Item label='130' value='130' />
+                                        <Picker.Item label='140' value='140' />
+                                        <Picker.Item label='150' value='150' />
+                                        <Picker.Item label='160' value='160' />
+                                        <Picker.Item label='170' value='170' />
+                                        <Picker.Item label='180' value='180' />
+                                        <Picker.Item label='190' value='190' />
+                                        <Picker.Item label='200' value='200' />
+                                        <Picker.Item label='210' value='210' />
+                                        <Picker.Item label='220' value='220' />
+                                        <Picker.Item label='230' value='230' />
+                                    </Picker>
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.title}>パスワード<Text style={styles.must}>必須</Text></Text>
