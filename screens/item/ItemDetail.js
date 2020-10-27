@@ -14,34 +14,35 @@ export default class ItemDetail extends React.Component {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
-            cartItems: [],
-            currentUserEmail: ''
+            currentUserEmail: '',
+            isFavorited: false,
+            isCarted: false
         }
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
-        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20, zindex:100}}/>
+        headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('ItemTab')} }/>
     });
 
-    componentDidMount() {
+    componentDidMount = async () => {
+        await this.fetchCurrentUser()
         this.props.navigation.addListener('didFocus', () => {
-            this.fetchCartData()
-            console.log(this.state.item)
+            this.fetchItemData()
         })
     }
 
-    fetchCartData = async () => {
+    fetchItemData = async () => {
+        const res = await API.graphql(graphqlOperation(gqlQueries.getItem, {id: this.state.item.id }))
+        console.log(res)
+    }
+
+    fetchCurrentUser = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         const currentUserEmail = currentUser.attributes.email
-        console.log(currentUser)
-        const res = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail }))
-        console.log(res)
-        this.setState({
-            cartItems: res.data.getCart.itemCarts.items,
-            currentUserEmail: currentUserEmail
-        })
+        this.setState({ currentUserEmail: currentUserEmail　})
     }
 
+    //カートに追加
     saveItemToCart = async () => {
         const { currentUserEmail, item } = this.state
         console.log('カートに入れるボタンが押されました')
@@ -59,13 +60,9 @@ export default class ItemDetail extends React.Component {
                 status: 'CARTING'
             }
         }))
-        //スマホ版専用のアラートなのでWebブラウザのsimulatorではAlertが出ない
-        Alert.alert(
-            'Button pressed',
-            'You did it',
-        );
     }
 
+    //お気に入りに追加
     saveItemToFavorite = async () => {
         const { currentUserEmail, item } = this.state
         console.log('お気に入りボタンが押されました')
@@ -76,9 +73,6 @@ export default class ItemDetail extends React.Component {
                 userId: currentUserEmail
             }
         }))
-        Alert.alert(
-            'Favorite added!',
-        )
     }
 
     render() {
@@ -155,7 +149,7 @@ export default class ItemDetail extends React.Component {
                                 <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
                             }
                             title="カートに入れる"
-                            titleStyle='white'
+                            titleStyle={{ color: 'white' }}
                             buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
                         />
                     </View>
@@ -197,7 +191,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     iconView: {
-        marginLeft: wp('50%'),
+        position: 'absolute',
+        right: wp('0%')
     },
     titleView: {
     },
@@ -252,7 +247,7 @@ const styles = StyleSheet.create({
         marginTop: hp('2%')
     },
     descriptionView: {
-        marginTop: hp('2%')
+        marginTop: hp('3%')
     },
     descriptionTitleText: {
         fontSize: 18

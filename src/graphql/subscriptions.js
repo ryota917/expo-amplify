@@ -6,7 +6,6 @@ export const onCreateItem = /* GraphQL */ `
     onCreateItem {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -63,7 +62,6 @@ export const onUpdateItem = /* GraphQL */ `
     onUpdateItem {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -120,7 +118,6 @@ export const onDeleteItem = /* GraphQL */ `
     onDeleteItem {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -637,7 +634,6 @@ export const onCreateItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -703,7 +699,6 @@ export const onUpdateItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -769,7 +764,6 @@ export const onDeleteItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -835,7 +829,6 @@ export const onCreateItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -901,7 +894,6 @@ export const onUpdateItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -967,7 +959,6 @@ export const onDeleteItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1033,7 +1024,6 @@ export const onCreateItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1102,7 +1092,6 @@ export const onUpdateItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1171,7 +1160,6 @@ export const onDeleteItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls

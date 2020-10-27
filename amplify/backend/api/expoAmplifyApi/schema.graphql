@@ -2,7 +2,6 @@
 type Item @model @searchable {
   id: ID!
   name: String!
-  nameKana: String!
   description: String!
   stateDescription: String
   imageUrls: [String!]!

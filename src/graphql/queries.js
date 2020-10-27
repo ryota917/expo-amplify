@@ -6,7 +6,6 @@ export const getItem = /* GraphQL */ `
     getItem(id: $id) {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -68,7 +67,6 @@ export const listItems = /* GraphQL */ `
       items {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -367,7 +365,6 @@ export const getItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -438,7 +435,6 @@ export const listItemCarts = /* GraphQL */ `
         item {
           id
           name
-          nameKana
           description
           stateDescription
           imageUrls
@@ -480,7 +476,6 @@ export const getItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -551,7 +546,6 @@ export const listItemCartLogs = /* GraphQL */ `
         item {
           id
           name
-          nameKana
           description
           stateDescription
           imageUrls
@@ -593,7 +587,6 @@ export const getItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -667,7 +660,6 @@ export const listItemFavorites = /* GraphQL */ `
         item {
           id
           name
-          nameKana
           description
           stateDescription
           imageUrls
@@ -724,7 +716,6 @@ export const searchItems = /* GraphQL */ `
       items {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -778,7 +769,6 @@ export const searchItemCarts = /* GraphQL */ `
         item {
           id
           name
-          nameKana
           description
           stateDescription
           imageUrls
@@ -832,7 +822,6 @@ export const searchItemCartLogs = /* GraphQL */ `
         item {
           id
           name
-          nameKana
           description
           stateDescription
           imageUrls
@@ -886,7 +875,6 @@ export const searchItemFavorites = /* GraphQL */ `
         item {
           id
           name
-          nameKana
           description
           stateDescription
           imageUrls

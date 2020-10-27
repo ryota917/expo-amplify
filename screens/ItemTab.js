@@ -46,7 +46,6 @@ export default class ItemTab extends React.Component {
     syncUserAndCartToDynamo = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         const currentUserEmail = currentUser.attributes.email
-        console.log(currentUser)
         const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUserEmail}))
         const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail}))
         if(!dynamoUser.data.getUser) {
@@ -320,10 +319,9 @@ export default class ItemTab extends React.Component {
     }
 
     flatLoad = async () => {
-        console.log('flatLoad 開始')
+        console.log('初期ローディング開始')
         const query = await this.fetchSearchQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res)
         const canLoad = !!(res.data.searchItems.nextToken)
         await this.setState({
             items: res.data.searchItems.items,
@@ -337,7 +335,6 @@ export default class ItemTab extends React.Component {
         this.setState({ isLoading: true })
         const query = this.loadSearchQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res)
         const canLoad = !!(res.data.searchItems.nextToken)
         await this.setState(prevState => ({
             items: prevState.items.concat(res.data.searchItems.items),

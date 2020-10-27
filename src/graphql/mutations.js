@@ -9,7 +9,6 @@ export const createItem = /* GraphQL */ `
     createItem(input: $input, condition: $condition) {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -69,7 +68,6 @@ export const updateItem = /* GraphQL */ `
     updateItem(input: $input, condition: $condition) {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -129,7 +127,6 @@ export const deleteItem = /* GraphQL */ `
     deleteItem(input: $input, condition: $condition) {
       id
       name
-      nameKana
       description
       stateDescription
       imageUrls
@@ -676,7 +673,6 @@ export const createItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -745,7 +741,6 @@ export const updateItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -814,7 +809,6 @@ export const deleteItemCart = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -883,7 +877,6 @@ export const createItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -952,7 +945,6 @@ export const updateItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1021,7 +1013,6 @@ export const deleteItemCartLog = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1090,7 +1081,6 @@ export const createItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1162,7 +1152,6 @@ export const updateItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
@@ -1234,7 +1223,6 @@ export const deleteItemFavorite = /* GraphQL */ `
       item {
         id
         name
-        nameKana
         description
         stateDescription
         imageUrls
