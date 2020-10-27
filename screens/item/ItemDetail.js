@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Image, Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
@@ -95,41 +95,54 @@ export default class ItemDetail extends React.Component {
                                 style={styles.swiper}
                                 showButtons={true}
                                 activeDotColor='#7389D9'
+                                dotStyle={{ top: hp('7%')}}
+                                activeDotStyle={{ top: hp('7%')}}
                             >
                                 {imagesDom}
                             </Swiper>
                         </View>
                         <View style={styles.textView}>
-                            <View style={styles.titleView}>
-                                <View style={styles.brandView}>
-                                    <Text style={styles.brandText}>ブランド名</Text>
+                            <View style={styles.flexRowView}>
+                                <View style={styles.titleView}>
+                                    {/* ブランド */}
+                                    <View style={styles.brandView}>
+                                        <Text style={styles.brandText}>{item.brand}</Text>
+                                    </View>
+                                    {/* アイテム名 */}
+                                    <View style={styles.nameView}>
+                                        <Text style={styles.nameText}>{item.name}</Text>
+                                    </View>
+                                    {/* カテゴリ名 */}
+                                    <View style={styles.categoryView}>
+                                        <Text style={styles.categoryText}>{item.bigCategory}</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.nameView}>
-                                    <Text style={styles.nameText}>アイテム名</Text>
+                                <View style={styles.iconView}>
+                                    {/* bookmark-minus-outline */}
+                                    <Icon name='bookmark-minus' size={40}/>
                                 </View>
-                                <View style={styles.categoryView}>
-                                    <Text style={styles.categoryText}>カテゴリ</Text>
-                                </View>
-                                <Icon name='search'/>
                             </View>
+                            {/* サイズ */}
                             <View style={styles.sizeView}>
-                                <View style={styles.sizePictureView}>
-                                    {/* <Image/> */}
-                                </View>
+                                <Image source={require('../..//assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
                                 <View style={styles.sizeTextView}>
-                                    <Text style={styles.sizeText}>①着丈 00cm</Text>
-                                    <Text style={styles.sizeText}>②身幅 99cm</Text>
-                                    <Text style={styles.sizeText}>③袖幅 002cm</Text>
+                                    <Text style={styles.sizeText}>①着丈 {item.dressLength}cm</Text>
+                                    <Text style={styles.sizeText}>②身幅 {item.dressWidth}cm</Text>
+                                    <Text style={styles.sizeText}>③袖幅 {item.sleeveLength}cm</Text>
                                 </View>
                             </View>
+                            {/* 状態 */}
                             <View style={styles.stateView}>
                                 <Text style={styles.stateTitleText}>状態</Text>
-                                <Text style={styles.stateRankText}>Sランク</Text>
-                                <Text style={styles.stateDescriptionText}>商品の状態説明が入りますううううううううううううううううううううううううううううううう</Text>
+                                <View style={styles.stateInnerView}>
+                                    <Text style={styles.stateRankText}>{item.rank}ランク</Text>
+                                    <Text style={styles.stateDescriptionText}>{item.stateDescription}</Text>
+                                </View>
                             </View>
+                            {/* 説明 */}
                             <View style={styles.descriptionView}>
                                 <Text style={styles.descriptionTitleText}>説明</Text>
-                                <Text style={styles.descriptionText}>アイテムの説明が入りますすすうううううううううううううううううううううううううううう</Text>
+                                <Text style={styles.descriptionText}>{item.description}</Text>
                             </View>
                             <View style={{ height: hp('10%') }}></View>
                         </View>
@@ -139,7 +152,7 @@ export default class ItemDetail extends React.Component {
                     <View style={styles.footerInnerView}>
                         <Button
                             icon={
-                                <Icon name='search' size={15} style={{ color: 'white' }}  />
+                                <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
                             }
                             title="カートに入れる"
                             titleStyle='white'
@@ -163,22 +176,89 @@ const styles = StyleSheet.create({
         flex: 1
     },
     innerContainer: {
-        width: wp('80%'),
+        width: wp('80%')
     },
     imagesView: {
         width: wp('100%'),
         height: wp('80%')
     },
     swiper: {
-        //width: wp('90%'),
-        //height: wp('90%')
     },
     image: {
         width: wp('100%'),
         height: wp('100%')
     },
     textView: {
-        marginTop: hp('5%')
+        marginTop: hp('3%'),
+        width: wp('80%'),
+        left: wp('10%')
+    },
+    flexRowView: {
+        flexDirection: 'row'
+    },
+    iconView: {
+        marginLeft: wp('50%'),
+    },
+    titleView: {
+    },
+    brandView: {
+    },
+    brandText: {
+        color: '#7389D9',
+        fontSize: 16
+    },
+    nameView: {
+        marginTop: hp('0.3%')
+    },
+    nameText: {
+        fontSize: 20
+    },
+    categoryView: {
+        marginTop: hp('1%')
+    },
+    categoryText: {
+        fontSize: 13,
+        color: 'grey'
+    },
+    sizeView: {
+        marginTop: hp('2%'),
+        flexDirection: 'row'
+    },
+    sizeTextView: {
+        marginLeft: wp('10%')
+    },
+    sizeText: {
+        marginBottom: hp('0.5%')
+    },
+    stateView: {
+        marginTop: hp('2%'),
+        flexDirection: 'row'
+    },
+    stateInnerView: {
+        width: wp('60%'),
+        marginLeft: wp('10%')
+    },
+    stateTitleText: {
+        fontSize: 18
+    },
+    stateRankText: {
+        backgroundColor: '#C4C4C4',
+        color: 'white',
+        fontSize: 16,
+        textAlign: 'center',
+        width: wp('20%')
+    },
+    stateDescriptionText: {
+        marginTop: hp('2%')
+    },
+    descriptionView: {
+        marginTop: hp('2%')
+    },
+    descriptionTitleText: {
+        fontSize: 18
+    },
+    descriptionText: {
+        marginTop: hp('2%')
     },
     footerView: {
         height: hp('20%'),
