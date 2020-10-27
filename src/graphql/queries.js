@@ -6,12 +6,23 @@ export const getItem = /* GraphQL */ `
     getItem(id: $id) {
       id
       name
+      nameKana
       description
-      color
-      size
+      stateDescription
+      imageUrls
       status
       season
-      image_url
+      bigCategory
+      smallCategory
+      color
+      dressLength
+      dressWidth
+      sleeveLength
+      size
+      brand
+      supplier
+      material
+      rank
       itemCarts {
         items {
           id
@@ -57,12 +68,23 @@ export const listItems = /* GraphQL */ `
       items {
         id
         name
+        nameKana
         description
-        color
-        size
+        stateDescription
+        imageUrls
         status
         season
-        image_url
+        bigCategory
+        smallCategory
+        color
+        dressLength
+        dressWidth
+        sleeveLength
+        size
+        brand
+        supplier
+        material
+        rank
         itemCarts {
           nextToken
         }
@@ -84,7 +106,13 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       name
-      email
+      nameKana
+      phoneNumber
+      address
+      postalCode
+      height
+      birthday
+      gender
       cartId
       cart {
         id
@@ -92,7 +120,13 @@ export const getUser = /* GraphQL */ `
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt
@@ -137,7 +171,13 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         name
-        email
+        nameKana
+        phoneNumber
+        address
+        postalCode
+        height
+        birthday
+        gender
         cartId
         cart {
           id
@@ -166,7 +206,13 @@ export const getCart = /* GraphQL */ `
       user {
         id
         name
-        email
+        nameKana
+        phoneNumber
+        address
+        postalCode
+        height
+        birthday
+        gender
         cartId
         cart {
           id
@@ -211,7 +257,13 @@ export const listCarts = /* GraphQL */ `
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt
@@ -235,7 +287,13 @@ export const getCartLog = /* GraphQL */ `
       user {
         id
         name
-        email
+        nameKana
+        phoneNumber
+        address
+        postalCode
+        height
+        birthday
+        gender
         cartId
         cart {
           id
@@ -280,7 +338,13 @@ export const listCartLogs = /* GraphQL */ `
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt
@@ -303,12 +367,23 @@ export const getItemCart = /* GraphQL */ `
       item {
         id
         name
+        nameKana
         description
-        color
-        size
+        stateDescription
+        imageUrls
         status
         season
-        image_url
+        bigCategory
+        smallCategory
+        color
+        dressLength
+        dressWidth
+        sleeveLength
+        size
+        brand
+        supplier
+        material
+        rank
         itemCarts {
           nextToken
         }
@@ -327,7 +402,13 @@ export const getItemCart = /* GraphQL */ `
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt
@@ -357,12 +438,23 @@ export const listItemCarts = /* GraphQL */ `
         item {
           id
           name
+          nameKana
           description
-          color
-          size
+          stateDescription
+          imageUrls
           status
           season
-          image_url
+          bigCategory
+          smallCategory
+          color
+          dressLength
+          dressWidth
+          sleeveLength
+          size
+          brand
+          supplier
+          material
+          rank
           createdAt
           updatedAt
         }
@@ -388,12 +480,23 @@ export const getItemCartLog = /* GraphQL */ `
       item {
         id
         name
+        nameKana
         description
-        color
-        size
+        stateDescription
+        imageUrls
         status
         season
-        image_url
+        bigCategory
+        smallCategory
+        color
+        dressLength
+        dressWidth
+        sleeveLength
+        size
+        brand
+        supplier
+        material
+        rank
         itemCarts {
           nextToken
         }
@@ -413,7 +516,13 @@ export const getItemCartLog = /* GraphQL */ `
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt
@@ -442,12 +551,23 @@ export const listItemCartLogs = /* GraphQL */ `
         item {
           id
           name
+          nameKana
           description
-          color
-          size
+          stateDescription
+          imageUrls
           status
           season
-          image_url
+          bigCategory
+          smallCategory
+          color
+          dressLength
+          dressWidth
+          sleeveLength
+          size
+          brand
+          supplier
+          material
+          rank
           createdAt
           updatedAt
         }
@@ -473,12 +593,23 @@ export const getItemFavorite = /* GraphQL */ `
       item {
         id
         name
+        nameKana
         description
-        color
-        size
+        stateDescription
+        imageUrls
         status
         season
-        image_url
+        bigCategory
+        smallCategory
+        color
+        dressLength
+        dressWidth
+        sleeveLength
+        size
+        brand
+        supplier
+        material
+        rank
         itemCarts {
           nextToken
         }
@@ -494,7 +625,13 @@ export const getItemFavorite = /* GraphQL */ `
       user {
         id
         name
-        email
+        nameKana
+        phoneNumber
+        address
+        postalCode
+        height
+        birthday
+        gender
         cartId
         cart {
           id
@@ -530,19 +667,36 @@ export const listItemFavorites = /* GraphQL */ `
         item {
           id
           name
+          nameKana
           description
-          color
-          size
+          stateDescription
+          imageUrls
           status
           season
-          image_url
+          bigCategory
+          smallCategory
+          color
+          dressLength
+          dressWidth
+          sleeveLength
+          size
+          brand
+          supplier
+          material
+          rank
           createdAt
           updatedAt
         }
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt
@@ -570,12 +724,23 @@ export const searchItems = /* GraphQL */ `
       items {
         id
         name
+        nameKana
         description
-        color
-        size
+        stateDescription
+        imageUrls
         status
         season
-        image_url
+        bigCategory
+        smallCategory
+        color
+        dressLength
+        dressWidth
+        sleeveLength
+        size
+        brand
+        supplier
+        material
+        rank
         itemCarts {
           nextToken
         }
@@ -613,12 +778,23 @@ export const searchItemCarts = /* GraphQL */ `
         item {
           id
           name
+          nameKana
           description
-          color
-          size
+          stateDescription
+          imageUrls
           status
           season
-          image_url
+          bigCategory
+          smallCategory
+          color
+          dressLength
+          dressWidth
+          sleeveLength
+          size
+          brand
+          supplier
+          material
+          rank
           createdAt
           updatedAt
         }
@@ -656,12 +832,23 @@ export const searchItemCartLogs = /* GraphQL */ `
         item {
           id
           name
+          nameKana
           description
-          color
-          size
+          stateDescription
+          imageUrls
           status
           season
-          image_url
+          bigCategory
+          smallCategory
+          color
+          dressLength
+          dressWidth
+          sleeveLength
+          size
+          brand
+          supplier
+          material
+          rank
           createdAt
           updatedAt
         }
@@ -699,19 +886,36 @@ export const searchItemFavorites = /* GraphQL */ `
         item {
           id
           name
+          nameKana
           description
-          color
-          size
+          stateDescription
+          imageUrls
           status
           season
-          image_url
+          bigCategory
+          smallCategory
+          color
+          dressLength
+          dressWidth
+          sleeveLength
+          size
+          brand
+          supplier
+          material
+          rank
           createdAt
           updatedAt
         }
         user {
           id
           name
-          email
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
           cartId
           createdAt
           updatedAt

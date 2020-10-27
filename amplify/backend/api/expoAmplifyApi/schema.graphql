@@ -2,12 +2,23 @@
 type Item @model @searchable {
   id: ID!
   name: String!
+  nameKana: String!
   description: String!
-  color: String!
-  size: String!
+  stateDescription: String
+  imageUrls: [String!]!
   status: String!
   season: String!
-  image_url: String!
+  bigCategory: String!
+  smallCategory: String
+  color: String!
+  dressLength: Int!
+  dressWidth: Int!
+  sleeveLength: Int!
+  size: String!
+  brand: String
+  supplier: String
+  material: String
+  rank: String!
   itemCarts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
   itemCartLogs: [ItemCartLog] @connection(keyName: "byItem", fields: ["id"])
   favoriteUser: [ItemFavorite] @connection(keyName: "byItem", fields: ["id"])
@@ -15,8 +26,14 @@ type Item @model @searchable {
 
 type User @model {
   id: ID!
-  name: String
-  email: String
+  name: String!
+  nameKana: String!
+  phoneNumber: String!
+  address: String!
+  postalCode: String!
+  height: String!
+  birthday: String!
+  gender: String!
   cartId: ID!
   cart: Cart @connection(fields: ["cartId"])
   cartLogs: [CartLog] @connection(keyName: "byUser", fields: ["id"])

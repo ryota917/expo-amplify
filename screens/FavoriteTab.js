@@ -36,12 +36,12 @@ export default class ItemTab extends React.Component {
         })
     }
 
-    fetchFevoriteItems = async () => {
+    fetchFavoriteItems = async () => {
         console.log('お気に入りのアイテムデータを取得します')
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems))
         console.log(res)
         const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState({
+        this.setState({
             items: res.data.searchItems.items,
             nextToken: res.data.searchItems.nextToken,
             canLoad: canLoad
@@ -77,7 +77,7 @@ export default class ItemTab extends React.Component {
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}>
                         <View style={styles.item} >
                             <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})} >
-                                <Card.Image source={{ uri: item.image_url }} style={styles.image} />
+                                <Card.Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
                                 <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
                             </Card>
                         </View>

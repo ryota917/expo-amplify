@@ -13,7 +13,8 @@ export default class CartTab extends React.Component {
         super(props);
         this.state = {
             itemCart: [],
-            cartSize: 0
+            cartSize: 0,
+            currentUserEmail: ''
         }
     }
 
@@ -30,18 +31,22 @@ export default class CartTab extends React.Component {
     //Cartに入っているアイテムを取得
     fetchItemCart = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
+        const currentUserEmail = currentUser.attributes.email
         try {
             const res = await API.graphql(graphqlOperation(gqlQueries.searchItemCarts, {
                 filter: {
                     cartId: {
-                        eq: currentUser.username
+                        eq: currentUserEmail
                     }
                 }
             }))
             console.log(res)
             const itemArray = []
             res.data.searchItemCarts.items.forEach(obj => itemArray.push(obj.item))
-            this.setState({itemCart: itemArray, cartSize: res.data.searchItemCarts.items.length })
+            this.setState({
+                itemCart: itemArray, cartSize: res.data.searchItemCarts.items.length,
+                currentUserEmail: currentUserEmail
+            })
         } catch(e) {
             console.log(e);
         }
@@ -49,8 +54,8 @@ export default class CartTab extends React.Component {
 
     //Cartに入っているアイテムを削除
     deleteItemFromCart = async (deleteItem) => {
+        const { currentUserEmail } = this.state
         console.log(deleteItem)
-        const currentUser = await Auth.currentAuthenticatedUser()
         await API.graphql(graphqlOperation(gqlMutations.updateItem, {
             input: {
                 id: deleteItem.id,
@@ -59,7 +64,7 @@ export default class CartTab extends React.Component {
         }))
         const res = await API.graphql(graphqlOperation(gqlMutations.deleteItemCart, {
             input: {
-                id: currentUser.username + deleteItem.id
+                id: currentUserEmail + deleteItem.id
             }
         }))
         console.log('カートから削除したアイテム')
@@ -82,7 +87,7 @@ export default class CartTab extends React.Component {
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.touchableOpacity} onPress={() =>  console.log('test')}>
                             <Card containerStyle={{borderColor: 'white'}} wrapperStyle={{ height: wp('27%')}}>
-                                <Card.Image source={{ uri: item.image_url }} style={styles.image} />
+                                <Card.Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
                                 <Card.Title style={styles.brand}>ブランド</Card.Title>
                                 <Card.Title style={styles.name}>{item.name}</Card.Title>
                                 <Card.Title style={styles.category}>アウター</Card.Title>

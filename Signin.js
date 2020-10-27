@@ -1,26 +1,29 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import { Auth } from 'aws-amplify';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Signup from './Signup'
 import { Loading } from 'aws-amplify-react-native'
 import { Input, Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
+import * as gqlQueries from './src/graphql/queries' // read
+import * as gqlMutations from './src/graphql/mutations' // create, update, delete
+
 
 export default class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            inputedEmail: '',
+            inputedPassword: '',
             isForgotPasswordModalVisible: false
         }
     }
 
     onPressSignin = async () => {
-        const { email, password } = this.state
+        const { inputedEmail, inputedPassword } = this.state
         try {
-            const user = await Auth.signIn(email, password)
+            const user = await Auth.signIn(inputedEmail, inputedPassword)
             console.log('successfully logined!')
             console.log(user)
         } catch(error) {
@@ -29,12 +32,33 @@ export default class Signin extends React.Component {
     }
 
     onPressConfirmSignin = async () => {
-        const { email, password } = this.state
-        const verificationCode = this.props.authData
+        console.log(this.props.authData)
+        const { inputedEmail, inputedPassword } = this.state
+        const { authData, verificationCode } = this.props.authData
         try{
-            const userData = await Auth.signIn(email, password)
-            const confirmUser = await Auth.confirmSignIn(userData, verificationCode)
-            console.log(confirmUser)
+            await Auth.signIn(inputedEmail, inputedPassword)
+            // console.log('新規ユーザーデータを作成します')
+            // await API.graphql(graphqlOperation(gqlMutations.createUser, {
+            //     input: {
+            //         id: authData.email,
+            //         cartId: authData.email,
+            //         name: authData.namez,
+            //         nameKana: authData.nameKana,
+            //         phoneNumber: authData.phoneNumber,
+            //         address: authData.address,
+            //         postalCode: authData.postalCode,
+            //         height: authData.height,
+            //         birthday: authData.birthday,
+            //         gender: authData.authgender
+            //     }
+            // }))
+            // console.log('新規ユーザーのカートデータを作成します')
+            // await API.graphql(graphqlOperation(gqlMutations.createCart, {
+            //     input: {
+            //         id: authData.email,
+            //         userId: authData.email
+            //     }
+            // }))
         } catch(err) {
             console.error(err)
         }
@@ -90,13 +114,13 @@ export default class Signin extends React.Component {
                                 <View style={styles.form}>
                                     <Text style={styles.formText}>メールアドレス</Text>
                                     <Input
-                                        onChangeText={val => this.setState({ email: val })}
+                                        onChangeText={val => this.setState({ inputedEmail: val })}
                                     />
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.formText}>パスワード</Text>
                                     <Input
-                                        onChangeText={val => this.setState({ password: val })}
+                                        onChangeText={val => this.setState({ inputedPassword: val })}
                                         secureTextEntry={true}
                                     />
                                 </View>
