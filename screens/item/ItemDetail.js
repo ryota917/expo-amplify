@@ -4,49 +4,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
-import ImageSlider from "react-native-image-slider";
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import {figmaHp, figmaWp } from '../../src/utils/figmaResponsiveWrapper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-
-class BookMark extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            isBookMarked: this._isBookMarked(),
-            currentUserEmail: ''
-            // TODO: ブックマークアイコンの画像の読み込み
-        }
-    }
-
-    _isBookMarked = itemId => {
-        // TODO: itemIdからユーザーがブックマークしているかどうかを判別
-        return true
-    }
-
-    _iconName = () => {
-        return this.state.isBookMarked ? this.state.bookMarkedIcon : this.state.notBookMarkedIcon
-    }
-
-    handleClick = () => {
-        this.setState((state)=>({isBookMarked : !state.isBookMarked}));
-    }
-
-    render(){
-        return(
-            <View>
-                <Icon name={this._iconName()} size={34} style={{marginTop: hp.responsive(49)}}/>
-            </View>
-        )
-    }
-}
+import Swiper from 'react-native-swiper'
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
-            urls: ["https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme.jpeg","https://amplify-expoamplify-dev-192017-deployment.s3-ap-northeast-1.amazonaws.com/clothes_imgs/etme_0001_wom_skart/etme2.jpeg"],
+            cartItems: [],
             currentUserEmail: ''
         }
     }
@@ -58,6 +26,7 @@ export default class ItemDetail extends React.Component {
     componentDidMount() {
         this.props.navigation.addListener('didFocus', () => {
             this.fetchCartData()
+            console.log(this.state.item)
         })
     }
 
@@ -113,43 +82,56 @@ export default class ItemDetail extends React.Component {
     }
 
     render() {
+        const { item } = this.state
+        const imagesDom = item.imageUrls.map((imgUrl, idx) =>
+            <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
+        )
         return(
             <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.innerContainer}>
                         <View style={styles.imagesView}>
-                            <Image />
+                            <Swiper
+                                style={styles.swiper}
+                                showButtons={true}
+                                activeDotColor='#7389D9'
+                            >
+                                {imagesDom}
+                            </Swiper>
                         </View>
-                        <View style={styles.titleView}>
-                            <View style={styles.brandView}>
-                                <Text style={styles.brandText}>ブランド名</Text>
+                        <View style={styles.textView}>
+                            <View style={styles.titleView}>
+                                <View style={styles.brandView}>
+                                    <Text style={styles.brandText}>ブランド名</Text>
+                                </View>
+                                <View style={styles.nameView}>
+                                    <Text style={styles.nameText}>アイテム名</Text>
+                                </View>
+                                <View style={styles.categoryView}>
+                                    <Text style={styles.categoryText}>カテゴリ</Text>
+                                </View>
+                                <Icon name='search'/>
                             </View>
-                            <View style={styles.nameView}>
-                                <Text style={styles.nameText}>アイテム名</Text>
+                            <View style={styles.sizeView}>
+                                <View style={styles.sizePictureView}>
+                                    {/* <Image/> */}
+                                </View>
+                                <View style={styles.sizeTextView}>
+                                    <Text style={styles.sizeText}>①着丈 00cm</Text>
+                                    <Text style={styles.sizeText}>②身幅 99cm</Text>
+                                    <Text style={styles.sizeText}>③袖幅 002cm</Text>
+                                </View>
                             </View>
-                            <View style={styles.categoryView}>
-                                <Text style={styles.categoryText}>カテゴリ</Text>
+                            <View style={styles.stateView}>
+                                <Text style={styles.stateTitleText}>状態</Text>
+                                <Text style={styles.stateRankText}>Sランク</Text>
+                                <Text style={styles.stateDescriptionText}>商品の状態説明が入りますううううううううううううううううううううううううううううううう</Text>
                             </View>
-                            <Icon name='search'/>
-                        </View>
-                        <View style={styles.sizeView}>
-                            <View style={styles.sizePictureView}>
-                                {/* <Image/> */}
+                            <View style={styles.descriptionView}>
+                                <Text style={styles.descriptionTitleText}>説明</Text>
+                                <Text style={styles.descriptionText}>アイテムの説明が入りますすすうううううううううううううううううううううううううううう</Text>
                             </View>
-                            <View style={styles.sizeTextView}>
-                                <Text style={styles.sizeText}>①着丈 00cm</Text>
-                                <Text style={styles.sizeText}>②身幅 99cm</Text>
-                                <Text style={styles.sizeText}>③袖幅 002cm</Text>
-                            </View>
-                        </View>
-                        <View style={styles.stateView}>
-                            <Text style={styles.stateTitleText}>状態</Text>
-                            <Text style={styles.stateRankText}>Sランク</Text>
-                            <Text style={styles.stateDescriptionText}>商品の状態説明が入りますううううううううううううううううううううううううううううううう</Text>
-                        </View>
-                        <View style={styles.descriptionView}>
-                            <Text style={styles.descriptionTitleText}>説明</Text>
-                            <Text style={styles.descriptionText}>アイテムの説明が入りますすすうううううううううううううううううううううううううううう</Text>
+                            <View style={{ height: hp('10%') }}></View>
                         </View>
                     </View>
                 </ScrollView>
@@ -182,7 +164,21 @@ const styles = StyleSheet.create({
     },
     innerContainer: {
         width: wp('80%'),
-        alignItems: 'center'
+    },
+    imagesView: {
+        width: wp('100%'),
+        height: wp('80%')
+    },
+    swiper: {
+        //width: wp('90%'),
+        //height: wp('90%')
+    },
+    image: {
+        width: wp('100%'),
+        height: wp('100%')
+    },
+    textView: {
+        marginTop: hp('5%')
     },
     footerView: {
         height: hp('20%'),
