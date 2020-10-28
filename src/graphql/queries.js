@@ -733,12 +733,33 @@ export const searchItems = /* GraphQL */ `
         material
         rank
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt

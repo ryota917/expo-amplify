@@ -350,20 +350,31 @@ export default class ItemTab extends React.Component {
         return (
             <FlatList
                 //onRefresh={() => {}}
-                style={styles.container}
                 data={items}
                 numColumns={3}
-                columnWrapperStyle={{ flex: 1, margin: 3, marginBottom: 6 }}
-                keyExtractor={(item, index) => index.toString()}
+                columnWrapperStyle={styles.columnWrapperStyle}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}>
-                        <View style={styles.item} >
-                            <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})} >
-                                <Card.Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
-                                <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
+                    // <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} style={styles.touchableOpacity} >
+                        // <View style={styles.itemView} >
+                            <Card
+                                containerStyle={styles.cardContainer}
+                                wrapperStyle={styles.cardWrapper}
+                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                            >
+                                <Card.Image
+                                    source={{ uri: item.imageUrls[0] }}
+                                    style={styles.itemImage}
+                                    onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                                />
+                                <Card.Title
+                                    style={styles.itemText}
+                                    onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                                >
+                                    {item.name}
+                                </Card.Title>
                             </Card>
-                        </View>
-                    </TouchableOpacity>
+                        // </View>
+                    // </TouchableOpacity>
                 )}
                 onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
                 onEndReachedThreshold={1}
@@ -374,18 +385,21 @@ export default class ItemTab extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        margin: -5,
-        backgroundColor: '#E5E5E5',
-        width: wp('100%')
+    columnWrapperStyle: {
+        margin: 1,
     },
-    item: {
-        height: hp('25%'),
-        alignItems: 'flex-start',
-        flex: 1,
+    cardContainer: {
+        padding: 0,
+        margin: 0,
+        width: wp('33%'),
     },
-    image: {
-        width: wp('32%'),
+    itemImage: {
+        width: wp('33%'),
         height: hp('20%'),
+    },
+    itemText: {
+        width: wp('32%'),
+        height: hp('5%'),
+        fontSize: 12
     }
 })

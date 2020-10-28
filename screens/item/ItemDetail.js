@@ -8,6 +8,7 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import {figmaHp, figmaWp } from '../../src/utils/figmaResponsiveWrapper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
+import Modal from 'react-native-modal'
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -16,54 +17,38 @@ export default class ItemDetail extends React.Component {
             item: this.props.navigation.state.params.item,
             currentUserEmail: '',
             isFavorited: false,
-            isCarted: false
+            isCarted: false,
+            isCartModalVisible: false
         }
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
-        headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('ItemTab')} }/>
+        headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('ItemTab')}} />
     });
 
     componentDidMount = async () => {
         await this.fetchCurrentUser()
-        this.props.navigation.addListener('didFocus', () => {
-            this.fetchItemData()
-        })
-    }
-
-    fetchItemData = async () => {
-        const res = await API.graphql(graphqlOperation(gqlQueries.getItem, {id: this.state.item.id }))
-        console.log(res)
+        this.setFavoritedOrCarted()
     }
 
     fetchCurrentUser = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         const currentUserEmail = currentUser.attributes.email
-        this.setState({ currentUserEmail: currentUserEmail　})
+        this.setState({ currentUserEmail: currentUserEmail })
     }
 
-    //カートに追加
-    saveItemToCart = async () => {
-        const { currentUserEmail, item } = this.state
-        console.log('カートに入れるボタンが押されました')
-        //多対多のリレーションは中間テーブルデータの生成で実現可能(item, cartの更新処理は不要)
-        await API.graphql(graphqlOperation(gqlMutations.createItemCart, {
-            input: {
-                id: currentUserEmail + this.state.item["id"],
-                itemId: item["id"],
-                cartId: currentUserEmail
-            }
-        }))
-        await API.graphql(graphqlOperation(gqlMutations.updateItem, {
-            input: {
-                id: item["id"],
-                status: 'CARTING'
-            }
-        }))
+    setFavoritedOrCarted = () => {
+        const isFavorited = this.props.navigation.state.params.item.favoriteUser.items.some(item => item.userId === this.state.currentUserEmail)
+        const isCarted = this.props.navigation.state.params.item.itemCarts.items.some(item => item.userId === this.state.currentUserEmail)
+        this.setState({
+            isFavorited: isFavorited,
+            isCarted: isCarted
+        })
     }
 
     //お気に入りに追加
     saveItemToFavorite = async () => {
+        this.setState({ isFavorited: true })
         const { currentUserEmail, item } = this.state
         console.log('お気に入りボタンが押されました')
         await API.graphql(graphqlOperation(gqlMutations.createItemFavorite, {
@@ -75,13 +60,85 @@ export default class ItemDetail extends React.Component {
         }))
     }
 
+    //お気に入りから削除
+    deleteItemFromFavorite = async () => {
+        this.setState({ isFavorited: false })
+        const { currentUserEmail, item } = this.state
+        console.log('お気に入りから削除されました')
+        await API.graphql(graphqlOperation(gqlMutations.deleteItemFavorite, {
+            input: {
+                id: currentUserEmail + item["id"]
+            }
+        }))
+    }
+
+    //カートに追加
+    saveItemToCart = async () => {
+        const { currentUserEmail, item } = this.state
+        this.toggleCartModal()
+        this.setState({ isCarted: true })
+        try {
+            //アイテムがWAITINGであることを確認できればカート保存処理を実行
+            const itemData = await API.graphql(graphqlOperation(gqlQueries.getItem, { id: item["id"] }))
+            if(itemData.data.getItem.status === 'WAITING') {
+                await API.graphql(graphqlOperation(gqlMutations.updateItem, {
+                    input: {
+                        id: item["id"],
+                        status: 'CARTING'
+                    }
+                }))
+                await API.graphql(graphqlOperation(gqlMutations.createItemCart, {
+                    input: {
+                        id: currentUserEmail + item["id"],
+                        itemId: item["id"],
+                        cartId: currentUserEmail
+                    }
+                }))
+            }
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
+    //モーダルを開閉
+    toggleCartModal = () => {
+        this.setState({ isCartModalVisible: !this.state.isCartModalVisible })
+    }
+
+    navigateCartTab = () => {
+        this.toggleCartModal()
+        this.props.navigation.navigate('CartTab')
+    }
+
     render() {
-        const { item } = this.state
+        const { item, isFavorited, isCarted } = this.state
         const imagesDom = item.imageUrls.map((imgUrl, idx) =>
             <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
         )
         return(
             <View style={styles.container}>
+                <Modal isVisible={this.state.isCartModalVisible}>
+                    <View style={styles.modalContainerView}>
+                        <View style={styles.modalInnerView}>
+                        <Image source={require('../../assets/taggu.png')} style={{ width: wp('25%'), height: hp('25%'), resizeMode: 'contain' }} />
+                            <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title='買い物を続ける'
+                                    buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#333333' }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                    onPress={() => this.toggleCartModal()}
+                                />
+                                <Button
+                                    title='カートを見る'
+                                    buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('27%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                    onPress={() => this.navigateCartTab()}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.innerContainer}>
                         <View style={styles.imagesView}>
@@ -113,7 +170,11 @@ export default class ItemDetail extends React.Component {
                                 </View>
                                 <View style={styles.iconView}>
                                     {/* bookmark-minus-outline */}
-                                    <Icon name='bookmark-minus' size={40}/>
+                                    <Icon
+                                        name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline'}
+                                        size={40}
+                                        onPress={isFavorited ? () => this.deleteItemFromFavorite() : () => this.saveItemToFavorite()}
+                                    />
                                 </View>
                             </View>
                             {/* サイズ */}
@@ -150,7 +211,8 @@ export default class ItemDetail extends React.Component {
                             }
                             title="カートに入れる"
                             titleStyle={{ color: 'white' }}
-                            buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
+                            buttonStyle={{ backgroundColor: isCarted ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
+                            onPress={isCarted ? null : () => this.saveItemToCart()}
                         />
                     </View>
                 </View>
@@ -262,5 +324,25 @@ const styles = StyleSheet.create({
     footerInnerView: {
         flex: 1,
         alignItems: 'center'
+    },
+    modalContainerView: {
+        backgroundColor: 'white',
+        width: wp('70%'),
+        height: hp('40%'),
+        left: wp('10%'),
+        textAlign: 'center',
+        borderRadius: 15
+    },
+    modalInnerView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modalText: {
+        fontWeight: '500',
+        marginBottom: hp('2%')
+    },
+    modalButtonView: {
+        flexDirection: 'row'
     }
 })
