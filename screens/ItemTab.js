@@ -7,10 +7,6 @@ import * as gqlMutations from '../src/graphql/mutations' // create, update, dele
 import { ListItem, Card, Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
-const RENTAL_NUM = 4
-const ITEMS_PER_PAGE = 50
-const ITEM_WIDTH = Dimensions.get('window').width;
-
 export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +15,9 @@ export default class ItemTab extends React.Component {
             items: [],
             nextToken: '',
             canLoad: true,
-            isLoading: false
+            isLoading: false,
+            isRefreshing: false,
+            isLoaded: false
         }
     }
 
@@ -33,12 +31,14 @@ export default class ItemTab extends React.Component {
 
     componentDidMount = async () => {
         this.syncUserAndCartToDynamo();
-        this.flatLoad()
+        this.initialMountLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
+        //FIX ME: addListenerが複数回レンダリングされている
         await this.props.navigation.addListener('didFocus', async () => {
             //stateが更新されるのとawaitしないと前のstateで表示される
+            console.log('addEvent内')
             await this.updateSearchState()
-            this.flatLoad()
+            if(!this.state.isLoaded) this.initialLoad()
         })
     }
 
@@ -83,7 +83,7 @@ export default class ItemTab extends React.Component {
         }
     }
 
-    loadSearchQuery = () => {
+    loadQuery = () => {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
         const limitNum = condition.length
         switch(limitNum) {
@@ -203,7 +203,7 @@ export default class ItemTab extends React.Component {
         }
     }
 
-    fetchSearchQuery = () => {
+    initialQuery = () => {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
         const limitNum = condition.length
         switch(limitNum) {
@@ -318,22 +318,39 @@ export default class ItemTab extends React.Component {
         }
     }
 
-    flatLoad = async () => {
-        console.log('初期ローディング開始')
-        const query = await this.fetchSearchQuery()
+    initialLoad = async () => {
+        console.log('初期ローディング')
+        this.setState({ isLoading: true })
+        const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
         const canLoad = !!(res.data.searchItems.nextToken)
         await this.setState({
             items: res.data.searchItems.items,
             nextToken: res.data.searchItems.nextToken,
-            canLoad: canLoad
+            canLoad: canLoad,
+            isLoading: false
         })
     }
 
-    startLoading = async () => {
-        console.log('ローディング開始')
+    initialMountLoad = async () => {
+        console.log('マウント時ローディング ')
         this.setState({ isLoading: true })
-        const query = this.loadSearchQuery()
+        const query = await this.initialQuery()
+        const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
+        const canLoad = !!(res.data.searchItems.nextToken)
+        await this.setState({
+            items: res.data.searchItems.items,
+            nextToken: res.data.searchItems.nextToken,
+            canLoad: canLoad,
+            isLoading: false,
+            isLoaded: true
+        })
+    }
+
+    continueLoading = async () => {
+        console.log('追加ローディング')
+        this.setState({ isLoading: true })
+        const query = this.loadQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
         const canLoad = !!(res.data.searchItems.nextToken)
         await this.setState(prevState => ({
@@ -344,41 +361,47 @@ export default class ItemTab extends React.Component {
         }))
     }
 
+    onRefresh = async () => {
+        this.setState({ isRefreshing: true })
+        await this.initialLoad()
+        this.setState({ isRefreshing: false })
+    }
+
     render() {
-        const activityIndicator = <ActivityIndicator animating size='large'/>
-        const { canLoad, items, isLoading } = this.state
+        const activityIndicator = <ActivityIndicator size='large' color='#7389D9' />
+        const { canLoad, items, isLoading, isRefreshing } = this.state
         return (
             <FlatList
-                //onRefresh={() => {}}
+                refreshing={isRefreshing}
+                onRefresh={() => this.onRefresh()}
                 data={items}
+                extraData={items}
                 numColumns={3}
                 columnWrapperStyle={styles.columnWrapperStyle}
+                // initialNumToRender={4}
                 renderItem={({ item }) => (
-                    // <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} style={styles.touchableOpacity} >
-                        // <View style={styles.itemView} >
-                            <Card
-                                containerStyle={styles.cardContainer}
-                                wrapperStyle={styles.cardWrapper}
-                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                            >
-                                <Card.Image
-                                    source={{ uri: item.imageUrls[0] }}
-                                    style={styles.itemImage}
-                                    onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                                />
-                                <Card.Title
-                                    style={styles.itemText}
-                                    onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                                >
-                                    {item.name}
-                                </Card.Title>
+                    <Card
+                        containerStyle={styles.cardContainer}
+                        wrapperStyle={styles.cardWrapper}
+                        onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                    >
+                        <Card.Image
+                            source={{ uri: item.imageUrls[0] }}
+                            style={styles.itemImage}
+                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                        />
+                        <Card.Title
+                            style={styles.itemText}
+                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                        >
+                            {item.name}
+                        </Card.Title>
                             </Card>
-                        // </View>
-                    // </TouchableOpacity>
                 )}
-                onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
+                onEndReached={(canLoad && !isLoading) ? this.continueLoading : null}
                 onEndReachedThreshold={1}
                 ListFooterComponent={canLoad ? activityIndicator : null}
+                ListFooterComponentStyle={{ marginTop : hp('2%') }}
             />
         );
     }

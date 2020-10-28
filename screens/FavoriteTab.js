@@ -7,7 +7,7 @@ import * as gqlMutations from '../src/graphql/mutations' // create, update, dele
 import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
-export default class ItemTab extends React.Component {
+export default class FavoriteTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -68,18 +68,18 @@ export default class ItemTab extends React.Component {
                 numColumns={3}
                 columnWrapperStyle={styles.columnWrapperStyle}
                 renderItem={({ item }) => (
-                            <Card containerStyle={styles.cardContainer} >
-                                <Card.Image
-                                    source={{ uri: item.imageUrls[0] }}
-                                    style={styles.itemImage}
-                                    onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
-                                />
-                                <Card.Title
-                                    style={styles.itemText}
-                                    onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
-                                >
-                                        {item.name}
-                                </Card.Title>
+                    <Card containerStyle={styles.cardContainer} >
+                        <Card.Image
+                            source={{ uri: item.imageUrls[0] }}
+                            style={styles.itemImage}
+                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
+                        />
+                        <Card.Title
+                            style={styles.itemText}
+                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
+                        >
+                                {item.name}
+                        </Card.Title>
                             </Card>
                 )}
                 onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
