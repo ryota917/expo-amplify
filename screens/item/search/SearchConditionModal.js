@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation } from 'aws-amplify';
 //import * as Query from '../../src/graphql/queries';
@@ -18,17 +18,18 @@ class SearchConditionModal extends React.Component {
             sizePulledDown: true,
             selectedSize: '',
             rankPulledDown: true,
-            selectedRank: ''
+            selectedRank: '',
+            searchCondition: this.props.navigation.state.params?.searchCondition
         }
     }
+
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'さがす',
         headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
     });
 
     searchWithCondition = () => {
-        const { selectedColor, selectedCategory, selectedSize, selectedRank} = this.state
-        this.props.navigation.navigate('ItemTab', { searchCondition: [{color: selectedColor}, {category: selectedCategory}, {size: selectedSize}, {rank: selectedRank}] })
+        this.props.navigation.navigate('ItemTab', { searchCondition: this.state.searchCondition })
     }
 
     // color
@@ -37,23 +38,30 @@ class SearchConditionModal extends React.Component {
     }
 
     selectColor = (color) => {
-        if(color === this.state.selectedColor) {
-            this.setState({ selectedColor: '' })
+        const searchCondition = this.state.searchCondition.slice();
+        if(color === this.state.searchCondition[0]['color']) {
+            searchCondition[0]['color'] = ''
+            this.setState({ searchCondition: searchCondition })
         } else {
-            this.setState({ selectedColor: color })
+            searchCondition[0]['color'] = color
+            this.setState({ searchCondition: searchCondition })
         }
     }
 
-    // category
-    toggleCategoryView = () => {
+
+    // bigCategory
+    toggleBigCategoryView = () => {
         this.setState({ categoryPulledDown: !this.state.categoryPulledDown })
     }
 
-    selectCategory = (category) => {
-        if(category === this.state.selectedCategory) {
-            this.setState({ selectedCategory: ''})
+    selectBigCategory = (bigCategory) => {
+        const searchCondition = this.state.searchCondition.slice();
+        if(bigCategory === this.state.searchCondition[1]['bigCategory']) {
+            searchCondition[1]['bigCategory'] = ''
+            this.setState({ searchCondition: searchCondition })
         } else {
-            this.setState({ selectedCategory: category })
+            searchCondition[1]['bigCategory'] = bigCategory
+            this.setState({ searchCondition: searchCondition })
         }
     }
 
@@ -63,10 +71,13 @@ class SearchConditionModal extends React.Component {
     }
 
     selectSize = (size) => {
-        if(size === this.state.selectedSize) {
-            this.setState({ selectedSize: ''})
+        const searchCondition = this.state.searchCondition.slice();
+        if(size === this.state.searchCondition[2]['size']) {
+            searchCondition[2]['size'] = ''
+            this.setState({ searchCondition: searchCondition })
         } else {
-            this.setState({ selectedSize: size})
+            searchCondition[2]['size'] = size
+            this.setState({ searchCondition: searchCondition })
         }
     }
 
@@ -76,256 +87,271 @@ class SearchConditionModal extends React.Component {
     }
 
     selectRank = (rank) => {
-        if(rank === this.state.selectedRank) {
-            this.setState({ selectedRank: ''})
+        const searchCondition = this.state.searchCondition.slice();
+        if(rank === this.state.searchCondition[3]['rank']) {
+            searchCondition[3]['rank'] = ''
+            this.setState({ searchCondition: searchCondition })
         } else {
-            this.setState({ selectedRank: rank})
+            searchCondition[3]['rank'] = rank
+            this.setState({ searchCondition: searchCondition })
         }
     }
 
     render() {
+        const { searchCondition } = this.state
         return (
-            <View style={{ flex: 1 }}>
-                <ScrollView style={{ flex: 1, backgroundColor: 'white' }} contentContainerStyle={{ paddingBottom: 40}} >
-                    {/* 色条件 */}
-                    <Button
-                        icon={
-                            <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
-                        }
-                        iconRight={true}
-                        title='色で検索'
-                        buttonStyle={{ borderRadius: 30, width: wp('30%'), backgroundColor: 'white', marginLeft: wp('10%'), marginTop: hp('1%'), justifyContent: 'flex-start' }}
-                        titleStyle={{ fontSize: 10, color: 'black', marginRight: wp('3%') }}
-                        onPress={this.toggleColorView}
-                    />
-                    {!this.state.colorPulledDown ? null :
-                        <View>
+            <View style={styles.container}>
+                <ScrollView style={styles.scrollView} >
+                    <View style={styles.innerContainer}>
+                        {/* カテゴリ条件 */}
+                        <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%') }}/>
+                                    <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
                                 }
-                                title='ブラック系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedColor === 'BLACK') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'BLACK') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'BLACK')}
+                                iconRight={true}
+                                title='カテゴリで検索'
+                                buttonStyle={styles.dropDownButtonStyle}
+                                titleStyle={styles.dropDownTitleStyle}
+                                onPress={this.toggleBigCategoryView}
                             />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                }
-                                title='ブラウン系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedColor === 'BROWN') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'BROWN') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'BROWN')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'white', marginRight: wp('5%') }} />
-                                }
-                                title='ホワイト系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'white') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'white') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'white')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'blue', marginRight: wp('5%') }} />
-                                }
-                                title='ブルー系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'BLUE') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'BLUE') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'BLUE')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'red', marginRight: wp('5%') }} />
-                                }
-                                title='レッド系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'RED') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'RED') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'RED')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'green', marginRight: wp('5%') }} />
-                                }
-                                title='グリーン系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'GREEN') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'GREEN') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'GREEN')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'yellow', marginRight: wp('5%') }} />
-                                }
-                                title='イエロー系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'YELLOW') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'YELLOW') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'YELLOW')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'purple', marginRight: wp('5%') }} />
-                                }
-                                title='パープル系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'PURPLE') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'PURPLE') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'PURPLE')}
-                            />
-                            <Button
-                                icon={
-                                    <Icon name='circle' size={20} style={{ color: 'grey', marginRight: wp('5%') }} />
-                                }
-                                title='グレー系'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedColor === 'GREY') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedColor === 'GREY') ? 'white' : 'black'}}
-                                onPress={this.selectColor.bind(this, 'GREY')}
-                            />
+                            {!this.state.categoryPulledDown ? null :
+                                <View>
+                                    <Button
+                                        icon={
+                                            <Image source={require('../../../assets/tops.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginRight: wp('5%') }} />
+                                        }
+                                        title='トップス'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'TOPS') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[1]['bigCategory'] === 'TOPS') ? 'white' : 'black' }]}
+                                        onPress={this.selectBigCategory.bind(this, 'TOPS')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Image source={require('../../../assets/outer.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginRight: wp('5%') }} />
+                                        }
+                                        title='アウター'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'OUTER') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[1]['bigCategory'] === 'OUTER') ? 'white' : 'black' }]}
+                                        onPress={this.selectBigCategory.bind(this, 'OUTER')}
+                                    />
+                                </View>
+                            }
                         </View>
-                    }
-                    {/* カテゴリ条件 */}
-                    <Button
-                        icon={
-                            <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
-                        }
-                        iconRight={true}
-                        title='カテゴリで検索'
-                        buttonStyle={{ borderRadius: 30, width: wp('30%'), backgroundColor: 'white', marginLeft: wp('10%'), marginTop: hp('1%'), justifyContent: 'flex-start' }}
-                        titleStyle={{ fontSize: 10, color: 'black', marginRight: wp('3%') }}
-                        onPress={this.toggleCategoryView}
-                    />
-                    {!this.state.categoryPulledDown ? null :
-                        <View>
+                        {/* 色条件 */}
+                        <View style={styles.conditionView}>
                             <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%'), borderWidth: 1, borderColor: 'white', borderRadius: '50%' }}/>
-                                // }
-                                title='トップス'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedCategory === 'OUTER') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedCategory === 'OUTER') ? 'white' : 'black'}}
-                                onPress={this.selectCategory.bind(this, 'OUTER')}
+                                icon={
+                                    <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                }
+                                iconRight={true}
+                                title='色で検索'
+                                buttonStyle={styles.dropDownButtonStyle}
+                                titleStyle={styles.dropDownTitleStyle}
+                                onPress={this.toggleColorView}
                             />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                // }
-                                title='アウター'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedCategory === 'TOPS') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedCategory === 'TOPS') ? 'white' : 'black'}}
-                                onPress={this.selectCategory.bind(this, 'TOPS')}
-                            />
+                            {!this.state.colorPulledDown ? null :
+                                <View>
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%') }}/>
+                                        }
+                                        title='ブラック系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'BLACK') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'BLACK') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'BLACK')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
+                                        }
+                                        title='ブラウン系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'BROWN') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'BROWN') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'BROWN')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'white', marginRight: wp('5%') }} />
+                                        }
+                                        title='ホワイト系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'white') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'white') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'white')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'blue', marginRight: wp('5%') }} />
+                                        }
+                                        title='ブルー系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'BLUE') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'BLUE') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'BLUE')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'red', marginRight: wp('5%') }} />
+                                        }
+                                        title='レッド系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'RED') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'RED') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'RED')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'green', marginRight: wp('5%') }} />
+                                        }
+                                        title='グリーン系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'GREEN') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'GREEN') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'GREEN')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'yellow', marginRight: wp('5%') }} />
+                                        }
+                                        title='イエロー系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'YELLOW') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'YELLOW') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'YELLOW')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'purple', marginRight: wp('5%') }} />
+                                        }
+                                        title='パープル系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'PURPLE') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'PURPLE') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'PURPLE')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={20} style={{ color: 'grey', marginRight: wp('5%') }} />
+                                        }
+                                        title='グレー系'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'GREY') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'GREY') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'GREY')}
+                                    />
+                                </View>
+                            }
                         </View>
-                    }
-                    {/* サイズ条件 */}
-                    <Button
-                        icon={
-                            <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
-                        }
-                        iconRight={true}
-                        title='サイズで検索'
-                        buttonStyle={{ borderRadius: 30, width: wp('30%'), backgroundColor: 'white', marginLeft: wp('10%'), marginTop: hp('1%'), justifyContent: 'flex-start' }}
-                        titleStyle={{ fontSize: 10, color: 'black', marginRight: wp('3%') }}
-                        onPress={this.toggleSizeView}
-                    />
-                    {!this.state.sizePulledDown ? null :
-                        <View>
+                        {/* サイズ条件 */}
+                        <View style={styles.conditionView}>
                             <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%'), borderWidth: 1, borderColor: 'white', borderRadius: '50%' }}/>
-                                // }
-                                title='S'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedSize === 'S') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedSize === 'S') ? 'white' : 'black'}}
-                                onPress={this.selectSize.bind(this, 'S')}
+                                icon={
+                                    <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                }
+                                iconRight={true}
+                                title='サイズで検索'
+                                buttonStyle={styles.dropDownButtonStyle}
+                                titleStyle={styles.dropDownTitleStyle}
+                                onPress={this.toggleSizeView}
                             />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                // }
-                                title='M'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedSize === 'M') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedSize === 'M') ? 'white' : 'black'}}
-                                onPress={this.selectSize.bind(this, 'M')}
-                            />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                // }
-                                title='L'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedSize === 'L') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedSize === 'L') ? 'white' : 'black'}}
-                                onPress={this.selectSize.bind(this, 'L')}
-                            />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                // }
-                                title='XL'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedSize === 'XL') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedSize === 'XL') ? 'white' : 'black'}}
-                                onPress={this.selectSize.bind(this, 'XL')}
-                            />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                // }
-                                title='XXL'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedSize === 'XXL') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedSize === 'XXL') ? 'white' : 'black'}}
-                                onPress={this.selectSize.bind(this, 'XXL')}
-                            />
+                            {!this.state.sizePulledDown ? null :
+                                <View>
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='S'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'S') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'S') ? 'white' : 'black' }]}
+                                        onPress={this.selectSize.bind(this, 'S')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='M'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'M') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'M') ? 'white' : 'black' }]}
+                                        onPress={this.selectSize.bind(this, 'M')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='L'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'L') ? '#333333' : 'white' }]}
+                                        titleStyle={styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'L') ? 'white' : 'black' }}
+                                        onPress={this.selectSize.bind(this, 'L')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='XL'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'XL') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'XL') ? 'white' : 'black' }]}
+                                        onPress={this.selectSize.bind(this, 'XL')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='XXL'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'XXL') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'XXL') ? 'white' : 'black' }]}
+                                        onPress={this.selectSize.bind(this, 'XXL')}
+                                    />
+                                </View>
+                            }
                         </View>
-                    }
-                    {/* ランク条件 */}
-                    <Button
-                        icon={
-                            <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
-                        }
-                        iconRight={true}
-                        title='ランクで検索'
-                        buttonStyle={{ borderRadius: 30, width: wp('30%'), backgroundColor: 'white', marginLeft: wp('10%'), marginTop: hp('1%'), justifyContent: 'flex-start' }}
-                        titleStyle={{ fontSize: 10, color: 'black', marginRight: wp('3%') }}
-                        onPress={this.toggleRankView}
-                    />
-                    {!this.state.rankPulledDown ? null :
-                        <View>
+                        {/* ランク条件 */}
+                        <View style={styles.conditionView}>
                             <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%'), borderWidth: 1, borderColor: 'white', borderRadius: '50%' }}/>
-                                // }
-                                title='Sランク'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedRank === 'Sランク') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedRank === 'Sランク') ? 'white' : 'black'}}
-                                onPress={this.selectRank.bind(this, 'Sランク')}
+                                icon={
+                                    <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                }
+                                iconRight={true}
+                                title='ランクで検索'
+                                buttonStyle={styles.dropDownButtonStyle}
+                                titleStyle={styles.dropDownTitleStyle}
+                                onPress={this.toggleRankView}
                             />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
-                                // }
-                                title='Aランク'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), height: hp('4%'), backgroundColor: !!(this.state.selectedRank === 'Aランク') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedRank === 'Aランク') ? 'white' : 'black'}}
-                                onPress={this.selectRank.bind(this, 'Aランク')}
-                            />
-                            <Button
-                                // icon={
-                                    // <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%'), borderWidth: 1, borderColor: 'white', borderRadius: '50%' }}/>
-                                // }
-                                title='Bランク'
-                                buttonStyle={{ borderRadius: 30, width: wp('80%'), backgroundColor: !!(this.state.selectedRank === 'Bランク') ? '#333333' : 'white', marginLeft: wp('10%'), justifyContent: 'flex-start' }}
-                                titleStyle={{ fontSize: 10, color: !!(this.state.selectedRank === 'Bランク') ? 'white' : 'black'}}
-                                onPress={this.selectRank.bind(this, 'Bランク')}
-                            />
+                            {!this.state.rankPulledDown ? null :
+                                <View>
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='Sランク'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[3]['rank'] === 'S') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[3]['rank'] === 'S') ? 'white' : 'black' }]}
+                                        onPress={this.selectRank.bind(this, 'S')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='Aランク'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[3]['rank'] === 'A') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[3]['rank'] === 'A') ? 'white' : 'black' }]}
+                                        onPress={this.selectRank.bind(this, 'A')}
+                                    />
+                                    <Button
+                                        icon={
+                                            <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
+                                        }
+                                        title='Bランク'
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[3]['rank'] === 'B') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[3]['rank'] === 'B') ? 'white' : 'black' }]}
+                                        onPress={this.selectRank.bind(this, 'B')}
+                                    />
+                                </View>
+                            }
                         </View>
-                    }
+                    </View>
+                    <View style={{ height: hp('25%') }}></View>
                 </ScrollView>
-                <View style={styles.button}>
+                <View style={styles.searchButtonView}>
                     <Button
                         title='検索する →'
-                        buttonStyle={{ borderRadius: 30, width: wp('40%'), height: hp('6%'), backgroundColor: 'white' }}
-                        titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
+                        buttonStyle={styles.searchButtonStyle}
+                        titleStyle={styles.searchTitleStyle}
                         onPress={this.searchWithCondition}
-                    />
+                        />
                 </View>
             </View>
         );
@@ -333,16 +359,64 @@ class SearchConditionModal extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    button: {
-        flex: 1,
+    container: {
+        width: wp('100%'),
+        height: hp('100%'),
+        backgroundColor: 'white'
+    },
+    scrollView: {
+    },
+    innerContainer: {
+        marginTop: hp('3%')
+    },
+    conditionView: {
+        paddingBottom: hp('2%'),
+    },
+    dropDownButtonStyle: {
+        borderRadius: 30,
+        width: wp('40%'),
+        marginLeft: wp('10%'),
+        marginBottom: hp('1%'),
+        backgroundColor: 'white',
+        justifyContent: 'flex-start',
+        backgroundColor: 'white'
+    },
+    dropDownTitleStyle: {
+        fontSize: 13,
+        color: 'black',
+        marginRight: wp('3%'),
+        fontWeight: '400'
+    },
+    choiceButtonStyle: {
+        borderRadius: 30,
+        width: wp('80%'),
+        marginLeft: wp('10%'),
+        justifyContent: 'flex-start',
+    },
+    choiceTitleStyle: {
+        fontSize: 13,
+        fontWeight: '400'
+    },
+    searchButtonView: {
         position: 'absolute',
-        bottom: hp('4%'),
-        right: wp('4%'),
+        right: wp('10%'),
+        bottom: hp('20%'),
+        backgroundColor: 'transparent',
         shadowColor: 'black',
         shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.6,
-        shadowRadius: 20,
+        shadowOpacity: 0.4,
+        shadowRadius: 20
+    },
+    searchButtonStyle: {
         borderRadius: 30,
+        width: wp('40%'),
+        height: hp('6%'),
+        backgroundColor: 'white',
+    },
+    searchTitleStyle: {
+        color: '#7389D9',
+        fontSize: 16,
+        fontWeight: 'bold'
     }
 })
 

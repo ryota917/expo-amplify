@@ -2,7 +2,7 @@
   "expo": {
     "name": "pretapo-demo",
     "slug": "slug",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/pretapo-icon.png",
     "splash": {
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pretapo.pretapo-demo",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.2"
     },
     "web": {
       "favicon": "./assets/favicon.png"

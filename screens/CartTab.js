@@ -87,7 +87,7 @@ export default class CartTab extends React.Component {
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.touchableOpacity} onPress={() =>  console.log('test')}>
                             <Card containerStyle={{borderColor: 'white'}} wrapperStyle={{ height: wp('27%')}}>
-                                <Card.Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
+                                <Card.Image source={{ uri: item.imageURLs[0] }} style={styles.image} />
                                 <Card.Title style={styles.brand}>ブランド</Card.Title>
                                 <Card.Title style={styles.name}>{item.name}</Card.Title>
                                 <Card.Title style={styles.category}>アウター</Card.Title>

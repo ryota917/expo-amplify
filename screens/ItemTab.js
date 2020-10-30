@@ -1,44 +1,45 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
-import { ListItem, Card, Button } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-
-const RENTAL_NUM = 4
-const ITEMS_PER_PAGE = 50
-const ITEM_WIDTH = Dimensions.get('window').width;
 
 export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchCondition: [{color: ''}, {category: ''}, {size: ''}, {rank: ''}],
+            searchCondition: [{color: ''}, {bigCategory: ''}, {size: ''}, {rank: ''}],
             items: [],
             nextToken: '',
             canLoad: true,
-            isLoading: false
+            isLoading: false,
+            isRefreshing: false,
         }
     }
 
-    static navigationOptions = ({navigation}) => ({
-        headerTitle: () => (
-            <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
-        ),
-        headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
-        headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
-    });
+    static navigationOptions = ({navigation}) => {
+        const { params } = navigation.state
+        return {
+                headerTitle: () => (
+                <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
+            ),
+            headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+            headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>
+        }
+    };
 
     componentDidMount = async () => {
         this.syncUserAndCartToDynamo();
-        this.flatLoad()
+        this.initialMountLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
+        //FIX ME: addListenerが複数回レンダリングされている
         await this.props.navigation.addListener('didFocus', async () => {
             //stateが更新されるのとawaitしないと前のstateで表示される
             await this.updateSearchState()
-            this.flatLoad()
+            this.initialLoad()
         })
     }
 
@@ -46,7 +47,6 @@ export default class ItemTab extends React.Component {
     syncUserAndCartToDynamo = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         const currentUserEmail = currentUser.attributes.email
-        console.log(currentUser)
         const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUserEmail}))
         const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail}))
         if(!dynamoUser.data.getUser) {
@@ -76,15 +76,18 @@ export default class ItemTab extends React.Component {
             }))
         }
     }
+
     //検索条件を更新
     updateSearchState = () => {
         //検索画面から検索条件を取得
         if(this.props.navigation.state.params?.searchCondition) {
             this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
         }
+        //検索画面へ渡す検索条件パラメータをセット
+        this.props.navigation.setParams({ searchCondition: this.state.searchCondition })
     }
 
-    loadSearchQuery = () => {
+    loadQuery = () => {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
         const limitNum = condition.length
         switch(limitNum) {
@@ -119,8 +122,8 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
-                    nextTokeN: this.state.nextToken
+                    limit: 30,
+                    nextToken: this.state.nextToken
                 }
             case 3:
                 const key31 = Object.keys(condition[0])
@@ -147,7 +150,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
                 break;
@@ -159,18 +162,18 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 [key21]: {
-                                    eq: condition[0][key1]
+                                    eq: condition[0][key21]
                                 }
                             },
                             [key22]: {
-                                eq: condition[1][key2]
+                                eq: condition[1][key22]
                             }
                         },
                         status: {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
                 break;
@@ -187,7 +190,7 @@ export default class ItemTab extends React.Component {
                             }
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
                 break;
@@ -204,7 +207,7 @@ export default class ItemTab extends React.Component {
         }
     }
 
-    fetchSearchQuery = () => {
+    initialQuery = () => {
         const condition = this.state.searchCondition.filter(ele => Object.values(ele)[0].length )
         const limitNum = condition.length
         switch(limitNum) {
@@ -239,7 +242,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                 }
             case 3:
                 const key31 = Object.keys(condition[0])
@@ -266,7 +269,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                 }
                 break;
             case 2:
@@ -277,18 +280,18 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 [key21]: {
-                                    eq: condition[0][key1]
+                                    eq: condition[0][key21]
                                 }
                             },
                             [key22]: {
-                                eq: condition[1][key2]
+                                eq: condition[1][key22]
                             }
                         },
                         status: {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                 }
                 break;
             case 1:
@@ -304,7 +307,7 @@ export default class ItemTab extends React.Component {
                             }
                         }
                     },
-                    limit: 9
+                    limit: 30
                 }
                 break;
             case 0:
@@ -314,32 +317,51 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9
+                    limit: 30
                 }
         }
     }
 
-    flatLoad = async () => {
-        console.log('flatLoad 開始')
-        const query = await this.fetchSearchQuery()
+    initialLoad = async () => {
+        console.log('初期ローディング')
+        this.setState({ isLoading: true })
+        const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res)
+        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState({
+        console.log(canLoad)
+        this.setState({
             items: res.data.searchItems.items,
             nextToken: res.data.searchItems.nextToken,
-            canLoad: canLoad
+            canLoad: canLoad,
+            isLoading: false
         })
     }
 
-    startLoading = async () => {
-        console.log('ローディング開始')
+    initialMountLoad = async () => {
+        console.log('マウント時ローディング ')
         this.setState({ isLoading: true })
-        const query = this.loadSearchQuery()
+        const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res)
+        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState(prevState => ({
+        this.setState({
+            items: res.data.searchItems.items,
+            nextToken: res.data.searchItems.nextToken,
+            canLoad: canLoad,
+            isLoading: false
+        })
+    }
+
+    continueLoading = async () => {
+        console.log('追加ローディング')
+        this.setState({ isLoading: true })
+        const query = await this.loadQuery()
+        const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
+        console.log(res.data.searchItems.nextToken)
+        const canLoad = !!(res.data.searchItems.nextToken)
+        console.log(canLoad)
+        this.setState(prevState => ({
             items: prevState.items.concat(res.data.searchItems.items),
             nextToken: res.data.searchItems.nextToken,
             canLoad: canLoad,
@@ -347,48 +369,66 @@ export default class ItemTab extends React.Component {
         }))
     }
 
+    onRefresh = async () => {
+        this.setState({ isRefreshing: true })
+        await this.initialLoad()
+        this.setState({ isRefreshing: false })
+    }
+
     render() {
-        const activityIndicator = <ActivityIndicator animating size='large'/>
-        const { canLoad, items, isLoading } = this.state
+        const activityIndicator = <ActivityIndicator size='large' color='#7389D9' />
+        const { canLoad, items, isLoading, isRefreshing } = this.state
         return (
             <FlatList
-                //onRefresh={() => {}}
-                style={styles.container}
+                refreshing={isRefreshing}
+                onRefresh={() => this.onRefresh()}
                 data={items}
                 numColumns={3}
-                columnWrapperStyle={{ flex: 1, margin: 3, marginBottom: 6 }}
-                keyExtractor={(item, index) => index.toString()}
+                columnWrapperStyle={styles.columnWrapperStyle}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}>
-                        <View style={styles.item} >
-                            <Card containerStyle={{ padding: 0, borderColor: 'white', margin: 4, height: hp('25%') }} wrapperStyle={{ padding: 0, borderColor: 'white', margin: 0 }} onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})} >
-                                <Card.Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
-                                <Card.Title style={{ fontSize: 14 }} >{item.name}</Card.Title>
+                    <Card
+                        containerStyle={styles.cardContainer}
+                        wrapperStyle={styles.cardWrapper}
+                        onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                    >
+                        <Card.Image
+                            source={{ uri: item.imageURLs[0] }}
+                            style={styles.itemImage}
+                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                        />
+                        <Card.Title
+                            style={styles.itemText}
+                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                        >
+                            {item.name}
+                        </Card.Title>
                             </Card>
-                        </View>
-                    </TouchableOpacity>
                 )}
-                onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
-                onEndReachedThreshold={1}
+                onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : null}
+                onEndReachedThreshold={0.7}
                 ListFooterComponent={canLoad ? activityIndicator : null}
+                ListFooterComponentStyle={{ marginTop : hp('2%') }}
             />
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        margin: -5,
-        backgroundColor: '#E5E5E5',
-        width: wp('100%')
+    columnWrapperStyle: {
+        margin: 1,
     },
-    item: {
-        height: hp('25%'),
-        alignItems: 'flex-start',
-        flex: 1,
+    cardContainer: {
+        padding: 0,
+        margin: 0,
+        width: wp('33%'),
     },
-    image: {
-        width: wp('32%'),
+    itemImage: {
+        width: wp('33%'),
         height: hp('20%'),
+    },
+    itemText: {
+        width: wp('32%'),
+        height: hp('5%'),
+        fontSize: 12
     }
 })

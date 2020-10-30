@@ -2,10 +2,9 @@
 type Item @model @searchable {
   id: ID!
   name: String!
-  nameKana: String!
   description: String!
   stateDescription: String
-  imageUrls: [String!]!
+  imageURLs: [String!]!
   status: String!
   season: String!
   bigCategory: String!
@@ -16,7 +15,7 @@ type Item @model @searchable {
   sleeveLength: Int!
   size: String!
   brand: String
-  supplier: String
+  supplierName: String
   material: String
   rank: String!
   itemCarts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
