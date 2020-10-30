@@ -20,13 +20,16 @@ export default class ItemTab extends React.Component {
         }
     }
 
-    static navigationOptions = ({navigation}) => ({
-        headerTitle: () => (
-            <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
-        ),
-        headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
-        headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal')}} style={{paddingRight: 20}}/>
-    });
+    static navigationOptions = ({navigation}) => {
+        const { params } = navigation.state
+        return {
+                headerTitle: () => (
+                <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
+            ),
+            headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+            headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>
+        }
+    };
 
     componentDidMount = async () => {
         this.syncUserAndCartToDynamo();
@@ -73,12 +76,15 @@ export default class ItemTab extends React.Component {
             }))
         }
     }
+
     //検索条件を更新
     updateSearchState = () => {
         //検索画面から検索条件を取得
         if(this.props.navigation.state.params?.searchCondition) {
             this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
         }
+        //検索画面へ渡す検索条件パラメータをセット
+        this.props.navigation.setParams({ searchCondition: this.state.searchCondition })
     }
 
     loadQuery = () => {
@@ -116,7 +122,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
             case 3:
@@ -144,7 +150,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
                 break;
@@ -167,7 +173,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
                 break;
@@ -184,7 +190,7 @@ export default class ItemTab extends React.Component {
                             }
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
                 break;
@@ -236,7 +242,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                 }
             case 3:
                 const key31 = Object.keys(condition[0])
@@ -263,7 +269,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                 }
                 break;
             case 2:
@@ -285,7 +291,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9,
+                    limit: 30,
                 }
                 break;
             case 1:
@@ -301,7 +307,7 @@ export default class ItemTab extends React.Component {
                             }
                         }
                     },
-                    limit: 9
+                    limit: 30
                 }
                 break;
             case 0:
@@ -311,7 +317,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 9
+                    limit: 30
                 }
         }
     }
@@ -321,8 +327,10 @@ export default class ItemTab extends React.Component {
         this.setState({ isLoading: true })
         const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
+        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState({
+        console.log(canLoad)
+        this.setState({
             items: res.data.searchItems.items,
             nextToken: res.data.searchItems.nextToken,
             canLoad: canLoad,
@@ -335,8 +343,9 @@ export default class ItemTab extends React.Component {
         this.setState({ isLoading: true })
         const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
+        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState({
+        this.setState({
             items: res.data.searchItems.items,
             nextToken: res.data.searchItems.nextToken,
             canLoad: canLoad,
@@ -347,10 +356,12 @@ export default class ItemTab extends React.Component {
     continueLoading = async () => {
         console.log('追加ローディング')
         this.setState({ isLoading: true })
-        const query = this.loadQuery()
+        const query = await this.loadQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
+        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState(prevState => ({
+        console.log(canLoad)
+        this.setState(prevState => ({
             items: prevState.items.concat(res.data.searchItems.items),
             nextToken: res.data.searchItems.nextToken,
             canLoad: canLoad,
@@ -372,10 +383,8 @@ export default class ItemTab extends React.Component {
                 refreshing={isRefreshing}
                 onRefresh={() => this.onRefresh()}
                 data={items}
-                extraData={items}
                 numColumns={3}
                 columnWrapperStyle={styles.columnWrapperStyle}
-                // initialNumToRender={4}
                 renderItem={({ item }) => (
                     <Card
                         containerStyle={styles.cardContainer}
@@ -395,8 +404,8 @@ export default class ItemTab extends React.Component {
                         </Card.Title>
                             </Card>
                 )}
-                onEndReached={(canLoad && !isLoading) ? this.continueLoading : null}
-                onEndReachedThreshold={1}
+                onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : null}
+                onEndReachedThreshold={0.7}
                 ListFooterComponent={canLoad ? activityIndicator : null}
                 ListFooterComponentStyle={{ marginTop : hp('2%') }}
             />

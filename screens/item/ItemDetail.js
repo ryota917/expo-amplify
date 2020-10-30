@@ -38,8 +38,8 @@ export default class ItemDetail extends React.Component {
     }
 
     setFavoritedOrCarted = () => {
-        const isFavorited = this.props.navigation.state.params.item.favoriteUser.items.some(item => item.userId === this.state.currentUserEmail)
-        const isCarted = this.props.navigation.state.params.item.itemCarts.items.some(item => item.userId === this.state.currentUserEmail)
+        const isFavorited = this.props.navigation.state.params.item.favoriteUser.items?.some(item => item.userId === this.state.currentUserEmail)
+        const isCarted = this.props.navigation.state.params.item.itemCarts.items?.some(item => item.userId === this.state.currentUserEmail)
         this.setState({
             isFavorited: isFavorited,
             isCarted: isCarted
