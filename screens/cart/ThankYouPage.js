@@ -11,8 +11,11 @@ export default class ItemDetail extends React.Component {
   render() {
     return (
       <View>
-        <View style={styles.mainImage}>
-          <Image source={require("../../assets/thankYouTaggu.png")} />
+        <View style={styles.mainImageContainer}>
+          <Image
+            style={styles.mainImage}
+            source={require("../../assets/thankYouTaggu.png")}
+          />
         </View>
         <View style={styles.confirmMessageContainer}>
           <Text style={styles.confirmMessage}>
