@@ -70,7 +70,7 @@ export default class FavoriteTab extends React.Component {
                 renderItem={({ item }) => (
                     <Card containerStyle={styles.cardContainer} >
                         <Card.Image
-                            source={{ uri: item.imageUrls[0] }}
+                            source={{ uri: item.imageURLs[0] }}
                             style={styles.itemImage}
                             onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
                         />

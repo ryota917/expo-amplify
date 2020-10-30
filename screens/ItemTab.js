@@ -1,23 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
-import { ListItem, Card, Button } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchCondition: [{color: ''}, {category: ''}, {size: ''}, {rank: ''}],
+            searchCondition: [{color: ''}, {bigCategory: ''}, {size: ''}, {rank: ''}],
             items: [],
             nextToken: '',
             canLoad: true,
             isLoading: false,
             isRefreshing: false,
-            isLoaded: false
         }
     }
 
@@ -36,9 +35,8 @@ export default class ItemTab extends React.Component {
         //FIX ME: addListenerが複数回レンダリングされている
         await this.props.navigation.addListener('didFocus', async () => {
             //stateが更新されるのとawaitしないと前のstateで表示される
-            console.log('addEvent内')
             await this.updateSearchState()
-            if(!this.state.isLoaded) this.initialLoad()
+            this.initialLoad()
         })
     }
 
@@ -119,7 +117,7 @@ export default class ItemTab extends React.Component {
                         }
                     },
                     limit: 9,
-                    nextTokeN: this.state.nextToken
+                    nextToken: this.state.nextToken
                 }
             case 3:
                 const key31 = Object.keys(condition[0])
@@ -158,11 +156,11 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 [key21]: {
-                                    eq: condition[0][key1]
+                                    eq: condition[0][key21]
                                 }
                             },
                             [key22]: {
-                                eq: condition[1][key2]
+                                eq: condition[1][key22]
                             }
                         },
                         status: {
@@ -276,11 +274,11 @@ export default class ItemTab extends React.Component {
                         and: {
                             and: {
                                 [key21]: {
-                                    eq: condition[0][key1]
+                                    eq: condition[0][key21]
                                 }
                             },
                             [key22]: {
-                                eq: condition[1][key2]
+                                eq: condition[1][key22]
                             }
                         },
                         status: {
@@ -342,8 +340,7 @@ export default class ItemTab extends React.Component {
             items: res.data.searchItems.items,
             nextToken: res.data.searchItems.nextToken,
             canLoad: canLoad,
-            isLoading: false,
-            isLoaded: true
+            isLoading: false
         })
     }
 
@@ -386,7 +383,7 @@ export default class ItemTab extends React.Component {
                         onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
                     >
                         <Card.Image
-                            source={{ uri: item.imageUrls[0] }}
+                            source={{ uri: item.imageURLs[0] }}
                             style={styles.itemImage}
                             onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
                         />

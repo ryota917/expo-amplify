@@ -112,7 +112,7 @@ export default class ItemDetail extends React.Component {
 
     render() {
         const { item, isFavorited, isCarted } = this.state
-        const imagesDom = item.imageUrls.map((imgUrl, idx) =>
+        const imagesDom = item.imageURLs.map((imgUrl, idx) =>
             <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
         )
         return(
@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         width: wp('100%'),
+        height: hp('100%'),
         flex: 1
     },
     innerContainer: {
@@ -319,11 +320,11 @@ const styles = StyleSheet.create({
     },
     footerView: {
         height: hp('20%'),
-        bottom: hp('7%')
+        bottom: hp('7%'),
     },
     footerInnerView: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     modalContainerView: {
         backgroundColor: 'white',

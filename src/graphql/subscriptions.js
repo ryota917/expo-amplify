@@ -8,7 +8,7 @@ export const onCreateItem = /* GraphQL */ `
       name
       description
       stateDescription
-      imageUrls
+      imageURLs
       status
       season
       bigCategory
@@ -19,7 +19,7 @@ export const onCreateItem = /* GraphQL */ `
       sleeveLength
       size
       brand
-      supplier
+      supplierName
       material
       rank
       itemCarts {
@@ -64,7 +64,7 @@ export const onUpdateItem = /* GraphQL */ `
       name
       description
       stateDescription
-      imageUrls
+      imageURLs
       status
       season
       bigCategory
@@ -75,7 +75,7 @@ export const onUpdateItem = /* GraphQL */ `
       sleeveLength
       size
       brand
-      supplier
+      supplierName
       material
       rank
       itemCarts {
@@ -120,7 +120,7 @@ export const onDeleteItem = /* GraphQL */ `
       name
       description
       stateDescription
-      imageUrls
+      imageURLs
       status
       season
       bigCategory
@@ -131,7 +131,7 @@ export const onDeleteItem = /* GraphQL */ `
       sleeveLength
       size
       brand
-      supplier
+      supplierName
       material
       rank
       itemCarts {
@@ -636,7 +636,7 @@ export const onCreateItemCart = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -647,7 +647,7 @@ export const onCreateItemCart = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -701,7 +701,7 @@ export const onUpdateItemCart = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -712,7 +712,7 @@ export const onUpdateItemCart = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -766,7 +766,7 @@ export const onDeleteItemCart = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -777,7 +777,7 @@ export const onDeleteItemCart = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -831,7 +831,7 @@ export const onCreateItemCartLog = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -842,7 +842,7 @@ export const onCreateItemCartLog = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -896,7 +896,7 @@ export const onUpdateItemCartLog = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -907,7 +907,7 @@ export const onUpdateItemCartLog = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -961,7 +961,7 @@ export const onDeleteItemCartLog = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -972,7 +972,7 @@ export const onDeleteItemCartLog = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -1026,7 +1026,7 @@ export const onCreateItemFavorite = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -1037,7 +1037,7 @@ export const onCreateItemFavorite = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -1094,7 +1094,7 @@ export const onUpdateItemFavorite = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -1105,7 +1105,7 @@ export const onUpdateItemFavorite = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -1162,7 +1162,7 @@ export const onDeleteItemFavorite = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -1173,7 +1173,7 @@ export const onDeleteItemFavorite = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {

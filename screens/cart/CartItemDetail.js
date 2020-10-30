@@ -38,7 +38,7 @@ export default class ItemDetail extends React.Component {
     render() {
         return(
             <View>
-                <Image source={{ uri: this.state.item.imageUrls[0] }} style={styles.image}></Image>
+                <Image source={{ uri: this.state.item.imageURLs[0] }} style={styles.image}></Image>
                 <Text>{this.state.item.name}</Text>
             </View>
         )

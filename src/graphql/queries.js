@@ -8,7 +8,7 @@ export const getItem = /* GraphQL */ `
       name
       description
       stateDescription
-      imageUrls
+      imageURLs
       status
       season
       bigCategory
@@ -19,7 +19,7 @@ export const getItem = /* GraphQL */ `
       sleeveLength
       size
       brand
-      supplier
+      supplierName
       material
       rank
       itemCarts {
@@ -69,7 +69,7 @@ export const listItems = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -80,7 +80,7 @@ export const listItems = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -367,7 +367,7 @@ export const getItemCart = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -378,7 +378,7 @@ export const getItemCart = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -437,7 +437,7 @@ export const listItemCarts = /* GraphQL */ `
           name
           description
           stateDescription
-          imageUrls
+          imageURLs
           status
           season
           bigCategory
@@ -448,7 +448,7 @@ export const listItemCarts = /* GraphQL */ `
           sleeveLength
           size
           brand
-          supplier
+          supplierName
           material
           rank
           createdAt
@@ -478,7 +478,7 @@ export const getItemCartLog = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -489,7 +489,7 @@ export const getItemCartLog = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -548,7 +548,7 @@ export const listItemCartLogs = /* GraphQL */ `
           name
           description
           stateDescription
-          imageUrls
+          imageURLs
           status
           season
           bigCategory
@@ -559,7 +559,7 @@ export const listItemCartLogs = /* GraphQL */ `
           sleeveLength
           size
           brand
-          supplier
+          supplierName
           material
           rank
           createdAt
@@ -589,7 +589,7 @@ export const getItemFavorite = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -600,7 +600,7 @@ export const getItemFavorite = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
@@ -662,7 +662,7 @@ export const listItemFavorites = /* GraphQL */ `
           name
           description
           stateDescription
-          imageUrls
+          imageURLs
           status
           season
           bigCategory
@@ -673,7 +673,7 @@ export const listItemFavorites = /* GraphQL */ `
           sleeveLength
           size
           brand
-          supplier
+          supplierName
           material
           rank
           createdAt
@@ -718,7 +718,7 @@ export const searchItems = /* GraphQL */ `
         name
         description
         stateDescription
-        imageUrls
+        imageURLs
         status
         season
         bigCategory
@@ -729,37 +729,16 @@ export const searchItems = /* GraphQL */ `
         sleeveLength
         size
         brand
-        supplier
+        supplierName
         material
         rank
         itemCarts {
-          items {
-            id
-            itemId
-            cartId
-            createdAt
-            updatedAt
-          }
           nextToken
         }
         itemCartLogs {
-          items {
-            id
-            itemId
-            cartLogId
-            createdAt
-            updatedAt
-          }
           nextToken
         }
         favoriteUser {
-          items {
-            id
-            itemId
-            userId
-            createdAt
-            updatedAt
-          }
           nextToken
         }
         createdAt
@@ -792,7 +771,7 @@ export const searchItemCarts = /* GraphQL */ `
           name
           description
           stateDescription
-          imageUrls
+          imageURLs
           status
           season
           bigCategory
@@ -803,7 +782,7 @@ export const searchItemCarts = /* GraphQL */ `
           sleeveLength
           size
           brand
-          supplier
+          supplierName
           material
           rank
           createdAt
@@ -845,7 +824,7 @@ export const searchItemCartLogs = /* GraphQL */ `
           name
           description
           stateDescription
-          imageUrls
+          imageURLs
           status
           season
           bigCategory
@@ -856,7 +835,7 @@ export const searchItemCartLogs = /* GraphQL */ `
           sleeveLength
           size
           brand
-          supplier
+          supplierName
           material
           rank
           createdAt
@@ -898,7 +877,7 @@ export const searchItemFavorites = /* GraphQL */ `
           name
           description
           stateDescription
-          imageUrls
+          imageURLs
           status
           season
           bigCategory
@@ -909,7 +888,7 @@ export const searchItemFavorites = /* GraphQL */ `
           sleeveLength
           size
           brand
-          supplier
+          supplierName
           material
           rank
           createdAt
