@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { View, Text, StyleSheet } from "react-native";
 import { Image, Button } from "react-native-elements";
 
 export default class ItemDetail extends React.Component {
@@ -27,6 +26,19 @@ export default class ItemDetail extends React.Component {
             {"ご利用ありがとうございます！\nお届けまでお待ちください。"}
           </Text>
         </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="ホームへ戻る"
+            titleStyle={{ color: "white" }}
+            buttonStyle={{
+              backgroundColor: "#7389D9",
+              borderRadius: 23,
+              width: wp("80%"),
+              height: hp("7%")
+            }}
+            //   onPress={TODO: 画面の遷移}
+          />
+        </View>
       </View>
     );
   }
@@ -34,7 +46,7 @@ export default class ItemDetail extends React.Component {
 
 const styles = StyleSheet.create({
   mainImageContainer: {},
-  mainImage: {},
+  mainImage: {}, // TODO: メイン画像のスタイリング
   confirmMessageContainer: {},
   confirmMessage: {
     fontFamily: "Noto Sans JP",
@@ -46,5 +58,6 @@ const styles = StyleSheet.create({
     fontFamily: "Noto Sans JP",
     fontSize: 11,
     textAlign: "center"
-  }
+  },
+  buttonContainer: {} //TODO: ボタンのスタイリング．
 });
