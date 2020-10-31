@@ -1,5 +1,4 @@
-/*
-const request = require("request");
+import axios from 'axios'
 const slackEndpointUrl = "https://hooks.slack.com/services/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";
 
 const headers = {
@@ -7,15 +6,11 @@ const headers = {
 }
 
 export default function send_message(content){
-    const options = {
+    axios({
+        method: "POST",
         url: slackEndpointUrl,
-        method: 'POST',
         headers: headers,
-        json:true,
+        json: true,
         form: JSON.stringify({text: content})
-    };
-    request(options, function (error, response, body) {
-        console.log(body);
     });
 }
-*/
