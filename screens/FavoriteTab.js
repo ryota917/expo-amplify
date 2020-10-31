@@ -121,8 +121,8 @@ export default class FavoriteTab extends React.Component {
                         </Card.Title>
                             </Card>
                 )}
-                onEndReached={(canLoad && !isLoading) ? () => this.fetchFavoriteItemsLoad() : null}
-                onEndReachedThreshold={0.5}
+                onEndReached={(canLoad && !isLoading) ? () => this.fetchFavoriteItemsLoad() : () => null}
+                onEndReachedThreshold={1}
                 ListFooterComponent={canLoad ? activityIndicator : null}
                 ListFooterComponentStyle={{ marginTop : hp('2%') }}
             />

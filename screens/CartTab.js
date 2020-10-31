@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Image, Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
@@ -13,8 +13,8 @@ export default class CartTab extends React.Component {
         super(props);
         this.state = {
             itemCart: [],
-            cartSize: 0,
-            currentUserEmail: ''
+            currentUserEmail: '',
+            isCartFilled: false
         }
     }
 
@@ -25,29 +25,35 @@ export default class CartTab extends React.Component {
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
     });
 
-    componentDidMount() {
+    componentDidMount = async () => {
+        await this.fetchCurrentUser()
+        this.fetchItemCart()
         //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
-        this.props.navigation.addListener('didFocus', () => this.fetchItemCart())
+        await this.props.navigation.addListener('didFocus', () => this.fetchItemCart())
+    }
+
+    fetchCurrentUser = async () => {
+        const currentUser = await Auth.currentAuthenticatedUser()
+        const currentUserEmail = currentUser.attributes.email
+        this.setState({ currentUserEmail: currentUserEmail })
     }
 
     //Cartに入っているアイテムを取得
     fetchItemCart = async () => {
-        const currentUser = await Auth.currentAuthenticatedUser()
-        const currentUserEmail = currentUser.attributes.email
         try {
             const res = await API.graphql(graphqlOperation(gqlQueries.searchItemCarts, {
                 filter: {
                     cartId: {
-                        eq: currentUserEmail
+                        eq: this.state.currentUserEmail
                     }
                 }
             }))
-            console.log(res)
             const itemArray = []
             res.data.searchItemCarts.items.forEach(obj => itemArray.push(obj.item))
+            const isCartFilled = res.data.searchItemCarts.items.length >= 4
             this.setState({
-                itemCart: itemArray, cartSize: res.data.searchItemCarts.items.length,
-                currentUserEmail: currentUserEmail
+                itemCart: itemArray,
+                isCartFilled: isCartFilled
             })
         } catch(e) {
             console.log(e);
@@ -57,7 +63,6 @@ export default class CartTab extends React.Component {
     //Cartに入っているアイテムを削除
     deleteItemFromCart = async (deleteItem) => {
         const { currentUserEmail } = this.state
-        console.log(deleteItem)
         await API.graphql(graphqlOperation(gqlMutations.updateItem, {
             input: {
                 id: deleteItem.id,
@@ -69,45 +74,45 @@ export default class CartTab extends React.Component {
                 id: currentUserEmail + deleteItem.id
             }
         }))
-        console.log('カートから削除したアイテム')
-        console.log(res)
         //削除したアイテムをstateから削除(再レンダリングしなくてもアイテムが消えるように)
         const newArray = this.state.itemCart.filter(ele => !(ele.id === res.data.deleteItemCart.itemId))
-        this.setState({itemCart: newArray, cartSize: this.state.cartSize - 1})
+        const isCartFilled = newArray.length >= 4
+        this.setState({
+            itemCart: newArray,
+            isCartFilled: isCartFilled
+        })
     }
 
     render() {
-        //カートにアイテムが4つ入っているか
-        const isCartFilled = !!(this.state.cartSize === 4)
+        const { isCartFilled } = this.state
         return(
             <View style={styles.container}>
-                <FlatList
-                    //onRefresh={() => {}}
-                    data={this.state.itemCart}
-                    style={styles.flatList}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.touchableOpacity} onPress={() =>  console.log('test')}>
-                            <Card containerStyle={{borderColor: 'white'}} wrapperStyle={{ height: wp('27%')}}>
-                                <Card.Image source={{ uri: item.imageURLs[0] }} style={styles.image} />
-                                <Card.Title style={styles.brand}>ブランド</Card.Title>
-                                <Card.Title style={styles.name}>{item.name}</Card.Title>
-                                <Card.Title style={styles.category}>アウター</Card.Title>
-                                <Card.Title style={styles.rank}>Sランク</Card.Title>
+                <ScrollView style={styles.scrollView}>
+                    {this.state.itemCart.map(item =>
+                        <View style={styles.cardContainer}>
+                            <Card wrapperStyle={{ height: wp('27%')}}>
+                                <Card.Image
+                                    source={{ uri: item.imageURLs[0] }}
+                                    style={styles.image}
+                                    onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                />
+                                <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>ブランド</Card.Title>
+                                <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>アウター</Card.Title>
+                                <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>Sランク</Card.Title>
                                 <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
                             </Card>
-                        </TouchableOpacity>
+                        </View>
                     )}
-                />
-                <View style={styles.rental}>
-                    <View style={styles.rentalButtonView}>
-                        <Button
-                            title='レンタル手続きへ →'
-                            buttonStyle={{ borderRadius: 30, width: wp('50%'), height: hp('6%'), backgroundColor: isCartFilled ? 'white' : 'transparent' }}
-                            titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
-                            onPress={() => console.log('rentaltest')}
-                        />
-                    </View>
+                    <View style={{ height: hp('34%') }}></View>
+                </ScrollView>
+                <View style={styles.rentalButtonView}>
+                    <Button
+                        title='レンタル手続きへ →'
+                        buttonStyle={[styles.rentalButtonStyle, { backgroundColor: isCartFilled ? 'white': 'rgba(255,255,255,0.5)' }]}
+                        titleStyle={styles.rentalTitleStyle}
+                        onPress={this.searchWithCondition}
+                    />
                 </View>
             </View>
         )
@@ -116,10 +121,12 @@ export default class CartTab extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#E5E5E5'
+        width: wp('100%'),
+        height: hp('100%'),
     },
-    flatList: {
-        height: hp('80%')
+    scrollView: {
+    },
+    cardContainer: {
     },
     image: {
         width: wp('27%'),
@@ -152,19 +159,24 @@ const styles = StyleSheet.create({
         marginLeft: wp('78%'),
         marginTop: -wp('9%')
     },
-    rental: {
-        height: hp('10%')
-    },
     rentalButtonView: {
         position: 'absolute',
-        right: wp('5%'),
-        bottom: hp('6%'),
+        right: wp('6%'),
+        bottom: hp('20%'),
+        backgroundColor: 'transparent',
         shadowColor: 'black',
         shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.6,
-        shadowRadius: 20,
+        shadowOpacity: 0.4,
+        shadowRadius: 20
+    },
+    rentalButtonStyle: {
         borderRadius: 30,
         width: wp('50%'),
-        height: hp('6%')
+        height: hp('7%'),
+    },
+    rentalTitleStyle: {
+        color: '#7389D9',
+        fontSize: 16,
+        fontWeight: 'bold'
     }
 })

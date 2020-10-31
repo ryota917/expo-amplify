@@ -17,6 +17,7 @@ export default class FavoriteItemDetail extends React.Component {
             currentUserEmail: '',
             isFavorited: true,
             isCarted: false,
+            isCartFilled: false,
             isCartModalVisible: false
         }
     }
@@ -28,6 +29,9 @@ export default class FavoriteItemDetail extends React.Component {
     componentDidMount = async () => {
         await this.fetchCurrentUser()
         this.setFavoritedOrCarted()
+        this.props.navigation.addListener('didFocus', async () => {
+            this.fetchCartData()
+        })
     }
 
     fetchCurrentUser = async () => {
@@ -42,6 +46,15 @@ export default class FavoriteItemDetail extends React.Component {
         this.setState({
             isCarted: isCarted
         })
+    }
+
+    //カートにアイテムが4つ入っているかを確認
+    fetchCartData = async () => {
+        const cart = await API.graphql(graphqlOperation(gqlQueries.getCart, { id: this.state.currentUserEmail }))
+        const isCartFilled = cart.data.getCart.itemCarts.items.length >= 4
+        console.log('isCartFilled')
+        console.log(isCartFilled)
+        this.setState({ isCartFilled: isCartFilled })
     }
 
     //お気に入りに追加
@@ -109,7 +122,7 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     render() {
-        const { item, isFavorited, isCarted } = this.state
+        const { item, isFavorited, isCarted, isCartFilled } = this.state
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
             <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
         )
@@ -209,8 +222,8 @@ export default class FavoriteItemDetail extends React.Component {
                             }
                             title="カートに入れる"
                             titleStyle={{ color: 'white' }}
-                            buttonStyle={{ backgroundColor: isCarted ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
-                            onPress={isCarted ? () => null : () => this.saveItemToCart()}
+                            buttonStyle={{ backgroundColor: (isCarted || isCartFilled) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
+                            onPress={(isCarted || isCartFilled) ? () => null : () => this.saveItemToCart()}
                         />
                     </View>
                 </View>

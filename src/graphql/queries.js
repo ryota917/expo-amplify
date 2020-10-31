@@ -201,34 +201,6 @@ export const getCart = /* GraphQL */ `
     getCart(id: $id) {
       id
       userId
-      user {
-        id
-        name
-        nameKana
-        phoneNumber
-        address
-        postalCode
-        height
-        birthday
-        gender
-        cartId
-        cart {
-          id
-          userId
-          createdAt
-          updatedAt
-        }
-        cartLogs {
-          nextToken
-        }
-        favoriteItem {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
       itemCarts {
         items {
           id
@@ -740,7 +712,6 @@ export const searchItems = /* GraphQL */ `
             itemId
             userId
           }
-          nextToken
         }
       }
       nextToken
@@ -784,8 +755,13 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
-          createdAt
-          updatedAt
+          favoriteUser {
+            items {
+              id
+              itemId
+              userId
+            }
+          }
         }
         cart {
           id
