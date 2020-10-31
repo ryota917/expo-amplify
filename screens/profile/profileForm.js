@@ -58,7 +58,7 @@ export default class ProfileForm extends React.Component {
                     </View>
                         <SexSelect
                             selectedSexName={this.props.userInfo.userSex}
-                            handleChange={selectedSexName => this.props.handleChangeSexSelect(selectedSexName)}
+                            handleChange = {val => this.props.handleFormChange("userSex",val)}
                         />
                     <View style={styles.normalForm}>
                         <Text>{"お届け先"}</Text>

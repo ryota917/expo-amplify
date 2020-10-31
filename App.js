@@ -24,7 +24,8 @@ import SearchConditionModal from './screens/item/search/SearchConditionModal'
 import ConfirmPage from "./screens/cart/ConfirmPage"
 import CartItemDetail from './screens/cart/CartItemDetail'
 import ConsultTab from './screens/ConsultTab'
-import ProfilePage from './screens/ProfilePage'
+import ProfileEditPage from './screens/ProfileEditPage'
+import ProfileConfirmPage from './screens/ProfileConfirmPage'
 
 //import Authentication Page
 import Signin from './Signin'
@@ -93,8 +94,9 @@ const ConsultTabStack = createStackNavigator(
 
 const ProfileStack = createStackNavigator(
   {
-    ProfileStack: {screen: ProfilePage}
-  }
+    ProfileStack: {screen: ProfileEditPage},
+    ProfileConfirmStack: {screen: ProfileConfirmPage},
+  },
 )
 
 //Tab
