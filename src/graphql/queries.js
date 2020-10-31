@@ -720,17 +720,13 @@ export const searchItems = /* GraphQL */ `
         stateDescription
         imageURLs
         status
-        season
         bigCategory
-        smallCategory
         color
         dressLength
         dressWidth
         sleeveLength
         size
         brand
-        supplierName
-        material
         rank
         itemCarts {
           nextToken
@@ -739,10 +735,13 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+          }
           nextToken
         }
-        createdAt
-        updatedAt
       }
       nextToken
       total

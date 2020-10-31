@@ -24,7 +24,7 @@ export default class ItemTab extends React.Component {
         const { params } = navigation.state
         return {
                 headerTitle: () => (
-                <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
+                <Image source={require('../assets/pretapo-logo-header.png')} style={{ resizeMode: 'contain', width: wp('25%'), height: hp('10%') }}/>
             ),
             headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
             headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>
@@ -33,7 +33,7 @@ export default class ItemTab extends React.Component {
 
     componentDidMount = async () => {
         this.syncUserAndCartToDynamo();
-        this.initialMountLoad()
+        this.initialLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
         //FIX ME: addListenerが複数回レンダリングされている
         await this.props.navigation.addListener('didFocus', async () => {
@@ -327,23 +327,6 @@ export default class ItemTab extends React.Component {
         this.setState({ isLoading: true })
         const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res.data.searchItems.nextToken)
-        const canLoad = !!(res.data.searchItems.nextToken)
-        console.log(canLoad)
-        this.setState({
-            items: res.data.searchItems.items,
-            nextToken: res.data.searchItems.nextToken,
-            canLoad: canLoad,
-            isLoading: false
-        })
-    }
-
-    initialMountLoad = async () => {
-        console.log('マウント時ローディング ')
-        this.setState({ isLoading: true })
-        const query = await this.initialQuery()
-        const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
         this.setState({
             items: res.data.searchItems.items,
@@ -376,7 +359,7 @@ export default class ItemTab extends React.Component {
     }
 
     render() {
-        const activityIndicator = <ActivityIndicator size='large' color='#7389D9' />
+        const activityIndicator = <ActivityIndicator size='large' />
         const { canLoad, items, isLoading, isRefreshing } = this.state
         return (
             <FlatList
@@ -389,7 +372,6 @@ export default class ItemTab extends React.Component {
                     <Card
                         containerStyle={styles.cardContainer}
                         wrapperStyle={styles.cardWrapper}
-                        onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
                     >
                         <Card.Image
                             source={{ uri: item.imageURLs[0] }}
@@ -405,7 +387,7 @@ export default class ItemTab extends React.Component {
                             </Card>
                 )}
                 onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : null}
-                onEndReachedThreshold={0.7}
+                onEndReachedThreshold={0.6}
                 ListFooterComponent={canLoad ? activityIndicator : null}
                 ListFooterComponentStyle={{ marginTop : hp('2%') }}
             />

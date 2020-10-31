@@ -18,6 +18,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import ItemTab from './screens/ItemTab';
 import CartTab from './screens/CartTab'
 import FavoriteTab from './screens/FavoriteTab'
+import FavoriteItemDetail from './screens/favorite/FavoriteItemDetail'
 import ItemDetail from './screens/item/ItemDetail'
 import SearchConditionModal from './screens/item/search/SearchConditionModal'
 import ConfirmPage from "./screens/cart/ConfirmPage"
@@ -49,7 +50,6 @@ Amplify.configure({
     }
 });
 
-//ItemTabのStack
 const ItemTabStack = createStackNavigator(
   {
     ItemTab: {screen: ItemTab},
@@ -61,7 +61,6 @@ const ItemTabStack = createStackNavigator(
   }
 );
 
-//CartTabのStack
 const CartTabStack = createStackNavigator(
   {
     CartTab: {screen: CartTab},
@@ -70,6 +69,16 @@ const CartTabStack = createStackNavigator(
   },
   {
     initialRouteName: 'CartTab'
+  }
+)
+
+const FavoriteTabStack = createStackNavigator(
+  {
+    FavoriteTab: {screen: FavoriteTab},
+    FavoriteItemDetail: {screen: FavoriteItemDetail}
+  },
+  {
+    initialRouteName: 'FavoriteTab'
   }
 )
 
@@ -98,7 +107,7 @@ const Tab = createBottomTabNavigator(
       }
     },
     'お気に入り': {
-      screen: createStackNavigator({ FavoriteTab: { screen: FavoriteTab }}),
+      screen: FavoriteTabStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='bookmark-minus' color={tintColor} />
       }
@@ -132,7 +141,7 @@ const Drawer = createDrawerNavigator(
   {
     contentComponent: (props) => (
       <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
-        <Image source={require('./assets/logo.png')} style={{ width: wp('30%'), height: hp('20%'), marginLeft: wp('20%') }} />
+        <Image source={require('./assets/pretapo-logo-drawer.png')} style={{ width: wp('30%'), height: hp('20%'), marginLeft: wp('20%') }} />
           <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white' activeBackgroundColor='black'/>
           <Text>
             <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>

@@ -11,21 +11,27 @@ export default class FavoriteTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUserEmail: '',
             items: [],
             canLoad: true,
             isLoading: false,
-            nextToken: ''
+            nextToken: '',
+            isRefreshing: false
         }
     }
 
     static navigationOptions = ({navigation}) => ({
         headerTitle: () => (
-            <Image source={{ uri: 'https://prepota-bucket.s3-ap-northeast-1.amazonaws.com/logo-white.png'}} style={{ height: 30, paddingLeft: 210, paddingTop: 13, resizeMode: 'contain' }}/>
+            <Image source={require('../assets/pretapo-logo-header.png')} style={{ resizeMode: 'contain', width: wp('25%'), height: hp('10%') }}/>
         ),
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
     });
 
     componentDidMount = async () => {
+        const currentUser = await Auth.currentAuthenticatedUser()
+        const currentUserEmail = currentUser.attributes.email
+        this.setState({ currentUserEmail: currentUserEmail })
+        this.fetchFavoriteItems()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
         await this.props.navigation.addListener('didFocus', async () => {
             this.fetchFavoriteItems()
@@ -33,58 +39,92 @@ export default class FavoriteTab extends React.Component {
     }
 
     fetchFavoriteItems = async () => {
-        console.log('お気に入りのアイテムデータを取得します')
-        const res = await API.graphql(graphqlOperation(gqlQueries.searchItems))
-        console.log(res)
-        const canLoad = !!(res.data.searchItems.nextToken)
+        console.log('お気に入り初期ローディング')
+        this.setState({ isLoading: true })
+        const res = await API.graphql(graphqlOperation(gqlQueries.searchItemFavorites, {
+            filter: {
+                userId: {
+                    eq: this.state.currentUserEmail
+                }
+            },
+            limit: 30
+        }))
+        const items = []
+        res.data.searchItemFavorites.items.forEach((val) => {
+            items.push(val.item)
+        })
+        const canLoad = !!(res.data.searchItemFavorites.nextToken)
         this.setState({
-            items: res.data.searchItems.items,
-            nextToken: res.data.searchItems.nextToken,
-            canLoad: canLoad
+            nextToken: res.data.searchItemFavorites.nextToken,
+            items: items,
+            canLoad: canLoad,
+            isLoading: false
         })
     }
 
-    startLoading = async () => {
-        console.log('ローディング開始')
+    fetchFavoriteItemsLoad = async () => {
+        console.log('お気に入り追加ローディング')
         this.setState({ isLoading: true })
-        const res = await API.graphql(graphqlOperation(gqlQueries.getItemFavorite))
-        console.log(res)
-        const canLoad = !!(res.data.searchItems.nextToken)
-        await this.setState(prevState => ({
-            items: prevState.items.concat(res.data.searchItems.items),
-            nextToken: res.data.searchItems.nextToken,
+        const res = await API.graphql(graphqlOperation(gqlQueries.searchItemFavorites, {
+            filter: {
+                userId: {
+                    eq: this.state.currentUserEmail
+                }
+            },
+            limit: 30,
+            nextToken: this.state.nextToken
+        }))
+        const items = []
+        res.data.searchItemFavorites.items.forEach((val) => {
+            items.push(val.item)
+        })
+        const canLoad = !!(res.data.searchItemFavorites.nextToken)
+        this.setState(prevState => ({
+            items: prevState.items.concat(items),
+            nextToken: res.data.searchItemFavorites.nextToken,
             canLoad: canLoad,
             isLoading: false
         }))
     }
 
+    onRefresh = async () => {
+        this.setState({ isRefreshing: true })
+        await this.fetchFavoriteItems()
+        this.setState({ isRefreshing: false })
+    }
+
     render() {
-        const activityIndicator = <ActivityIndicator animating/>
-        const { canLoad, items, isLoading } = this.state
+        const activityIndicator = <ActivityIndicator animating size='large' />
+        const { canLoad, items, isLoading, isRefreshing } = this.state
         return (
             <FlatList
-                //onRefresh={() => {}}
+                refreshing={isRefreshing}
+                onRefresh={() => this.onRefresh()}
                 data={items}
                 numColumns={3}
                 columnWrapperStyle={styles.columnWrapperStyle}
                 renderItem={({ item }) => (
-                    <Card containerStyle={styles.cardContainer} >
+                    <Card
+                        containerStyle={styles.cardContainer}
+                        wrapperStyle={styles.cardWrapper}
+                    >
                         <Card.Image
                             source={{ uri: item.imageURLs[0] }}
                             style={styles.itemImage}
-                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
+                            onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
                         />
                         <Card.Title
                             style={styles.itemText}
-                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item})}
+                            onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
                         >
-                                {item.name}
+                            {item.name}
                         </Card.Title>
                             </Card>
                 )}
-                onEndReached={(canLoad && !isLoading) ? this.startLoading : null}
-                onEndReachedThreshold={1}
+                onEndReached={(canLoad && !isLoading) ? () => this.fetchFavoriteItemsLoad() : null}
+                onEndReachedThreshold={0.5}
                 ListFooterComponent={canLoad ? activityIndicator : null}
+                ListFooterComponentStyle={{ marginTop : hp('2%') }}
             />
         );
     }

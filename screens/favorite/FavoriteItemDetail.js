@@ -5,25 +5,24 @@ import { Image, Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import {figmaHp, figmaWp } from '../../src/utils/figmaResponsiveWrapper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
 
-export default class ItemDetail extends React.Component {
+export default class FavoriteItemDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
             currentUserEmail: '',
-            isFavorited: false,
+            isFavorited: true,
             isCarted: false,
             isCartModalVisible: false
         }
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
-        headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}} />
+        headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('FavoriteTab')}} style={{ paddingLeft: wp('3%')}} />
     });
 
     componentDidMount = async () => {
@@ -38,11 +37,9 @@ export default class ItemDetail extends React.Component {
     }
 
     setFavoritedOrCarted = () => {
-        console.log(this.props.navigation.state.params.item.favoriteUser)
-        const isFavorited = this.props.navigation.state.params.item.favoriteUser.items?.some(item => item.userId === this.state.currentUserEmail)
         const isCarted = this.props.navigation.state.params.item.status !== 'WAITING'
+        console.log(isCarted)
         this.setState({
-            isFavorited: isFavorited,
             isCarted: isCarted
         })
     }
@@ -125,7 +122,7 @@ export default class ItemDetail extends React.Component {
                             <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
                             <View style={styles.modalButtonView}>
                                 <Button
-                                    title='買い物を続ける'
+                                    title='戻る'
                                     buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#333333' }}
                                     titleStyle={{ fontSize: 14, color: 'white' }}
                                     onPress={() => this.toggleCartModal()}
