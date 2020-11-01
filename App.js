@@ -14,18 +14,27 @@ import { API, graphqlOperation } from 'aws-amplify'
 import * as gqlMutations from './src/graphql/mutations' // create, update, delete
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
-//import screens
+//import ItemTab
 import ItemTab from './screens/ItemTab';
-import CartTab from './screens/CartTab'
+import SearchConditionModal from './screens/item/search/SearchConditionModal'
+import ItemDetail from './screens/item/ItemDetail'
+
+//import FavoriteTab
 import FavoriteTab from './screens/FavoriteTab'
 import FavoriteItemDetail from './screens/favorite/FavoriteItemDetail'
-import ItemDetail from './screens/item/ItemDetail'
-import SearchConditionModal from './screens/item/search/SearchConditionModal'
-import ConfirmPage from "./screens/cart/ConfirmPage"
+
+//import CartTab
+import CartTab from './screens/CartTab'
 import CartItemDetail from './screens/cart/CartItemDetail'
+import ConfirmPage from "./screens/cart/ConfirmPage"
+import ThankYouPage from './screens/cart/ThankYouPage'
+
+//import ConsultTab
 import ConsultTab from './screens/ConsultTab'
-import ProfileEditPage from './screens/ProfileEditPage'
+
+//import ProfileTab
 import ProfileConfirmPage from './screens/ProfileConfirmPage'
+import ProfileEditPage from './screens/ProfileEditPage'
 
 //import Authentication Page
 import Signin from './Signin'
@@ -67,6 +76,7 @@ const CartTabStack = createStackNavigator(
     CartTab: {screen: CartTab},
     ConfirmPage: {screen: ConfirmPage},
     CartItemDetail: {screen: CartItemDetail},
+    ThankYouPage: {screen: ThankYouPage}
   },
   {
     initialRouteName: 'CartTab'
@@ -94,8 +104,8 @@ const ConsultTabStack = createStackNavigator(
 
 const ProfileStack = createStackNavigator(
   {
-    ProfileStack: {screen: ProfileEditPage},
-    ProfileConfirmStack: {screen: ProfileConfirmPage},
+    ProfileConfirmPage: {screen: ProfileConfirmPage},
+    ProfileEditPage: {screen: ProfileEditPage},
   },
 )
 
@@ -138,14 +148,19 @@ const Drawer = createDrawerNavigator(
         drawerIcon: <Icon name='account-circle' size={24}  color='white'/>,
       }
     },
-    'ホーム': { screen: Tab }
+    'ホーム': {
+      screen: Tab,
+      navigationOptions: {
+        drawerIcon: <Icon name='home' size={24} color='white' />
+      }
+    }
   },
   {
     contentComponent: (props) => (
       <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
-        <Image source={require('./assets/pretapo-logo-drawer.png')} style={{ width: wp('30%'), height: hp('20%'), marginLeft: wp('20%') }} />
-          <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white' activeBackgroundColor='black'/>
-          <Text>
+        <Image source={require('./assets/pretapo-white.png')} style={{ width: wp('25%'), height: hp('15%'), marginLeft: wp('20%'), marginTop: hp('5%'), marginBottom: -hp('2%'), resizeMode: 'contain' }} />
+          <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
+          <Text style={{ position: 'absolute', bottom: hp('4%') }}>
             <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>
               <Icon name="logout" size={24} color={'white'} />
             </View>

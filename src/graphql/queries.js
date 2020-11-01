@@ -201,6 +201,34 @@ export const getCart = /* GraphQL */ `
     getCart(id: $id) {
       id
       userId
+      user {
+        id
+        name
+        nameKana
+        phoneNumber
+        address
+        postalCode
+        height
+        birthday
+        gender
+        cartId
+        cart {
+          id
+          userId
+          createdAt
+          updatedAt
+        }
+        cartLogs {
+          nextToken
+        }
+        favoriteItem {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
       itemCarts {
         items {
           id
@@ -692,13 +720,17 @@ export const searchItems = /* GraphQL */ `
         stateDescription
         imageURLs
         status
+        season
         bigCategory
+        smallCategory
         color
         dressLength
         dressWidth
         sleeveLength
         size
         brand
+        supplierName
+        material
         rank
         itemCarts {
           nextToken
@@ -707,12 +739,51 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         favoriteUser {
-          items {
-            id
-            itemId
-            userId
-          }
+          nextToken
         }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchCartLogs = /* GraphQL */ `
+  query SearchCartLogs(
+    $filter: SearchableCartLogFilterInput
+    $sort: SearchableCartLogSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchCartLogs(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userId
+        createdAt
+        user {
+          id
+          name
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
+          cartId
+          createdAt
+          updatedAt
+        }
+        itemCartLogs {
+          nextToken
+        }
+        updatedAt
       }
       nextToken
       total
@@ -755,13 +826,8 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
-          favoriteUser {
-            items {
-              id
-              itemId
-              userId
-            }
-          }
+          createdAt
+          updatedAt
         }
         cart {
           id

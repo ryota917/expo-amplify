@@ -9,8 +9,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
 
-const CART_SIZE = 4
-
 export default class FavoriteItemDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -24,6 +22,7 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
+        title: 'tesettest',
         headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('CartTab')}} style={{ paddingLeft: wp('3%')}} />
     });
 

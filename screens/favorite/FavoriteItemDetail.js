@@ -42,7 +42,6 @@ export default class FavoriteItemDetail extends React.Component {
 
     setFavoritedOrCarted = () => {
         const isCarted = this.props.navigation.state.params.item.status !== 'WAITING'
-        console.log(isCarted)
         this.setState({
             isCarted: isCarted
         })
@@ -131,7 +130,7 @@ export default class FavoriteItemDetail extends React.Component {
                 <Modal isVisible={this.state.isCartModalVisible}>
                     <View style={styles.modalContainerView}>
                         <View style={styles.modalInnerView}>
-                        <Image source={require('../../assets/taggu.png')} style={{ width: wp('25%'), height: hp('25%'), resizeMode: 'contain' }} />
+                        <Image source={require('../../assets/taggu-cart.png')} style={{ width: wp('25%'), height: hp('25%'), resizeMode: 'contain' }} />
                             <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
                             <View style={styles.modalButtonView}>
                                 <Button

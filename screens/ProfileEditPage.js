@@ -7,26 +7,11 @@ import {figmaHp, figmaWp} from "../src/utils/figmaResponsiveWrapper"
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            userFamilyNameKanji: "高山",
-            userFirstNameKanji: "眞太郎",
-            userFamilyNameKatakana: "タカヤマ",
-            userFirstNameKatakana: "シンタロウ",
-            userSex: "male",
-            addressNumber: "0000000",
-            address: "京都府京都市",
-            birthDate: "2020/10/5",
-            phoneNumber: "090-1234-5678",
-            mailAdress: "pretapo.com",
-            userTall: 160,
-            editable: true,
-            password: "password"
-        }
         // TODO:User情報の取得
     }
 
     static navigationOptions = ({navigation}) => ({
-        title: 'ボックス',
+        title: '登録情報の修正',
         headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
     });
 
@@ -34,16 +19,15 @@ export default class ProfileEditPage extends React.Component {
         return(
             <View>
                 <ScrollView style={{height:hp.responsive("85%")}}>
-                    <ProfileForm
-                        editable={true}
-                        userInfo={this.state}
-                        handleFormChange={(stateName, val) => {this.setState({[stateName]: val})}}
-                    />
-                    <Button title="情報を変更する→" onPress={()=>this.props.navigation.navigate("ProfileConfirmStack", {userInfo: this.state})}/>
-                    {/* TODO: 情報の更新 */}
-                    <TextInput defaultValue={this.state.password} secureTextEntry={true} onChangeText={password => this.setState({"password":password})}/>
-                    <Button title="パスワードを変更する→"/>
-                    {/* TODO: パスワードの変更 */}
+                    {/* <ProfileForm
+                        editable={false}
+                        userInfo={this.props.navigation.state.params.userInfo}
+                        handleFormChange={(stateName, val) => {}}
+                    /> */}
+                    <View style={{flexDirection:"row", justifyContent:"space-around"}}>
+                        <Button title="戻る" onPress={()=>this.props.navigation.goBack()}/>
+                        <Button title="変更確定→" onPress={()=>{/*TODO: DBの更新*/}}/>
+                    </View>
                 </ScrollView>
             </View>
         )
@@ -51,4 +35,3 @@ export default class ProfileEditPage extends React.Component {
 }
 const hp = new figmaHp(812);
 const wp = new figmaWp(375);
-

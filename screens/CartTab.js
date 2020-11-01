@@ -7,6 +7,7 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import * as gqlSubscriptions from '../src/graphql/subscriptions' // 監視
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import send_message from '../src/messaging/slack'
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -83,13 +84,17 @@ export default class CartTab extends React.Component {
         })
     }
 
+    navigateConfirmPage = () => {
+        this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
+    }
+
     render() {
         const { isCartFilled } = this.state
         return(
             <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    {this.state.itemCart.map(item =>
-                        <View style={styles.cardContainer}>
+                    {this.state.itemCart.map((item, i) =>
+                        <View style={styles.cardContainer} key={i}>
                             <Card wrapperStyle={{ height: wp('27%')}}>
                                 <Card.Image
                                     source={{ uri: item.imageURLs[0] }}
@@ -111,7 +116,7 @@ export default class CartTab extends React.Component {
                         title='レンタル手続きへ →'
                         buttonStyle={[styles.rentalButtonStyle, { backgroundColor: isCartFilled ? 'white': 'rgba(255,255,255,0.5)' }]}
                         titleStyle={styles.rentalTitleStyle}
-                        onPress={this.searchWithCondition}
+                        onPress={isCartFilled ? () => this.navigateConfirmPage() : () => null}
                     />
                 </View>
             </View>

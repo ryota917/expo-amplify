@@ -1,15 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Image, Button } from "react-native-elements";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 export default class ItemDetail extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  static navigationOptions = ({ navigation: { navigate } }) => ({
+    title: 'レンタルお手続き',
+    headerLeft: () => null
+})
+
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <View style={styles.mainImageContainer}>
           <Image
             style={styles.mainImage}
@@ -28,15 +34,15 @@ export default class ItemDetail extends React.Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            title="ホームへ戻る"
-            titleStyle={{ color: "white" }}
+            title="戻る"
+            titleStyle={{ color: "white", fontSize: 19 }}
             buttonStyle={{
               backgroundColor: "#7389D9",
               borderRadius: 23,
               width: wp("80%"),
               height: hp("7%")
             }}
-            //   onPress={TODO: 画面の遷移}
+            onPress={() => this.props.navigation.navigate('CartTab')}
           />
         </View>
       </View>
@@ -45,19 +51,35 @@ export default class ItemDetail extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  mainImageContainer: {},
-  mainImage: {}, // TODO: メイン画像のスタイリング
+  container: {
+    width: wp('80%'),
+    //justifyContentで中央寄せする時はheight85%
+    height: hp('85%'),
+    left: wp('10%'),
+    justifyContent: 'center',
+  },
+  mainImageContainer: {
+    alignItems: 'center',
+    marginBottom: hp('4%')
+  },
+  mainImage: {
+    width: wp('40%'),
+    height: hp('20%'),
+    resizeMode: 'contain'
+  },
   confirmMessageContainer: {},
   confirmMessage: {
-    fontFamily: "Noto Sans JP",
+    // fontFamily: "Noto Sans JP",
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "center",
+    marginBottom: hp('3%')
   },
   thankYouMassageContainer: {},
   thankYouMessage: {
-    fontFamily: "Noto Sans JP",
-    fontSize: 11,
-    textAlign: "center"
+    // fontFamily: "Noto Sans JP",
+    fontSize: 12,
+    textAlign: "center",
+    marginBottom: hp('4%')
   },
-  buttonContainer: {} //TODO: ボタンのスタイリング．
+  buttonContainer: {}
 });

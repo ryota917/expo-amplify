@@ -52,13 +52,15 @@ type Cart @model {
 
 type CartLog
   @model
-  @key(name: "byUser", fields: ["userId"]) {
-  id: ID!
-  userId: ID!
-  createdAt: AWSDateTime!
-  user: User @connection(fields: ["userId"])
-  itemCartLogs: [ItemCartLog] @connection(keyName: "byCartLog", fields: ["id"])
-}
+  @key(name: "byUser", fields: ["userId"])
+  @searchable
+  {
+    id: ID!
+    userId: ID!
+    createdAt: AWSDateTime!
+    user: User @connection(fields: ["userId"])
+    itemCartLogs: [ItemCartLog] @connection(keyName: "byCartLog", fields: ["id"])
+  }
 
 # 中間テーブル
 type ItemCart
