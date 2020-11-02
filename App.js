@@ -142,16 +142,16 @@ const Tab = createBottomTabNavigator(
 //drawer
 const Drawer = createDrawerNavigator(
   {
-    '登録情報を編集': {
-      screen: ProfileStack,
-      navigationOptions: {
-        drawerIcon: <Icon name='account-circle' size={24}  color='white'/>,
-      }
-    },
     'ホーム': {
       screen: Tab,
       navigationOptions: {
         drawerIcon: <Icon name='home' size={24} color='white' />
+      }
+    },
+    '登録情報を編集': {
+      screen: ProfileStack,
+      navigationOptions: {
+        drawerIcon: <Icon name='account-circle' size={24}  color='white'/>,
       }
     }
   },
