@@ -37,7 +37,7 @@ export default class Signin extends React.Component {
             return(
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Icon name='angle-left' size={50} onPress={this.navigateSignin}/>
+                        <Icon name='angle-left' size={30} onPress={this.navigateSignin}/>
                         <Text style={styles.headerText}>パスワードの再設定</Text>
                     </View>
                     <View style={styles.innerContainer}>
@@ -49,11 +49,14 @@ export default class Signin extends React.Component {
                                 <Text style={styles.formText}>メールアドレス</Text>
                                 <Input
                                     onChangeText={val => this.setState({ email: val })}
+                                    placeholder='半角英数字8文字以上'
                                 />
                             </View>
                             <View>
                                 <Button
                                     title='送信'
+                                    titleStyle={{}}
+                                    buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 30, height: hp('7%') }}
                                     onPress={this.onPressForgotPasswordButton}
                                 />
                             </View>
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('5%')
+        marginLeft: wp('16%'),
     },
     innerContainer: {
         width: wp('70%'),

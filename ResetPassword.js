@@ -45,7 +45,7 @@ export default class ResetPassword extends React.Component {
             return(
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Icon name='angle-left' size={50} onPress={this.navigateSignin}/>
+                        <Icon name='angle-left' size={30} onPress={this.navigateSignin}/>
                         <Text style={styles.headerText}>新しいパスワードの設定</Text>
                     </View>
                     <View style={styles.innerContainer}>
@@ -71,6 +71,7 @@ export default class ResetPassword extends React.Component {
                             <View>
                                 <Button
                                     title='設定'
+                                    buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 30, height: hp('7%') }}
                                     onPress={this.onPressResetPassword}
                                 />
                             </View>
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('5%')
+        marginLeft: wp('16%'),
     },
     innerContainer: {
         width: wp('70%'),

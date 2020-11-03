@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { Auth, formContainer } from 'aws-amplify';
 import { Input, Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
 
@@ -13,7 +13,8 @@ export default class Signin extends React.Component {
             verificationCode: '',
             isResendConfimationModalVisile: false,
             isSendedModalVisible: false,
-            isConfirmPressed: false
+            isConfirmPressed: false,
+            confirmationAlert: false
         }
     }
 
@@ -22,22 +23,23 @@ export default class Signin extends React.Component {
     }
 
     onPressConfirmationSignup = async () => {
-        console.log(this.props.authData)
         const { verificationCode } = this.state
-        const authData = this.props.authData
+        const { email } = this.props.authData
+        console.log(email)
+        console.log(verificationCode)
         try{
-            const auth = await Auth.confirmSignUp(authData.email, verificationCode)
-            this.props.onStateChange('confirmSignIn', {authData, verificationCode})
+            await Auth.confirmSignUp(email, verificationCode)
+            this.props.onStateChange('confirmSignIn', { verificationCode })
         } catch(error) {
             console.error(error)
+            this.setState({ confirmationAlert: true })
+            setTimeout(() => this.setState({ confirmationAlert: false }), 3000)
         }
     }
 
     onPressResendConfirmationMail = async () => {
         const email = this.props.authData
         try {
-            //const resend = await Auth.resendSignUp(email)
-            //console.log(resend)
             this.toggleResendConfirmationModal()
         } catch(err) {
             console.error(err)
@@ -117,11 +119,16 @@ export default class Signin extends React.Component {
                         </View>
                     </Modal>
                     <View style={styles.header}>
-                        <Icon name='angle-left' size={50} onPress={this.navigateSignIn}/>
+                        <Icon name='chevron-left' size={30} onPress={this.navigateSignIn}/>
                         <Text style={styles.headerText}>確認コード入力</Text>
                     </View>
                     <View style={styles.innerContainer}>
                         <View style={styles.formContainer}>
+                            {/* アラートView */}
+                            <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: this.state.confirmationAlert ? 'block' : 'none' }}>
+                                <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>認証に失敗しました</Text>
+                            </View>
                             <View style={styles.formView}>
                                 <Input onChangeText={val => this.setState({ verificationCode: val })} />
                             </View>
@@ -129,15 +136,15 @@ export default class Signin extends React.Component {
                         <View style={styles.resendButtonView}>
                             <Button
                                 title='確認コードを再送する'
-                                buttonStyle={{}}
-                                titleStyle={{}}
+                                buttonStyle={{ backgroundColor: 'transparent', marginLeft: wp('30%'), marginTop: hp('3%') }}
+                                titleStyle={{ color: 'silver', fontSize: 16, textDecorationLine: 'underline' }}
                                 onPress={this.toggleResendConfirmationModal}
                             />
                         </View>
                     </View>
                     <View style={styles.confirmButtonView}>
                         <Button
-                            title='確認'
+                            title='確認 →'
                             buttonStyle={{ borderRadius: 30, width: wp('30%'), height: hp('6%'), backgroundColor: 'white' }}
                             titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
                             onPress={this.onPressConfirmationSignup}
@@ -163,13 +170,13 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('5%')
+        marginLeft: wp('23%')
     },
     innerContainer: {
-        width: wp('70%'),
+        width: wp('80%'),
         height: hp('100%'),
-        left: wp('12%'),
-        top: hp('4%')
+        left: wp('10%'),
+        top: hp('30%')
     },
     formContainer: {
     },
@@ -181,11 +188,11 @@ const styles = StyleSheet.create({
     confirmButtonView: {
         flex: 1,
         position: 'absolute',
-        bottom: hp('4%'),
+        bottom: hp('10%'),
         right: wp('8%'),
         shadowColor: 'black',
         shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.6,
+        shadowOpacity: 0.3,
         shadowRadius: 20,
         borderRadius: 30,
     },

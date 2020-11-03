@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableHighlightBase } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Signup from './Signup'
 import { Loading } from 'aws-amplify-react-native'
@@ -8,6 +8,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Modal from 'react-native-modal'
 import * as gqlQueries from './src/graphql/queries' // read
 import * as gqlMutations from './src/graphql/mutations' // create, update, delete
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 export default class Signin extends React.Component {
@@ -16,8 +17,13 @@ export default class Signin extends React.Component {
         this.state = {
             inputedEmail: '',
             inputedPassword: '',
-            isForgotPasswordModalVisible: false
+            isForgotPasswordModalVisible: false,
+            alert: false
         }
+    }
+
+    componentDidMount = () => {
+        this.setState({ alert: false })
     }
 
     onPressSignin = async () => {
@@ -28,6 +34,8 @@ export default class Signin extends React.Component {
             console.log(user)
         } catch(error) {
             console.log('error signing in ', error)
+            this.setState({ alert: true })
+            setTimeout(() => this.setState({ alert: false }), 3000)
         }
     }
 
@@ -37,30 +45,10 @@ export default class Signin extends React.Component {
         const { authData, verificationCode } = this.props.authData
         try{
             await Auth.signIn(inputedEmail, inputedPassword)
-            // console.log('新規ユーザーデータを作成します')
-            // await API.graphql(graphqlOperation(gqlMutations.createUser, {
-            //     input: {
-            //         id: authData.email,
-            //         cartId: authData.email,
-            //         name: authData.namez,
-            //         nameKana: authData.nameKana,
-            //         phoneNumber: authData.phoneNumber,
-            //         address: authData.address,
-            //         postalCode: authData.postalCode,
-            //         height: authData.height,
-            //         birthday: authData.birthday,
-            //         gender: authData.authgender
-            //     }
-            // }))
-            // console.log('新規ユーザーのカートデータを作成します')
-            // await API.graphql(graphqlOperation(gqlMutations.createCart, {
-            //     input: {
-            //         id: authData.email,
-            //         userId: authData.email
-            //     }
-            // }))
         } catch(err) {
             console.error(err)
+            this.setState({ alert: true })
+            setTimeout(() => this.setState({ alert: false }), 1)
         }
     }
 
@@ -108,8 +96,11 @@ export default class Signin extends React.Component {
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.formContainer}>
                             <View>
-                                <View style={styles.login}>
-                                    <Text style={styles.loginText}>Log in</Text>
+                                <Text style={styles.loginText}>LOG IN</Text>
+                                {/* アラートView */}
+                                <View style={{ flexDirection: 'row', display: this.state.alert ? 'block' : 'none' }}>
+                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>ログインに失敗しました</Text>
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.formText}>メールアドレス</Text>
@@ -125,19 +116,21 @@ export default class Signin extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.toForgotPassworButton}>
-                                    <Button
-                                        title='パスワードを忘れた方はこちら'
-                                        onPress={this.toggleModal}
-                                        buttonStyle={{ backgroundColor: 'white'}}
-                                        titleStyle={{ color: '#7389D9', fontWeight: 'bold', fontSize: 16 }}
-                                    />
+                                    <Icon.Button
+                                        name='alert-circle'
+                                        backgroundColor='white'
+                                        iconStyle={{ color: 'silver' }}
+                                        onPress={() => this.toggleModal()}
+                                    >
+                                        <Text style={{ color: 'silver', fontSize: 15, fontWeight: '400' }}>パスワードを忘れた方はこちら</Text>
+                                    </Icon.Button>
                                 </View>
                                 <View style={styles.toSignupButton}>
                                     <Button
                                         title='アカウントをお持ちでない方はこちら'
                                         onPress={this.navigateSignup}
                                         buttonStyle={{ backgroundColor: 'white'}}
-                                        titleStyle={{ color: '#7389D9', fontWeight: 'bold', fontSize: 16 }}
+                                        titleStyle={{ color: '#7389D9', fontWeight: 'bold', fontSize: 17 }}
                                     />
                                 </View>
                             </View>
@@ -185,21 +178,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     scrollView: {
-        flex: 1,
-        width: wp('100%'),
     },
     formContainer: {
-        width: wp('90%'),
-        alignItems: 'center',
+        width: wp('80%'),
+        left: wp('10%'),
         height: wp('100%'),
-        justifyContent: 'center'
-    },
-    login: {
+        justifyContent: 'center',
+        marginTop: hp('3%')
     },
     loginText: {
         width: wp('40%'),
         fontSize: wp('10%'),
-        fontWeight: '500'
+        fontWeight: '500',
+        marginBottom: hp('3%'),
     },
     form: {
         marginTop: wp('4%')
@@ -208,19 +199,19 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     toForgotPassworButton: {
-
+        marginTop: -hp('2%')
     },
     toSignupButton: {
-        marginTop: wp('4%')
+        marginTop: wp('8%')
     },
     nextButton: {
         flex: 1,
         position: 'absolute',
-        bottom: hp('14%'),
+        bottom: hp('17%'),
         right: wp('8%'),
         shadowColor: 'black',
         shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.6,
+        shadowOpacity: 0.3,
         shadowRadius: 20,
         borderRadius: 30,
     }

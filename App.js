@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { API, graphqlOperation } from 'aws-amplify'
 import * as gqlMutations from './src/graphql/mutations' // create, update, delete
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import awsmobile from './aws-exports'
 
 //import ItemTab
 import ItemTab from './screens/ItemTab';
@@ -43,22 +44,8 @@ import SignupConfirmation from './SignupConfirmation'
 import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
 
-//aws-exportsを読み込めないので暫定的に直接記入
-Amplify.configure({
-    "aws_project_region": "ap-northeast-1",
-    "aws_appsync_graphqlEndpoint": "https://lpysywb5rnamtdmuojjypxxkri.appsync-api.ap-northeast-1.amazonaws.com/graphql",
-    "aws_appsync_region": "ap-northeast-1",
-    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
-    "aws_cognito_identity_pool_id": "ap-northeast-1:62bd8c1c-2157-4e62-9cda-67ca440caa9a",
-    "aws_cognito_region": "ap-northeast-1",
-    "aws_user_pools_id": "ap-northeast-1_krUoox3yW",
-    "aws_user_pools_web_client_id": "rruh53etit2lj1h760u11nfb",
-    "oauth": {},
-    //No credentials, applicationId or regionを回避
-    Analytics: {
-      disabled: true,
-    }
-});
+//aws接続設定
+Amplify.configure(awsmobile);
 
 const ItemTabStack = createStackNavigator(
   {

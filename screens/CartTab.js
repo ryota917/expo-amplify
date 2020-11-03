@@ -30,7 +30,10 @@ export default class CartTab extends React.Component {
         await this.fetchCurrentUser()
         this.fetchItemCart()
         //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
-        await this.props.navigation.addListener('didFocus', () => this.fetchItemCart())
+        this.props.navigation.addListener('didFocus', async () => {
+            await this.fetchCurrentUser()
+            await this.fetchItemCart()
+        })
     }
 
     fetchCurrentUser = async () => {

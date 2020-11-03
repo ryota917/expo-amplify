@@ -63,8 +63,6 @@ export default class ProfileEditPage extends React.Component {
     onPressChangeProfile = async () => {
         const nameAlert = !(this.state.inputedName && this.state.inputedNameKana)
         const addressAlert = !(this.state.inputedAddress && this.state.inputedPostalCode)
-        console.log(nameAlert)
-        console.log(addressAlert)
         this.setState({
             nameAlert: nameAlert,
             addressAlert: addressAlert

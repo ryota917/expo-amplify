@@ -1,9 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, TextInput, ScrollView, Picker } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
+import * as gqlMutations from './src/graphql/mutations'
 import { Input, Button, CheckBox } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 export default class Signin extends React.Component {
@@ -20,6 +21,11 @@ export default class Signin extends React.Component {
             gender: '',
             birthday: new Date(),
             height: '160',
+            nameAlert: false,
+            addressAlert: false,
+            emailAlert: false,
+            passWordAlert: false,
+            signUpAlert: false
         }
     }
 
@@ -47,35 +53,74 @@ export default class Signin extends React.Component {
     }
 
     onPressSignup = async () => {
-        console.log('サインアップが押されました')
         const { name, nameKana, email, password, phoneNumber, address, postalCode, height, birthday, gender } = this.state
+        const nameAlert = !(name && nameKana)
+        const addressAlert = !(address && postalCode)
+        const emailAlert = !email
+        const passwordAlert = !password
+        this.setState({
+            nameAlert: nameAlert,
+            addressAlert: addressAlert,
+            emailAlert: emailAlert,
+            passwordAlert: passwordAlert
+        })
+        if(nameAlert || addressAlert || emailAlert || passwordAlert ) this.refs._scrollView.scrollTo({ x: 5, y: 5, animated: false })
         try {
-            console.log('Cognitoにサインアップします')
-            await Auth.signUp(email, password)
-            this.props.onStateChange('confirmSignUp', {name, nameKana, email, phoneNumber, address, postalCode, height, birthday, gender})
+            if(name && nameKana && email && password && postalCode && address) {
+                console.log('Cognitoにサインアップします')
+                await Auth.signUp(email, password)
+                await API.graphql(graphqlOperation(gqlMutations.createUser, {
+                    input: {
+                        id: email,
+                        cartId: email,
+                        name: name,
+                        nameKana: nameKana,
+                        phoneNumber: phoneNumber,
+                        address: address,
+                        postalCode: postalCode,
+                        height: height,
+                        birthday: birthday,
+                        gender: gender
+                    }
+                }))
+                this.props.onStateChange('confirmSignUp', { email: email })
+            }
         } catch(error) {
             console.error(error)
+            this.setState({ signUpAlert: true })
+            this.refs._scrollView.scrollTo({ x: 5, y: 5, animated: false })
         }
     }
 
     render() {
-        const { gender } = this.state
+        const { gender, nameAlert, addressAlert, emailAlert, passwordAlert, signUpAlert } = this.state
         if(this.props.authState !== 'signUp') {
             return null;
         } else {
             return(
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Icon name='angle-left' size={40} onPress={this.navigateSignin} style={styles.backIcon}/>
+                        <Icon name='chevron-left' size={30} onPress={this.navigateSignin} style={styles.backIcon}/>
                     </View>
-                    <ScrollView style={styles.scrollView}>
+                    <ScrollView ref={'_scrollView'} style={styles.scrollView}>
                         <View style={styles.formContainer}>
                             <View>
-                                <View>
-                                    <Text style={styles.signupText}>Sign up</Text>
+                                <Text style={styles.signupText}>SIGN UP</Text>
+                                {/* アラートView */}
+                                <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: signUpAlert ? 'block' : 'none' }}>
+                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>登録に失敗しました</Text>
                                 </View>
                                 <View style={styles.form}>
-                                    <Text style={styles.title}>お名前<Text style={styles.must}>必須</Text></Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={styles.title}>お名前</Text>
+                                        <Text style={styles.mustText}>必須</Text>
+                                    </View>
+                                    {/* アラートView */}
+                                    <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: nameAlert ? 'block' : 'none' }}>
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                        <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>適切に入力されていません</Text>
+                                    </View>
                                     <Input
                                         onChangeText={val => this.setState({ name: val })}
                                         placeholder='姓名(漢字)'
@@ -115,7 +160,15 @@ export default class Signin extends React.Component {
                                     </View>
                                 </View>
                                 <View style={styles.form}>
-                                    <Text style={styles.title}>お届け先<Text style={styles.must}>必須</Text></Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={styles.title}>お届け先</Text>
+                                        <Text style={styles.mustText}>必須</Text>
+                                    </View>
+                                    {/* アラートView */}
+                                    <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: addressAlert ? 'block' : 'none' }}>
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                        <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>適切に入力されていません</Text>
+                                    </View>
                                     <Input
                                         placeholder='郵便番号'
                                         onChangeText={val => this.setState({ postalCode: val })}
@@ -142,7 +195,15 @@ export default class Signin extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.form}>
-                                    <Text style={styles.title}>メールアドレス<Text style={styles.must}>必須</Text></Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={styles.title}>メールアドレス</Text>
+                                        <Text style={styles.mustText}>必須</Text>
+                                    </View>
+                                    {/* アラートView */}
+                                    <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: emailAlert ? 'block' : 'none' }}>
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                        <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>適切に入力されていません</Text>
+                                    </View>
                                     <Input
                                         onChangeText={val => this.setState({ email: val })}
                                     />
@@ -168,14 +229,22 @@ export default class Signin extends React.Component {
                                     </Picker>
                                 </View>
                                 <View style={styles.form}>
-                                    <Text style={styles.title}>パスワード<Text style={styles.must}>必須</Text></Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={styles.title}>パスワード</Text>
+                                        <Text style={styles.mustText}>必須</Text>
+                                    </View>
+                                    {/* アラートView */}
+                                    <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: passwordAlert ? 'block' : 'none' }}>
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                        <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>適切に入力されていません</Text>
+                                    </View>
                                     <Input
-                                        placeholder='半角英数字'
+                                        placeholder='半角英数字8文字以上'
                                         onChangeText={val => this.setState({ password: val })}
                                         secureTextEntry={true}
                                     />
                                 </View>
-                                <View style={{ height: hp('20%') }}></View>
+                                <View style={{ height: hp('25%') }}></View>
                             </View>
                         </View>
                     </ScrollView>
@@ -206,7 +275,7 @@ const styles = StyleSheet.create({
         height: hp('8%')
     },
     backIcon: {
-        left: wp('10%')
+        left: wp('0%'),
     },
     scrollView: {
         flex: 1,
@@ -214,17 +283,17 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         width: wp('80%'),
-        alignItems: 'center',
         top: hp('3%'),
-        //bottom: hp('10%')
+        left: wp('10%')
     },
     signupText: {
         width: wp('40%'),
         fontSize: wp('10%'),
-        fontWeight: '500'
+        fontWeight: '500',
+        marginBottom: hp('3%')
     },
     form: {
-        marginTop: hp('3%')
+        marginTop: hp('4%')
     },
     title: {
         marginBottom: hp('2%'),
@@ -236,19 +305,22 @@ const styles = StyleSheet.create({
     button: {
         flex: 1,
         position: 'absolute',
-        bottom: hp('4%'),
+        bottom: hp('10%'),
         right: wp('8%'),
         shadowColor: 'black',
         shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.6,
+        shadowOpacity: 0.3,
         shadowRadius: 20,
         borderRadius: 30,
     },
-    must: {
+    mustText: {
         backgroundColor: '#7389D9',
-        color: 'white',
         textAlign: 'center',
-        width: wp('6%'),
-        fontSize: wp('3%'),
-    }
+        color: 'white',
+        fontSize: 13,
+        height: hp('2.5%'),
+        paddingTop: wp('0.5%'),
+        width: wp('9%'),
+        marginLeft: wp('3%')
+    },
 })

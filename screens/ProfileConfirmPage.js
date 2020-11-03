@@ -32,8 +32,7 @@ export default class ProfileConfirmPage extends React.Component {
         this.props.navigation.addListener('didFocus', async () => {
             const user = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUserEmail}))
             this.setState({
-                user: user.data.getUser,
-                passwordAlert: false
+                user: user.data.getUser
             })
         })
     }
@@ -55,6 +54,7 @@ export default class ProfileConfirmPage extends React.Component {
         } catch(err) {
             console.log(err)
             this.setState({ passwordAlert: true })
+            setTimeout(() => this.setState({ passwordAlert: false }), 3000)
         }
     }
 
