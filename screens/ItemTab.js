@@ -38,6 +38,7 @@ export default class ItemTab extends React.Component {
         //FIX ME: addListenerが複数回レンダリングされている
         await this.props.navigation.addListener('didFocus', async () => {
             //stateが更新されるのとawaitしないと前のstateで表示される
+            console.log(this.state.searchCondition)
             await this.updateSearchState()
             this.initialLoad()
         })
@@ -80,6 +81,7 @@ export default class ItemTab extends React.Component {
     //検索条件を更新
     updateSearchState = () => {
         //検索画面から検索条件を取得
+        console.log(this.props.navigation.state.params?.searchCondition)
         if(this.props.navigation.state.params?.searchCondition) {
             this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
         }
@@ -341,9 +343,7 @@ export default class ItemTab extends React.Component {
         this.setState({ isLoading: true })
         const query = await this.loadQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
-        console.log(res.data.searchItems.nextToken)
         const canLoad = !!(res.data.searchItems.nextToken)
-        console.log(canLoad)
         this.setState(prevState => ({
             items: prevState.items.concat(res.data.searchItems.items),
             nextToken: res.data.searchItems.nextToken,
@@ -411,6 +411,7 @@ const styles = StyleSheet.create({
     itemText: {
         width: wp('32%'),
         height: hp('5%'),
-        fontSize: 12
+        fontSize: 12,
+        marginTop: hp('1%')
     }
 })

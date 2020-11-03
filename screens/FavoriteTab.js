@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView, Image, FlatList, ActivityIndicator, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet,　Image, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
-import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
@@ -146,6 +145,7 @@ const styles = StyleSheet.create({
     itemText: {
         width: wp('32%'),
         height: hp('5%'),
-        fontSize: 12
+        fontSize: 13,
+        marginTop: hp('1%')
     }
 })

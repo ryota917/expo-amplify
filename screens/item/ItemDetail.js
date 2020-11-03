@@ -5,7 +5,6 @@ import { Image, Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import {figmaHp, figmaWp } from '../../src/utils/figmaResponsiveWrapper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'

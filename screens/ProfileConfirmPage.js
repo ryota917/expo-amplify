@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View ,ScrollView, TextInput, StyleSheet, Picker } from 'react-native'
+import { Text, View ,ScrollView, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { Input, Button } from 'react-native-elements'

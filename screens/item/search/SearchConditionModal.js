@@ -1,9 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { API, graphqlOperation } from 'aws-amplify';
-//import * as Query from '../../src/graphql/queries';
-import { ListItem, Button } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 
@@ -107,7 +105,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='カテゴリで検索'
@@ -142,7 +140,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='色で検索'
@@ -172,7 +170,7 @@ class SearchConditionModal extends React.Component {
                                     />
                                     <Button
                                         icon={
-                                            <Icon name='circle' size={20} style={{ color: 'white', marginRight: wp('5%') }} />
+                                            <Icon name='circle' size={20} style={{ color: 'floralwhite', marginRight: wp('5%') }} />
                                         }
                                         title='ホワイト系'
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'white') ? '#333333' : 'white' }]}
@@ -240,7 +238,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='サイズで検索'
@@ -302,7 +300,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={15} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='ランクで検索'

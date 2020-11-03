@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
         height: hp('8%')
     },
     backIcon: {
-        left: wp('0%'),
+        left: -wp('4%'),
     },
     scrollView: {
         flex: 1,

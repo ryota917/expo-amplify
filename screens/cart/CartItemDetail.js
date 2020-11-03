@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Image, Button } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
-import Modal from 'react-native-modal'
 
 export default class FavoriteItemDetail extends React.Component {
     constructor(props) {
