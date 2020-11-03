@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "pretapo-demo",
+    "name": "pretapo",
     "slug": "slug",
     "version": "1.0.3",
     "orientation": "portrait",
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pretapo.pretapo-demo",
+      "bundleIdentifier": "com.pretapo.pretapo",
       "buildNumber": "1.0.3"
     },
     "web": {
