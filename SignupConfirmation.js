@@ -164,13 +164,13 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        left: wp('7%'),
+        left: wp('4%'),
         top: wp('3%'),
         height: hp('8%')
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('23%')
+        marginLeft: wp('21%')
     },
     innerContainer: {
         width: wp('80%'),
