@@ -33,6 +33,7 @@ type User @model {
   height: String!
   birthday: String!
   gender: String!
+  rental: Boolean
   cartId: ID!
   cart: Cart @connection(fields: ["cartId"])
   cartLogs: [CartLog] @connection(keyName: "byUser", fields: ["id"])

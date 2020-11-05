@@ -1,17 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, Button, SafeAreaView, View, Text } from 'react-native';
+import { Image, View, Text } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
 import {
-  withAuthenticator, Loading, VerifyContact } from 'aws-amplify-react-native';
-//aws-exportsを読み込めないので暫定的にコメントアウト
-//import config from './aws-exports';
+  withAuthenticator, VerifyContact } from 'aws-amplify-react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { API, graphqlOperation } from 'aws-amplify'
-import * as gqlMutations from './src/graphql/mutations' // create, update, delete
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import awsmobile from './aws-exports'
 
@@ -184,6 +180,5 @@ export default withAuthenticator(App, false,
     <ForgotPassword />,
     <ResetPassword />,
     <VerifyContact />,
-    <Loading />
   ]
 )

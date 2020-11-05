@@ -5,7 +5,6 @@ import { Image, Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
-import * as gqlSubscriptions from '../src/graphql/subscriptions' // 監視
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import send_message from '../src/messaging/slack'
 
@@ -14,8 +13,17 @@ export default class CartTab extends React.Component {
         super(props);
         this.state = {
             itemCart: [],
+            itemCartLog: [],
             currentUserEmail: '',
-            isCartFilled: false
+            isCartFilled: false,
+            //レンタル中かどうか
+            isRental: false,
+            //次のレンタル可能日を過ぎているかどうか
+            canNextRental: false,
+            //次のレンタル可能日
+            canNextRentalDate: '',
+            //レンタル可能か(レンタル中でないかつ、一ヶ月以内にレンタルしていない)
+            canRental: true
         }
     }
 
@@ -29,10 +37,13 @@ export default class CartTab extends React.Component {
     componentDidMount = async () => {
         await this.fetchCurrentUser()
         this.fetchItemCart()
+        // this.fetchItemCartLog()
+        this.fetchRentalData()
         //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
         this.props.navigation.addListener('didFocus', async () => {
             await this.fetchCurrentUser()
-            await this.fetchItemCart()
+            this.fetchItemCart()
+            this.fetchRentalData()
         })
     }
 
@@ -64,6 +75,47 @@ export default class CartTab extends React.Component {
         }
     }
 
+    //レンタル履歴を取得
+    fetchRentalData = async () => {
+        try {
+            const cartLogRes = await API.graphql(graphqlOperation(gqlQueries.searchCartLogs, {
+                filter: {
+                    userId: {
+                        eq: this.state.currentUserEmail
+                    }
+                },
+                sort: {
+                    field: 'createdAt',
+                    direction: 'desc'
+                },
+                limit: 1
+            }))
+            //最新のカートログに入っているアイテムデータを取得
+            const itemCartLogArr = []
+            cartLogRes.data.searchCartLogs.items[0].itemCartLogs.items.forEach(obj => itemCartLogArr.push(obj.item))
+            console.log(itemCartLogArr)
+            //次回レンタル可能な日付データを取得
+            const canNextRentalDate = new Date(cartLogRes.data.searchCartLogs.items[0].createdAt)
+            canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
+            const today = new Date()
+            const canNextRental = canNextRentalDate.getTime() > new Date(today).getTime()
+            //現在レンタル中かのデータを取得
+            const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: this.state.currentUserEmail }))
+            const isRental = userRes.data.getUser.rental
+            //レンタルが可能かどうか
+            const canRental = !canNextRental && !isRental
+            this.setState({
+                itemCartLog: itemCartLogArr,
+                canNextRental: canNextRental,
+                isRental: isRental,
+                canRental: canRental,
+                canNextRentalDate: canNextRentalDate
+            })
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
     //Cartに入っているアイテムを削除
     deleteItemFromCart = async (deleteItem) => {
         const { currentUserEmail } = this.state
@@ -92,36 +144,59 @@ export default class CartTab extends React.Component {
     }
 
     render() {
-        const { isCartFilled } = this.state
+        const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate } = this.state
+        const nextCanRentalDate = '次回レンタル可能な日は' + (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日以降です'
         return(
             <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    {this.state.itemCart.map((item, i) =>
-                        <View style={styles.cardContainer} key={i}>
-                            <Card wrapperStyle={{ height: wp('27%')}}>
-                                <Card.Image
-                                    source={{ uri: item.imageURLs[0] }}
-                                    style={styles.image}
-                                    onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                />
-                                <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>ブランド</Card.Title>
-                                <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
-                                <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>アウター</Card.Title>
-                                <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>Sランク</Card.Title>
-                                <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
-                            </Card>
-                        </View>
-                    )}
+                    <Text style={styles.titleText}>{canNextRental ? nextCanRentalDate : '現在レンタル可能です'}</Text>
+                    <Text style={styles.titleText}>{isRental ? 'レンタル中のアイテム' : 'カート'}</Text>
+                    {isRental ?
+                        this.state.itemCartLog.map((item, i) =>
+                            <View style={styles.cardContainer} key={i}>
+                                <Card wrapperStyle={{ height: wp('27%')}}>
+                                    <Card.Image
+                                        source={{ uri: item.imageURLs[0] }}
+                                        style={styles.image}
+                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                    />
+                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
+                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
+                                </Card>
+                            </View>
+                        )
+                    :
+                        this.state.itemCart.map((item, i) =>
+                            <View style={styles.cardContainer} key={i}>
+                                <Card wrapperStyle={{ height: wp('27%')}}>
+                                    <Card.Image
+                                        source={{ uri: item.imageURLs[0] }}
+                                        style={styles.image}
+                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                    />
+                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
+                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
+                                    <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
+                                </Card>
+                            </View>
+                        )
+                    }
                     <View style={{ height: hp('34%') }}></View>
                 </ScrollView>
-                <View style={styles.rentalButtonView}>
-                    <Button
-                        title='レンタル手続きへ →'
-                        buttonStyle={[styles.rentalButtonStyle, { backgroundColor: isCartFilled ? 'white': 'rgba(255,255,255,0.5)' }]}
-                        titleStyle={styles.rentalTitleStyle}
-                        onPress={isCartFilled ? () => this.navigateConfirmPage() : () => null}
-                    />
-                </View>
+                {isRental ? null :
+                    <View style={styles.rentalButtonView}>
+                        <Button
+                            title='レンタル手続きへ →'
+                            buttonStyle={[styles.rentalButtonStyle, { backgroundColor: isCartFilled ? 'white': 'rgba(255,255,255,0.5)' }]}
+                            titleStyle={styles.rentalTitleStyle}
+                            onPress={isCartFilled ? () => this.navigateConfirmPage() : () => null}
+                        />
+                    </View>
+                }
             </View>
         )
     }
@@ -131,6 +206,11 @@ const styles = StyleSheet.create({
     container: {
         width: wp('100%'),
         height: hp('100%'),
+    },
+    titleText: {
+        textAlign: 'center',
+        marginTop: hp('2%'),
+        fontWeight: 'bold'
     },
     scrollView: {
     },
@@ -143,16 +223,25 @@ const styles = StyleSheet.create({
     brand: {
         marginTop: -wp('26%'),
         color: '#7389D9',
-        fontSize: 12
+        fontSize: 12,
+        width: wp('40%'),
+        marginLeft: wp('30%'),
+        textAlign: 'left'
     },
     name: {
         marginTop: -wp('2%'),
-        fontSize: 16
+        fontSize: 16,
+        width: wp('50%'),
+        marginLeft: wp('30%'),
+        textAlign: 'left'
     },
     category: {
         marginTop: -wp('3%'),
         fontSize: 11,
-        color: '#828282'
+        color: '#828282',
+        width: wp('40%'),
+        textAlign: 'left',
+        marginLeft: wp('30%')
     },
     rank: {
         marginTop: -wp('1%'),

@@ -80,7 +80,14 @@ export default class Signin extends React.Component {
                         postalCode: postalCode,
                         height: height,
                         birthday: birthday,
-                        gender: gender
+                        gender: gender,
+                        rental: false
+                    }
+                }))
+                await API.graphql(graphqlOperation(gqlMutations.createCart, {
+                    input: {
+                        id: email,
+                        userId: email
                     }
                 }))
                 this.props.onStateChange('confirmSignUp', { email: email })

@@ -12,8 +12,8 @@ const awsmobile = {
     "aws_user_pools_id": "ap-northeast-1_krUoox3yW",
     "aws_user_pools_web_client_id": "rruh53etit2lj1h760u11nfb",
     "oauth": {},
-    Analytics: {
-        disabled: true,
+    "Analytics": {
+        "disabled": true
     }
 };
 

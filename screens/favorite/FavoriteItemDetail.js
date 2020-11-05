@@ -175,7 +175,7 @@ export default class FavoriteItemDetail extends React.Component {
                                     </View>
                                     {/* カテゴリ名 */}
                                     <View style={styles.categoryView}>
-                                        <Text style={styles.categoryText}>{item.bigCategory}</Text>
+                                        <Text style={styles.categoryText}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.iconView}>

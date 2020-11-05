@@ -21,7 +21,7 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
-        title: 'tesettest',
+        title: 'アイテム詳細',
         headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('CartTab')}} style={{ paddingLeft: wp('3%')}} />
     });
 
@@ -37,6 +37,7 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     setFavoritedOrCarted = () => {
+        console.log(this.props.navigation.state.params.item)
         const isFavorited = this.props.navigation.state.params.item.favoriteUser.items?.some(item => item.userId === this.state.currentUserEmail)
         this.setState({
             isFavorited: isFavorited
@@ -135,7 +136,7 @@ export default class FavoriteItemDetail extends React.Component {
                                     </View>
                                     {/* カテゴリ名 */}
                                     <View style={styles.categoryView}>
-                                        <Text style={styles.categoryText}>{item.bigCategory}</Text>
+                                        <Text style={styles.categoryText}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.iconView}>

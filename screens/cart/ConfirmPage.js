@@ -57,6 +57,8 @@ export default class ConfirmPage extends React.Component {
         try{
             //CartLogの生成
             await this.createCartLog()
+            //Userステータスをレンタルに変更
+            await this.changeUserStatus()
             //それぞれのアイテムをレンタル処理
             this.state.itemCart.map(item => {
                 this.rentalItem(item)
@@ -107,6 +109,14 @@ export default class ConfirmPage extends React.Component {
             }
         }))
         this.setState({ cartLogNum: cartLogNum })
+    }
+
+    changeUserStatus = async () => {
+        await API.graphql(graphqlOperation(gqlMutations.updateUser, {
+            input: {
+                rental: true
+            }
+        }))
     }
 
     render() {

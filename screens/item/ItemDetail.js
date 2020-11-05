@@ -23,6 +23,7 @@ export default class ItemDetail extends React.Component {
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
+        title: 'アイテム詳細',
         headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}} />
     });
 
@@ -90,8 +91,6 @@ export default class ItemDetail extends React.Component {
     //カートに追加
     saveItemToCart = async () => {
         const { currentUserEmail, item } = this.state
-        this.toggleCartModal()
-        this.setState({ isCarted: true })
         try {
             //アイテムがWAITINGであることを確認できればカート保存処理を実行
             const itemData = await API.graphql(graphqlOperation(gqlQueries.getItem, { id: item["id"] }))
@@ -109,6 +108,8 @@ export default class ItemDetail extends React.Component {
                         cartId: currentUserEmail
                     }
                 }))
+                this.setState({ isCarted: true })
+                this.toggleCartModal()
             }
         } catch(err) {
             console.error(err)
@@ -127,6 +128,7 @@ export default class ItemDetail extends React.Component {
 
     render() {
         const { item, isFavorited, isCarted, isCartFilled } = this.state
+        const bigCategory = this.state.bigCategory === 'OUTER' ? 'アウター' : 'トップス'
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
             <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
         )
@@ -180,7 +182,7 @@ export default class ItemDetail extends React.Component {
                                     </View>
                                     {/* カテゴリ名 */}
                                     <View style={styles.categoryView}>
-                                        <Text style={styles.categoryText}>{item.bigCategory}</Text>
+                                        <Text style={styles.categoryText}>{bigCategory}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.iconView}>

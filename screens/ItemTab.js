@@ -32,7 +32,6 @@ export default class ItemTab extends React.Component {
     };
 
     componentDidMount = async () => {
-        this.syncUserAndCartToDynamo();
         this.initialLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
         //FIX ME: addListenerが複数回レンダリングされている
@@ -42,40 +41,6 @@ export default class ItemTab extends React.Component {
             await this.updateSearchState()
             this.initialLoad()
         })
-    }
-
-    //暫定対応
-    syncUserAndCartToDynamo = async () => {
-        const currentUser = await Auth.currentAuthenticatedUser()
-        const currentUserEmail = currentUser.attributes.email
-        const dynamoUser = await API.graphql(graphqlOperation(gqlQueries.getUser, {id: currentUserEmail}))
-        const dynamoCart = await API.graphql(graphqlOperation(gqlQueries.getCart, {id: currentUserEmail}))
-        if(!dynamoUser.data.getUser) {
-            console.log('新規ユーザーデータを作成します')
-            await API.graphql(graphqlOperation(gqlMutations.createUser, {
-                input: {
-                    id: currentUserEmail,
-                    cartId: currentUserEmail,
-                    name: 'name',
-                    nameKana: 'fdf',
-                    phoneNumber: 'dff',
-                    address: 'dfasdf',
-                    postalCode: 'fdsa',
-                    height: 'dfafs',
-                    birthday: 'dfas',
-                    gender: 'afsdf'
-                }
-            }))
-        }
-        if(!dynamoCart.data.getCart) {
-            console.log('新規ユーザーのカートデータを作成します')
-            await API.graphql(graphqlOperation(gqlMutations.createCart, {
-                input: {
-                    id: currentUserEmail,
-                    userId: currentUserEmail
-                }
-            }))
-        }
     }
 
     //検索条件を更新

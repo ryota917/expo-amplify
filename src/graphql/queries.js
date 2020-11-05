@@ -111,24 +111,11 @@ export const getUser = /* GraphQL */ `
       height
       birthday
       gender
+      rental
       cartId
       cart {
         id
         userId
-        user {
-          id
-          name
-          nameKana
-          phoneNumber
-          address
-          postalCode
-          height
-          birthday
-          gender
-          cartId
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
         itemCarts {
@@ -176,6 +163,7 @@ export const listUsers = /* GraphQL */ `
         height
         birthday
         gender
+        rental
         cartId
         cart {
           id
@@ -211,6 +199,7 @@ export const getCart = /* GraphQL */ `
         height
         birthday
         gender
+        rental
         cartId
         cart {
           id
@@ -262,6 +251,7 @@ export const listCarts = /* GraphQL */ `
           height
           birthday
           gender
+          rental
           cartId
           createdAt
           updatedAt
@@ -292,6 +282,7 @@ export const getCartLog = /* GraphQL */ `
         height
         birthday
         gender
+        rental
         cartId
         cart {
           id
@@ -343,6 +334,7 @@ export const listCartLogs = /* GraphQL */ `
           height
           birthday
           gender
+          rental
           cartId
           createdAt
           updatedAt
@@ -406,6 +398,7 @@ export const getItemCart = /* GraphQL */ `
           height
           birthday
           gender
+          rental
           cartId
           createdAt
           updatedAt
@@ -518,6 +511,7 @@ export const getItemCartLog = /* GraphQL */ `
           height
           birthday
           gender
+          rental
           cartId
           createdAt
           updatedAt
@@ -625,6 +619,7 @@ export const getItemFavorite = /* GraphQL */ `
         height
         birthday
         gender
+        rental
         cartId
         cart {
           id
@@ -689,6 +684,7 @@ export const listItemFavorites = /* GraphQL */ `
           height
           birthday
           gender
+          rental
           cartId
           createdAt
           updatedAt
@@ -766,22 +762,44 @@ export const searchCartLogs = /* GraphQL */ `
         id
         userId
         createdAt
-        user {
-          id
-          name
-          nameKana
-          phoneNumber
-          address
-          postalCode
-          height
-          birthday
-          gender
-          cartId
-          createdAt
-          updatedAt
-        }
         itemCartLogs {
-          nextToken
+          items {
+            id
+            itemId
+            item {
+              id
+              name
+              description
+              stateDescription
+              imageURLs
+              status
+              season
+              bigCategory
+              smallCategory
+              color
+              dressLength
+              dressWidth
+              sleeveLength
+              size
+              brand
+              supplierName
+              material
+              rank
+              favoriteUser {
+                items {
+                  id
+                  itemId
+                  userId
+                  createdAt
+                  updatedAt
+                }
+                nextToken
+              }
+            }
+            cartLogId
+            createdAt
+            updatedAt
+          }
         }
         updatedAt
       }
@@ -826,6 +844,16 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
+          favoriteUser {
+            items {
+              id
+              itemId
+              userId
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -879,6 +907,16 @@ export const searchItemCartLogs = /* GraphQL */ `
           supplierName
           material
           rank
+          favoriteUser {
+            items {
+              id
+              itemId
+              userId
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -945,6 +983,7 @@ export const searchItemFavorites = /* GraphQL */ `
           height
           birthday
           gender
+          rental
           cartId
           createdAt
           updatedAt
