@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Image, View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Image } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
@@ -48,7 +47,6 @@ export default class FavoriteItemDetail extends React.Component {
     saveItemToFavorite = async () => {
         this.setState({ isFavorited: true })
         const { currentUserEmail, item } = this.state
-        console.log('お気に入りボタンが押されました')
         await API.graphql(graphqlOperation(gqlMutations.createItemFavorite, {
             input: {
                 id: currentUserEmail + item["id"],
@@ -62,7 +60,6 @@ export default class FavoriteItemDetail extends React.Component {
     deleteItemFromFavorite = async () => {
         this.setState({ isFavorited: false })
         const { currentUserEmail, item } = this.state
-        console.log('お気に入りから削除されました')
         await API.graphql(graphqlOperation(gqlMutations.deleteItemFavorite, {
             input: {
                 id: currentUserEmail + item["id"]

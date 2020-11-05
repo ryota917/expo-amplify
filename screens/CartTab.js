@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Image, Text, View, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Image, Card, Button } from 'react-native-elements';
+import { Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import send_message from '../src/messaging/slack'
+import Modal from 'react-native-modal'
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -23,7 +23,8 @@ export default class CartTab extends React.Component {
             //次のレンタル可能日
             canNextRentalDate: '',
             //レンタル可能か(レンタル中でないかつ、一ヶ月以内にレンタルしていない)
-            canRental: true
+            canRental: true,
+            isRentalAlertVisible: false
         }
     }
 
@@ -93,7 +94,6 @@ export default class CartTab extends React.Component {
             //最新のカートログに入っているアイテムデータを取得
             const itemCartLogArr = []
             cartLogRes.data.searchCartLogs.items[0].itemCartLogs.items.forEach(obj => itemCartLogArr.push(obj.item))
-            console.log(itemCartLogArr)
             //次回レンタル可能な日付データを取得
             const canNextRentalDate = new Date(cartLogRes.data.searchCartLogs.items[0].createdAt)
             canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
@@ -143,11 +143,32 @@ export default class CartTab extends React.Component {
         this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
     }
 
+    toggleAlertModal = () => {
+        this.setState({ isRentalAlertVisible: !this.state.isRentalAlertVisible })
+    }
+
     render() {
+
         const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate } = this.state
         const nextCanRentalDate = '次回レンタル可能な日は' + (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日以降です'
+        const rentalAlertText = canRental ? 'カートに4つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日まで\nお待ちください'
         return(
             <View style={styles.container}>
+                <Modal isVisible={this.state.isRentalAlertVisible}>
+                    <View style={styles.modalContainerView}>
+                        <View style={styles.modalInnerView}>
+                            <Text style={styles.modalText}>{rentalAlertText}</Text>
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title='OK'
+                                    onPress={() => this.toggleAlertModal()}
+                                    buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <ScrollView style={styles.scrollView}>
                     <Text style={styles.titleText}>{canNextRental ? nextCanRentalDate : '現在レンタル可能です'}</Text>
                     <Text style={styles.titleText}>{isRental ? 'レンタル中のアイテム' : 'カート'}</Text>
@@ -191,9 +212,9 @@ export default class CartTab extends React.Component {
                     <View style={styles.rentalButtonView}>
                         <Button
                             title='レンタル手続きへ →'
-                            buttonStyle={[styles.rentalButtonStyle, { backgroundColor: isCartFilled ? 'white': 'rgba(255,255,255,0.5)' }]}
+                            buttonStyle={[styles.rentalButtonStyle, { backgroundColor: (isCartFilled && canRental) ? 'white': 'rgba(255,255,255,0.5)' }]}
                             titleStyle={styles.rentalTitleStyle}
-                            onPress={isCartFilled ? () => this.navigateConfirmPage() : () => null}
+                            onPress={(isCartFilled && canRental) ? () => this.navigateConfirmPage() : () => this.toggleAlertModal()}
                         />
                     </View>
                 }
@@ -275,5 +296,25 @@ const styles = StyleSheet.create({
         color: '#7389D9',
         fontSize: 16,
         fontWeight: 'bold'
+    },
+    modalContainerView: {
+        backgroundColor: 'white',
+        width: wp('70%'),
+        height: hp('30%'),
+        left: wp('10%'),
+        textAlign: 'center',
+        borderRadius: 15
+    },
+    modalInnerView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modalText: {
+        marginBottom: hp('2%'),
+        fontWeight: '500'
+    },
+    modalButtonView: {
+        marginTop: hp('2%')
     }
 })

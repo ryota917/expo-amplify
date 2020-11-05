@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
+import { Image, View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Image, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
@@ -51,8 +51,6 @@ export default class FavoriteItemDetail extends React.Component {
     fetchCartData = async () => {
         const cart = await API.graphql(graphqlOperation(gqlQueries.getCart, { id: this.state.currentUserEmail }))
         const isCartFilled = cart.data.getCart.itemCarts.items.length >= 4
-        console.log('isCartFilled')
-        console.log(isCartFilled)
         this.setState({ isCartFilled: isCartFilled })
     }
 

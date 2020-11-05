@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,　Image, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read

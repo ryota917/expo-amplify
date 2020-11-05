@@ -114,6 +114,7 @@ export default class ConfirmPage extends React.Component {
     changeUserStatus = async () => {
         await API.graphql(graphqlOperation(gqlMutations.updateUser, {
             input: {
+                id: this.state.currentUserEmail,
                 rental: true
             }
         }))

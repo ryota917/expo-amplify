@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Image, Button } from "react-native-elements";
+import { Image, View, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 export default class ItemDetail extends React.Component {

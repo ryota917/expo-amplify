@@ -1,5 +1,5 @@
 import axios from 'axios'
-const slackEndpointUrl = "https://hooks.slack.com/services/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";
+const slackEndpointUrl = "https://hooks.slack.com/services/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";
 
 const headers = {
   'Content-Type':'application/json'
