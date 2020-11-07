@@ -735,6 +735,13 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt

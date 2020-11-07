@@ -16,9 +16,14 @@ export default class FavoriteItemDetail extends React.Component {
             item: this.props.navigation.state.params.item,
             currentUserEmail: '',
             isFavorited: true,
+            //WAITINGのアイテムでなければカートに入れることができない
             isCarted: false,
+            //カート内がいっぱいであればカートに入れることはできない
             isCartFilled: false,
-            isCartModalVisible: false
+            isCartModalVisible: false,
+            isAlertModalVisible: false,
+            //ユーザーがレンタル中であればカートを使うことはできない
+            isRental: false
         }
     }
 
@@ -28,9 +33,13 @@ export default class FavoriteItemDetail extends React.Component {
 
     componentDidMount = async () => {
         await this.fetchCurrentUser()
-        this.setFavoritedOrCarted()
+        this.setCarted()
+        this.fetchCartData()
+        this.fetchIsRental()
         this.props.navigation.addListener('didFocus', async () => {
+            this.setCarted()
             this.fetchCartData()
+            this.fetchIsRental()
         })
     }
 
@@ -40,7 +49,7 @@ export default class FavoriteItemDetail extends React.Component {
         this.setState({ currentUserEmail: currentUserEmail })
     }
 
-    setFavoritedOrCarted = () => {
+    setCarted = () => {
         const isCarted = this.props.navigation.state.params.item.status !== 'WAITING'
         this.setState({
             isCarted: isCarted
@@ -66,6 +75,13 @@ export default class FavoriteItemDetail extends React.Component {
                 userId: currentUserEmail
             }
         }))
+    }
+
+    //ユーザーがレンタル中かどうかを確認
+    fetchIsRental = async () => {
+        const user = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: this.state.currentUserEmail }))
+        const isRental = user.data.getUser.rental
+        this.setState({ isRental: isRental })
     }
 
     //お気に入りから削除
@@ -119,10 +135,18 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     render() {
-        const { item, isFavorited, isCarted, isCartFilled } = this.state
+        const { item, isFavorited, isCarted, isCartFilled, isRental } = this.state
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
             <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
         )
+        let alertText = ''
+        if(isRental) {
+            alertText = 'レンタル中のアイテムを返却すると\nカートにアイテムを入れることが\nできるようになります'
+        } else if(isCarted) {
+            alertText = 'このアイテムはレンタル中です'
+        } else if(isCartFilled) {
+            alertText = 'カートがいっぱいです'
+        }
         return(
             <View style={styles.container}>
                 <Modal isVisible={this.state.isCartModalVisible}>
@@ -144,6 +168,19 @@ export default class FavoriteItemDetail extends React.Component {
                                     onPress={() => this.navigateCartTab()}
                                 />
                             </View>
+                        </View>
+                    </View>
+                </Modal>
+                <Modal isVisible={this.state.isAlertModalVisible}>
+                    <View style={styles.modalContainerView}>
+                        <View style={styles.modalInnerView}>
+                            <Text style={styles.modalText}>{alertText}</Text>
+                                <Button
+                                    title='OK'
+                                    buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#7389D9', marginTop: hp('2%') }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                    onPress={() => this.toggleAlertModal()}
+                                />
                         </View>
                     </View>
                 </Modal>
@@ -219,8 +256,8 @@ export default class FavoriteItemDetail extends React.Component {
                             }
                             title="カートに入れる"
                             titleStyle={{ color: 'white' }}
-                            buttonStyle={{ backgroundColor: (isCarted || isCartFilled) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
-                            onPress={(isCarted || isCartFilled) ? () => null : () => this.saveItemToCart()}
+                            buttonStyle={{ backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
+                            onPress={(isCarted || isCartFilled || isRental) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
                         />
                     </View>
                 </View>

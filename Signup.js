@@ -251,7 +251,7 @@ export default class Signin extends React.Component {
                                         secureTextEntry={true}
                                     />
                                 </View>
-                                <View style={{ height: hp('25%') }}></View>
+                                <View style={{ height: hp('50%') }}></View>
                             </View>
                         </View>
                     </ScrollView>

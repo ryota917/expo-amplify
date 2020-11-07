@@ -38,7 +38,6 @@ export default class CartTab extends React.Component {
     componentDidMount = async () => {
         await this.fetchCurrentUser()
         this.fetchItemCart()
-        // this.fetchItemCartLog()
         this.fetchRentalData()
         //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
         this.props.navigation.addListener('didFocus', async () => {
@@ -66,13 +65,14 @@ export default class CartTab extends React.Component {
             }))
             const itemArray = []
             res.data.searchItemCarts.items.forEach(obj => itemArray.push(obj.item))
+            console.log(itemArray)
             const isCartFilled = res.data.searchItemCarts.items.length >= 4
             this.setState({
                 itemCart: itemArray,
                 isCartFilled: isCartFilled
             })
         } catch(e) {
-            console.log(e);
+            console.error(e);
         }
     }
 
@@ -93,9 +93,9 @@ export default class CartTab extends React.Component {
             }))
             //最新のカートログに入っているアイテムデータを取得
             const itemCartLogArr = []
-            cartLogRes.data.searchCartLogs.items[0].itemCartLogs.items.forEach(obj => itemCartLogArr.push(obj.item))
+            cartLogRes?.data?.searchCartLogs?.items[0]?.itemCartLogs?.items.forEach(obj => itemCartLogArr.push(obj.item))
             //次回レンタル可能な日付データを取得
-            const canNextRentalDate = new Date(cartLogRes.data.searchCartLogs.items[0].createdAt)
+            const canNextRentalDate = new Date(cartLogRes?.data?.searchCartLogs?.items[0]?.createdAt)
             canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
             const today = new Date()
             const canNextRental = canNextRentalDate.getTime() > new Date(today).getTime()
