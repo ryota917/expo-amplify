@@ -141,7 +141,7 @@ export default class ItemDetail extends React.Component {
     navigateCartTab = () => {
         this.toggleCartModal()
         //カートアイテム取得にラグがあるので1秒タイムアウトを取る
-        setTimeout(() => this.props.navigation.navigate('CartTab'), 1000)
+        setTimeout(() => this.props.navigation.navigate('CartTab'), 2000)
     }
 
     render() {
@@ -255,12 +255,19 @@ export default class ItemDetail extends React.Component {
                                 <Text style={styles.descriptionTitleText}>説明</Text>
                                 <Text style={styles.descriptionText}>{item.description}</Text>
                             </View>
-                            <View style={{ height: hp('10%') }}></View>
+                            <View style={{ height: hp('17%') }}></View>
                         </View>
                     </View>
                 </ScrollView>
-                <View style={styles.footerView}>
+                <View style={[styles.footerView, { bottom: isRental ? hp('12%') : hp('7%') }]}>
                     <View style={styles.footerInnerView}>
+                        {isRental ?
+                            <View style={styles.cartAlertView}>
+                                <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
+                                <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
+                            </View>
+                        :  null
+                        }
                         <Button
                             icon={
                                 <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
@@ -268,7 +275,7 @@ export default class ItemDetail extends React.Component {
                             title="カートに入れる"
                             titleStyle={{ color: 'white' }}
                             buttonStyle={{ backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
-                            onPress={(isCarted || isCartFilled || isRental) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
+                            onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
                         />
                     </View>
                 </View>
@@ -376,7 +383,6 @@ const styles = StyleSheet.create({
     },
     footerView: {
         height: hp('20%'),
-        bottom: hp('7%'),
     },
     footerInnerView: {
         flex: 1,
@@ -401,5 +407,15 @@ const styles = StyleSheet.create({
     },
     modalButtonView: {
         flexDirection: 'row'
+    },
+    cartAlertView: {
+        flexDirection: 'row',
+        borderColor: 'black',
+        borderWidth: 2
+    },
+    cartAlertText: {
+        padding: 2,
+        backgroundColor: 'white',
+        fontSize: 13
     }
 })

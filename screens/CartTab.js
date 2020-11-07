@@ -24,7 +24,8 @@ export default class CartTab extends React.Component {
             canNextRentalDate: '',
             //レンタル可能か(レンタル中でないかつ、一ヶ月以内にレンタルしていない)
             canRental: true,
-            isRentalAlertVisible: false
+            isRentalAlertVisible: false,
+            cartNum: 0
         }
     }
 
@@ -65,11 +66,12 @@ export default class CartTab extends React.Component {
             }))
             const itemArray = []
             res.data.searchItemCarts.items.forEach(obj => itemArray.push(obj.item))
-            console.log(itemArray)
+            const cartNum = res.data.searchItemCarts.items.length
             const isCartFilled = res.data.searchItemCarts.items.length >= 4
             this.setState({
                 itemCart: itemArray,
-                isCartFilled: isCartFilled
+                isCartFilled: isCartFilled,
+                cartNum: cartNum
             })
         } catch(e) {
             console.error(e);
@@ -97,13 +99,17 @@ export default class CartTab extends React.Component {
             //次回レンタル可能な日付データを取得
             const canNextRentalDate = new Date(cartLogRes?.data?.searchCartLogs?.items[0]?.createdAt)
             canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
+            console.log('canNextRentalDate ' + canNextRentalDate)
             const today = new Date()
-            const canNextRental = canNextRentalDate.getTime() > new Date(today).getTime()
+            const canNextRental = canNextRentalDate.getTime() < new Date(today).getTime()
+            console.log('canNextRental ' + canNextRental)
             //現在レンタル中かのデータを取得
             const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: this.state.currentUserEmail }))
             const isRental = userRes.data.getUser.rental
+            console.log('isRental ' + isRental)
             //レンタルが可能かどうか
-            const canRental = !canNextRental && !isRental
+            const canRental = canNextRental && !isRental
+            console.log('canRental ' + canRental)
             this.setState({
                 itemCartLog: itemCartLogArr,
                 canNextRental: canNextRental,
@@ -135,7 +141,8 @@ export default class CartTab extends React.Component {
         const isCartFilled = newArray.length >= 4
         this.setState({
             itemCart: newArray,
-            isCartFilled: isCartFilled
+            isCartFilled: isCartFilled,
+            cartNum: this.state.cartNum - 1
         })
     }
 
@@ -149,9 +156,9 @@ export default class CartTab extends React.Component {
 
     render() {
 
-        const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate } = this.state
-        const nextCanRentalDate = '次回レンタル可能な日は' + (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日以降です'
-        const rentalAlertText = canRental ? 'カートに4つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日まで\nお待ちください'
+        const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate, cartNum } = this.state
+        const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
+        const rentalAlertText = canRental ? 'カートに4つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
         return(
             <View style={styles.container}>
                 <Modal isVisible={this.state.isRentalAlertVisible}>
@@ -169,9 +176,17 @@ export default class CartTab extends React.Component {
                         </View>
                     </View>
                 </Modal>
+                {isRental ?
+                    <View style={styles.isRentalView}>
+                        <Image source={require('../assets/error.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginTop: wp('3%'), marginRight: wp('2%') }}/>
+                        <Text style={styles.isRentalText}>以下のアイテムを現在レンタル中です。</Text>
+                    </View>
+                :
+                    <View style={styles.isCartNumView}>
+                        <Text style={styles.isCartNumText}>カートにアイテムが{cartNum}点入っています。</Text>
+                    </View>
+                }
                 <ScrollView style={styles.scrollView}>
-                    <Text style={styles.titleText}>{canNextRental ? nextCanRentalDate : '現在レンタル可能です'}</Text>
-                    <Text style={styles.titleText}>{isRental ? 'レンタル中のアイテム' : 'カート'}</Text>
                     {isRental ?
                         this.state.itemCartLog.map((item, i) =>
                             <View style={styles.cardContainer} key={i}>
@@ -206,9 +221,16 @@ export default class CartTab extends React.Component {
                             </View>
                         )
                     }
-                    <View style={{ height: hp('34%') }}></View>
+                    <View style={{ height: (isRental && canNextRental) ? hp('20%') : hp('5%') }}></View>
                 </ScrollView>
-                {isRental ? null :
+                {isRental ?
+                    canNextRental ? null :
+                    <View style={{ height: hp('27%'), backgroundColor: '#7389D9' }}>
+                        <Text style={{ textAlign: 'center', marginTop: hp('3%'), color: 'white', fontSize: 15}}>次は<Text style={{ fontSize: 24 }}>{nextRentalText}</Text>からレンタルできます。</Text>
+                        {/* この注意書きを入れるかは相談 */}
+                        {/* <Text style={{ textAlign: 'center', marginTop: hp('1%'), color: 'white', fontSize: 16}}>レンタル可能です。{'\n'}(現在レンタル中のアイテムを返却すると{"\n"}レンタルが可能になります。)</Text> */}
+                    </View>
+                :
                     <View style={styles.rentalButtonView}>
                         <Button
                             title='レンタル手続きへ →'
@@ -228,10 +250,26 @@ const styles = StyleSheet.create({
         width: wp('100%'),
         height: hp('100%'),
     },
-    titleText: {
+    isRentalView: {
+        backgroundColor: 'white',
+        height: hp('6%'),
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    isRentalText: {
         textAlign: 'center',
+        color: '#7288D7',
         marginTop: hp('2%'),
-        fontWeight: 'bold'
+        fontWeight: '500'
+    },
+    isCartNumView: {
+        backgroundColor: 'white',
+        height: hp("6%"),
+        justifyContent: 'center'
+    },
+    isCartNumText: {
+        textAlign: 'center',
+        fontWeight: '500'
     },
     scrollView: {
     },
