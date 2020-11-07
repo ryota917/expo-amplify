@@ -101,6 +101,10 @@ export default class Signin extends React.Component {
 
     render() {
         const { gender, nameAlert, addressAlert, emailAlert, passwordAlert, signUpAlert } = this.state
+        let pickers = [];
+        for(let i = 130; i < 230; i++) {
+            pickers.push(<Picker.Item lable={i} value={i} key={i} />)
+        }
         if(this.props.authState !== 'signUp') {
             return null;
         } else {
@@ -221,18 +225,97 @@ export default class Signin extends React.Component {
                                         selectedValue={this.state.height}
                                         onValueChange={value => this.setState({ height: value })}
                                     >
-                                        <Picker.Item label='120' value='120' />
                                         <Picker.Item label='130' value='130' />
+                                        <Picker.Item label='131' value='131' />
+                                        <Picker.Item label='132' value='132' />
+                                        <Picker.Item label='133' value='133' />
+                                        <Picker.Item label='134' value='134' />
+                                        <Picker.Item label='135' value='135' />
+                                        <Picker.Item label='136' value='136' />
+                                        <Picker.Item label='137' value='137' />
+                                        <Picker.Item label='138' value='138' />
+                                        <Picker.Item label='139' value='139' />
                                         <Picker.Item label='140' value='140' />
+                                        <Picker.Item label='141' value='141' />
+                                        <Picker.Item label='142' value='142' />
+                                        <Picker.Item label='143' value='143' />
+                                        <Picker.Item label='144' value='144' />
+                                        <Picker.Item label='145' value='145' />
+                                        <Picker.Item label='146' value='146' />
+                                        <Picker.Item label='147' value='147' />
+                                        <Picker.Item label='148' value='148' />
+                                        <Picker.Item label='149' value='149' />
                                         <Picker.Item label='150' value='150' />
+                                        <Picker.Item label='151' value='151' />
+                                        <Picker.Item label='152' value='152' />
+                                        <Picker.Item label='153' value='153' />
+                                        <Picker.Item label='154' value='154' />
+                                        <Picker.Item label='155' value='155' />
+                                        <Picker.Item label='156' value='156' />
+                                        <Picker.Item label='157' value='157' />
+                                        <Picker.Item label='158' value='158' />
+                                        <Picker.Item label='159' value='159' />
                                         <Picker.Item label='160' value='160' />
+                                        <Picker.Item label='161' value='161' />
+                                        <Picker.Item label='162' value='162' />
+                                        <Picker.Item label='163' value='163' />
+                                        <Picker.Item label='164' value='164' />
+                                        <Picker.Item label='165' value='165' />
+                                        <Picker.Item label='166' value='166' />
+                                        <Picker.Item label='167' value='167' />
+                                        <Picker.Item label='168' value='168' />
+                                        <Picker.Item label='169' value='169' />
                                         <Picker.Item label='170' value='170' />
+                                        <Picker.Item label='171' value='171' />
+                                        <Picker.Item label='172' value='172' />
+                                        <Picker.Item label='173' value='173' />
+                                        <Picker.Item label='174' value='174' />
+                                        <Picker.Item label='175' value='175' />
+                                        <Picker.Item label='176' value='176' />
+                                        <Picker.Item label='177' value='177' />
+                                        <Picker.Item label='178' value='178' />
+                                        <Picker.Item label='179' value='179' />
                                         <Picker.Item label='180' value='180' />
+                                        <Picker.Item label='181' value='181' />
+                                        <Picker.Item label='182' value='182' />
+                                        <Picker.Item label='183' value='183' />
+                                        <Picker.Item label='184' value='184' />
+                                        <Picker.Item label='185' value='185' />
+                                        <Picker.Item label='186' value='186' />
+                                        <Picker.Item label='187' value='187' />
+                                        <Picker.Item label='188' value='188' />
+                                        <Picker.Item label='189' value='189' />
                                         <Picker.Item label='190' value='190' />
+                                        <Picker.Item label='191' value='191' />
+                                        <Picker.Item label='192' value='192' />
+                                        <Picker.Item label='193' value='193' />
+                                        <Picker.Item label='194' value='194' />
+                                        <Picker.Item label='195' value='195' />
+                                        <Picker.Item label='196' value='196' />
+                                        <Picker.Item label='197' value='197' />
+                                        <Picker.Item label='198' value='198' />
+                                        <Picker.Item label='199' value='199' />
                                         <Picker.Item label='200' value='200' />
+                                        <Picker.Item label='201' value='201' />
+                                        <Picker.Item label='202' value='202' />
+                                        <Picker.Item label='203' value='203' />
+                                        <Picker.Item label='204' value='204' />
+                                        <Picker.Item label='205' value='205' />
+                                        <Picker.Item label='206' value='206' />
+                                        <Picker.Item label='207' value='207' />
+                                        <Picker.Item label='208' value='208' />
+                                        <Picker.Item label='209' value='209' />
                                         <Picker.Item label='210' value='210' />
+                                        <Picker.Item label='211' value='211' />
+                                        <Picker.Item label='212' value='212' />
+                                        <Picker.Item label='213' value='213' />
+                                        <Picker.Item label='214' value='214' />
+                                        <Picker.Item label='215' value='215' />
+                                        <Picker.Item label='216' value='216' />
+                                        <Picker.Item label='217' value='217' />
+                                        <Picker.Item label='218' value='218' />
+                                        <Picker.Item label='219' value='219' />
                                         <Picker.Item label='220' value='220' />
-                                        <Picker.Item label='230' value='230' />
                                     </Picker>
                                 </View>
                                 <View style={styles.form}>
