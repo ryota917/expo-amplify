@@ -221,7 +221,7 @@ export default class CartTab extends React.Component {
                             </View>
                         )
                     }
-                    <View style={{ height: (isRental && canNextRental) ? hp('20%') : hp('5%') }}></View>
+                    <View style={{ height: isRental ? canNextRental ? hp('20%') : hp('5%') : hp('34%') }}></View>
                 </ScrollView>
                 {isRental ?
                     canNextRental ? null :

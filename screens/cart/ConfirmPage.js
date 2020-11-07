@@ -145,6 +145,9 @@ export default class ConfirmPage extends React.Component {
                         </View>
                     </View>
                 </Modal>
+                <View style={styles.confirmView}>
+                    <Text style={styles.confirmText}>これらのアイテムをお届けします。</Text>
+                </View>
                 <ScrollView style={styles.scrollView}>
                     {this.state.itemCart.map((item, i) =>
                         <View style={styles.cardContainer} key={i}>
@@ -208,16 +211,25 @@ const styles = StyleSheet.create({
     brand: {
         marginTop: -wp('26%'),
         color: '#7389D9',
-        fontSize: 12
+        fontSize: 12,
+        width: wp('40%'),
+        marginLeft: wp('30%'),
+        textAlign: 'left'
     },
     name: {
         marginTop: -wp('2%'),
-        fontSize: 16
+        fontSize: 16,
+        width: wp('50%'),
+        marginLeft: wp('30%'),
+        textAlign: 'left'
     },
     category: {
         marginTop: -wp('3%'),
         fontSize: 11,
-        color: '#828282'
+        color: '#828282',
+        width: wp('40%'),
+        textAlign: 'left',
+        marginLeft: wp('30%')
     },
     rank: {
         marginTop: -wp('1%'),
@@ -305,4 +317,13 @@ const styles = StyleSheet.create({
         marginLeft: wp('2%'),
         fontSize: 14
     },
+    confirmView: {
+        backgroundColor: 'white',
+        height: hp("6%"),
+        justifyContent: 'center'
+    },
+    confirmText: {
+        textAlign: 'center',
+        fontWeight: '500'
+    }
 })

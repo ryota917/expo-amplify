@@ -28,6 +28,7 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     static navigationOptions = ({navigation: { navigate }}) => ({
+        title: 'アイテム詳細',
         headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('FavoriteTab')}} style={{ paddingLeft: wp('3%')}} />
     });
 
