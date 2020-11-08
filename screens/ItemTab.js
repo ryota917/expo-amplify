@@ -34,10 +34,8 @@ export default class ItemTab extends React.Component {
     componentDidMount = async () => {
         this.initialLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
-        //FIX ME: addListenerが複数回レンダリングされている
         await this.props.navigation.addListener('didFocus', async () => {
-            //stateが更新されるのとawaitしないと前のstateで表示される
-            console.log(this.state.searchCondition)
+            //awaitしないと前のstateで表示される
             await this.updateSearchState()
             this.initialLoad()
         })
@@ -46,7 +44,6 @@ export default class ItemTab extends React.Component {
     //検索条件を更新
     updateSearchState = () => {
         //検索画面から検索条件を取得
-        console.log(this.props.navigation.state.params?.searchCondition)
         if(this.props.navigation.state.params?.searchCondition) {
             this.setState({ searchCondition: this.props.navigation.state.params?.searchCondition })
         }
