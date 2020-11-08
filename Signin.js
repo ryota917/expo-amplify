@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView, TouchableHighlightBase } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Signup from './Signup'
 import { Loading } from 'aws-amplify-react-native'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, ScrollView, Picker } from 'react-native'
+import { StyleSheet, Text, View, TextInput, ScrollView, Picker, Platform } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlMutations from './src/graphql/mutations'
 import { Input, Button, CheckBox } from 'react-native-elements'
@@ -189,15 +189,93 @@ export default class Signin extends React.Component {
                                         onChangeText={val => this.setState({ address: val })}
                                     />
                                 </View>
-                                <View style={styles.form}>
-                                    <Text style={styles.title}>生年月日</Text>
-                                    <DateTimePicker
-                                        style={{ width: wp('70%')}}
-                                        value={this.state.birthday}
-                                        mode={'date'}
-                                        onChange={(event, date) => this.setState({ birthday: date })}
-                                    />
-                                </View>
+                                {Platform.OS === 'android' ? null
+                                    // <View style={styles.form}>
+                                    //     <Text style={styles.title}>生年月日</Text>
+                                    //     <Picker>
+                                    //         <Picker.Item label='1990' value='1990' />
+                                    //         <Picker.Item label='1991' value='1991' />
+                                    //         <Picker.Item label='2001' value='1992' />
+                                    //         <Picker.Item label='1993' value='1993' />
+                                    //         <Picker.Item label='1994' value='1994' />
+                                    //         <Picker.Item label='1995' value='1995' />
+                                    //         <Picker.Item label='1996' value='1996' />
+                                    //         <Picker.Item label='1997' value='1997' />
+                                    //         <Picker.Item label='1998' value='1998' />
+                                    //         <Picker.Item label='1999' value='1999' />
+                                    //         <Picker.Item label='2000' value='2000' />
+                                    //         <Picker.Item label='2001' value='2001' />
+                                    //         <Picker.Item label='2002' value='2002' />
+                                    //         <Picker.Item label='2003' value='2003' />
+                                    //         <Picker.Item label='2004' value='2004' />
+                                    //         <Picker.Item label='2005' value='2005' />
+                                    //         <Picker.Item label='2006' value='2006' />
+                                    //         <Picker.Item label='2007' value='2007' />
+                                    //         <Picker.Item label='2008' value='2008' />
+                                    //         <Picker.Item label='2009' value='2009' />
+                                    //     </Picker>
+                                    //     <Text>年</Text>
+                                    //     <Picker>
+                                    //         <Picker.Item label='1' value='1' />
+                                    //         <Picker.Item label='2' value='2' />
+                                    //         <Picker.Item label='3' value='3' />
+                                    //         <Picker.Item label='4' value='4' />
+                                    //         <Picker.Item label='5' value='5' />
+                                    //         <Picker.Item label='6' value='6' />
+                                    //         <Picker.Item label='7' value='7' />
+                                    //         <Picker.Item label='8' value='8' />
+                                    //         <Picker.Item label='9' value='9' />
+                                    //         <Picker.Item label='10' value='10' />
+                                    //         <Picker.Item label='11' value='11' />
+                                    //         <Picker.Item label='12' value='12' />
+                                    //     </Picker>
+                                    //     <Text>月</Text>
+                                    //     <Picker>
+                                    //         <Picker.Item label='1' value='1' />
+                                    //         <Picker.Item label='2' value='2' />
+                                    //         <Picker.Item label='3' value='3' />
+                                    //         <Picker.Item label='4' value='4' />
+                                    //         <Picker.Item label='5' value='5' />
+                                    //         <Picker.Item label='6' value='6' />
+                                    //         <Picker.Item label='7' value='7' />
+                                    //         <Picker.Item label='8' value='8' />
+                                    //         <Picker.Item label='9' value='9' />
+                                    //         <Picker.Item label='10' value='10' />
+                                    //         <Picker.Item label='11' value='11' />
+                                    //         <Picker.Item label='12' value='12' />
+                                    //         <Picker.Item label='13' value='13' />
+                                    //         <Picker.Item label='14' value='14' />
+                                    //         <Picker.Item label='15' value='15' />
+                                    //         <Picker.Item label='16' value='16' />
+                                    //         <Picker.Item label='17' value='17' />
+                                    //         <Picker.Item label='18' value='18' />
+                                    //         <Picker.Item label='19' value='19' />
+                                    //         <Picker.Item label='20' value='20' />
+                                    //         <Picker.Item label='21' value='21' />
+                                    //         <Picker.Item label='22' value='22' />
+                                    //         <Picker.Item label='23' value='23' />
+                                    //         <Picker.Item label='24' value='24' />
+                                    //         <Picker.Item label='25' value='25' />
+                                    //         <Picker.Item label='26' value='26' />
+                                    //         <Picker.Item label='27' value='27' />
+                                    //         <Picker.Item label='28' value='28' />
+                                    //         <Picker.Item label='29' value='29' />
+                                    //         <Picker.Item label='30' value='30' />
+                                    //         <Picker.Item label='31' value='31' />
+                                    //     </Picker>
+                                    //     <Text>日</Text>
+                                    // </View>
+                                :
+                                    <View style={styles.form}>
+                                        <Text style={styles.title}>生年月日</Text>
+                                        <DateTimePicker
+                                            style={{ width: wp('70%')}}
+                                            value={this.state.birthday}
+                                            mode={'date'}
+                                            onChange={(event, date) => this.setState({ birthday: date })}
+                                        />
+                                    </View>
+                                }
                                 <View style={styles.form}>
                                     <Text style={styles.title}>電話番号</Text>
                                     <Input

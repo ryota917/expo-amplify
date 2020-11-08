@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View ,ScrollView, StyleSheet } from 'react-native'
+import { Text, View ,ScrollView, StyleSheet, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { Input, Button } from 'react-native-elements'
@@ -139,13 +139,16 @@ export default class ProfileConfirmPage extends React.Component {
                                 disabled={true}
                             />
                         </View>
-                        <View style={styles.formView}>
-                            <Text style={styles.titleText}>生年月日</Text>
-                            <Input
-                                defaultValue={birthdayText}
-                                disabled={true}
-                            />
-                        </View>
+                        {Platform.OS === 'android' ? null
+                        :
+                            <View style={styles.formView}>
+                                <Text style={styles.titleText}>生年月日</Text>
+                                <Input
+                                    defaultValue={birthdayText}
+                                    disabled={true}
+                                />
+                            </View>
+                        }
                         <View style={styles.formView}>
                             <Text style={styles.titleText}>電話番号</Text>
                             <Input

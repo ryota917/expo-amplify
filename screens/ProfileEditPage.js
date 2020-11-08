@@ -1,5 +1,5 @@
 import React from 'react'
-import { Picker, Text, View, ScrollView, StyleSheet } from 'react-native'
+import { Picker, Text, View, ScrollView, StyleSheet, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Input, Button } from 'react-native-elements'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
@@ -175,15 +175,18 @@ export default class ProfileEditPage extends React.Component {
                                 onChangeText={val => this.setState({ inputedAddress: val })}
                             />
                         </View>
-                        <View style={styles.formView}>
-                            <Text style={styles.titleText}>生年月日</Text>
-                            <DateTimePicker
-                                style={{ width: wp('70%')}}
-                                value={inputedBirthday}
-                                mode={'date'}
-                                onChange={(event, date) => this.setState({ inputedBirthday: date })}
-                            />
-                        </View>
+                        {Platform.OS === 'android' ? null
+                        :
+                            <View style={styles.formView}>
+                                <Text style={styles.titleText}>生年月日</Text>
+                                <DateTimePicker
+                                    style={{ width: wp('70%')}}
+                                    value={inputedBirthday}
+                                    mode={'date'}
+                                    onChange={(event, date) => this.setState({ inputedBirthday: date })}
+                                />
+                            </View>
+                        }
                         <View style={styles.formView}>
                             <Text style={styles.titleText}>電話番号</Text>
                             <Input
