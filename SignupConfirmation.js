@@ -50,7 +50,10 @@ export default class Signin extends React.Component {
         this.setState({ isResendConfimationModalVisile: !this.state.isResendConfimationModalVisile })
     }
 
-    toggleResendConfirmationModalWithConfirmed = () => {
+    //確認コードを再送する
+    toggleResendConfirmationModalWithConfirmed = async () => {
+        const { email } = this.props.authData
+        await Auth.resendSignUp(email)
         this.setState({
             isResendConfimationModalVisile: !this.state.isResendConfimationModalVisile,
             isConfirmPressed: true

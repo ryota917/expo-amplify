@@ -48,7 +48,7 @@ export default class Signin extends React.Component {
         } catch(err) {
             console.error(err)
             this.setState({ alert: true })
-            setTimeout(() => this.setState({ alert: false }), 1)
+            setTimeout(() => this.setState({ alert: false }), 3000)
         }
     }
 

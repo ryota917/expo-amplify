@@ -25,7 +25,8 @@ export default class Signin extends React.Component {
             addressAlert: false,
             emailAlert: false,
             passWordAlert: false,
-            signUpAlert: false
+            signUpAlert: false,
+            signUpAlertText: ''
         }
     }
 
@@ -94,13 +95,31 @@ export default class Signin extends React.Component {
             }
         } catch(error) {
             console.error(error)
+            console.log(error.name)
+            switch(error.name) {
+                case 'UsernameExistsException':
+                    this.setState({ signUpAlertText: 'このメールアドレスは既に使われています'})
+                    break;
+                case 'InvalidParameterException':
+                    if(error.message === 'Username should be an email.') {
+                        this.setState({ signUpAlertText: 'メールアドレスが適切に入力されていません'})
+                    } else {
+                        this.setState({ signUpAlertText: 'メールアドレスまたはパスワードが適切に入力されていません'})
+                    }
+                    break;
+                case 'InvalidPasswordException':
+                    this.setState({ signUpAlertText: 'パスワードが適切に入力されていません' })
+                default:
+                    this.setState({ signUpAlertText: '登録に失敗しました' })
+            }
             this.setState({ signUpAlert: true })
             this.refs._scrollView.scrollTo({ x: 5, y: 5, animated: false })
+            setTimeout(() => this.setState({ signUpAlert: false }), 3000)
         }
     }
 
     render() {
-        const { gender, nameAlert, addressAlert, emailAlert, passwordAlert, signUpAlert } = this.state
+        const { gender, nameAlert, addressAlert, emailAlert, passwordAlert, signUpAlert, signUpAlertText } = this.state
         let pickers = [];
         for(let i = 130; i < 230; i++) {
             pickers.push(<Picker.Item lable={i} value={i} key={i} />)
@@ -120,7 +139,7 @@ export default class Signin extends React.Component {
                                 {/* アラートView */}
                                 <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: signUpAlert ? 'block' : 'none' }}>
                                     <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
-                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>登録に失敗しました</Text>
+                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>{signUpAlertText}</Text>
                                 </View>
                                 <View style={styles.form}>
                                     <View style={{ flexDirection: 'row' }}>
