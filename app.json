@@ -25,7 +25,8 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "package": "com.sasatani_ryota.slug"
+      "package": "com.sasatani_ryota.slug",
+      "versionCode": 2,
     }
   }
 }
