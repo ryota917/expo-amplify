@@ -768,7 +768,6 @@ export const searchCartLogs = /* GraphQL */ `
       items {
         id
         userId
-        createdAt
         itemCartLogs {
           items {
             id
@@ -808,6 +807,7 @@ export const searchCartLogs = /* GraphQL */ `
             updatedAt
           }
         }
+        createdAt
         updatedAt
       }
       nextToken

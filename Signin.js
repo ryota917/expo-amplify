@@ -10,7 +10,6 @@ import * as gqlQueries from './src/graphql/queries' // read
 import * as gqlMutations from './src/graphql/mutations' // create, update, delete
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-
 export default class Signin extends React.Component {
     constructor(props) {
         super(props);
