@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Image, Text, View, ScrollView } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import Signup from './Signup'
 import { Loading } from 'aws-amplify-react-native'
@@ -100,7 +100,7 @@ export default class Signin extends React.Component {
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.formContainer}>
                             <View>
-                                <Text style={styles.loginText}>LOG IN</Text>
+                                <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
                                 {/* アラートView */}
                                 <View style={{ flexDirection: 'row', display: this.state.alert ? 'block' : 'none' }}>
                                     <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
@@ -143,8 +143,8 @@ export default class Signin extends React.Component {
                     <View style={styles.nextButton}>
                         <Button
                             title='next →'
-                            buttonStyle={{ borderRadius: 30, width: wp('30%'), height: hp('6%'), backgroundColor: 'white' }}
-                            titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
+                            buttonStyle={{ borderRadius: 30, width: wp('42%'), height: hp('8%'), backgroundColor: 'white' }}
+                            titleStyle={{ color: '#7389D9', fontSize: 18, fontWeight: 'bold' }}
                             onPress={(this.props.authState === 'signIn') ? this.onPressSignin : this.onPressConfirmSignin}
                         />
                     </View>
@@ -183,12 +183,17 @@ const styles = StyleSheet.create({
     },
     scrollView: {
     },
+    loginTextImage: {
+        marginTop: hp('10%'),
+        width: wp('35%'),
+        height: wp('8%'),
+        resizeMode: 'contain',
+    },
     formContainer: {
         width: wp('80%'),
         left: wp('10%'),
         height: wp('100%'),
         justifyContent: 'center',
-        marginTop: hp('3%')
     },
     loginText: {
         width: wp('40%'),
@@ -197,10 +202,11 @@ const styles = StyleSheet.create({
         marginBottom: hp('3%'),
     },
     form: {
-        marginTop: wp('4%')
+        marginTop: wp('6%')
     },
     formText: {
-        fontSize: 16
+        fontSize: 14,
+        color: 'silver',
     },
     toForgotPassworButton: {
         marginTop: -hp('2%')
