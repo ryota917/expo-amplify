@@ -1,13 +1,9 @@
 import React from 'react'
-import { StyleSheet, Image, Text, View, ScrollView } from 'react-native'
-import { API, graphqlOperation, Auth } from 'aws-amplify';
-import Signup from './Signup'
-import { Loading } from 'aws-amplify-react-native'
-import { Input, Button } from 'react-native-elements'
+import { TextInput, StyleSheet, Image, Text, View, ScrollView } from 'react-native'
+import { Auth } from 'aws-amplify';
+import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
-import * as gqlQueries from './src/graphql/queries' // read
-import * as gqlMutations from './src/graphql/mutations' // create, update, delete
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default class Signin extends React.Component {
@@ -102,31 +98,33 @@ export default class Signin extends React.Component {
                             <View>
                                 <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
                                 {/* アラートView */}
-                                <View style={{ flexDirection: 'row', display: this.state.alert ? 'block' : 'none' }}>
-                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
-                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>ログインに失敗しました</Text>
+                                <View style={styles.alertView}>
+                                    <Icon name='alert-circle' size={17} style={[styles.alertIcon, { display: this.state.alert ? 'block' : 'none' }]} />
+                                    <Text style={[styles.alertText, { display: this.state.alert ? 'flex' : 'none' }]}>ログインに失敗しました</Text>
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.formText}>メールアドレス</Text>
-                                    <Input
+                                    <TextInput
                                         onChangeText={val => this.setState({ inputedEmail: val })}
+                                        style={styles.textInput}
                                     />
                                 </View>
                                 <View style={styles.form}>
                                     <Text style={styles.formText}>パスワード</Text>
-                                    <Input
+                                    <TextInput
                                         onChangeText={val => this.setState({ inputedPassword: val })}
                                         secureTextEntry={true}
+                                        style={styles.textInput}
                                     />
                                 </View>
-                                <View style={styles.toForgotPassworButton}>
+                                <View style={styles.forgotPasswordView}>
                                     <Icon.Button
                                         name='alert-circle'
                                         backgroundColor='white'
-                                        iconStyle={{ color: 'silver' }}
+                                        iconStyle={styles.forgotPasswordIcon}
                                         onPress={() => this.toggleModal()}
                                     >
-                                        <Text style={{ color: 'silver', fontSize: 15, fontWeight: '400' }}>パスワードを忘れた方はこちら</Text>
+                                        <Text style={styles.forgotPasswordButton}>パスワードを忘れた方はこちら</Text>
                                     </Icon.Button>
                                 </View>
                                 <View style={styles.toSignupButton}>
@@ -134,7 +132,7 @@ export default class Signin extends React.Component {
                                         title='アカウントをお持ちでない方はこちら'
                                         onPress={this.navigateSignup}
                                         buttonStyle={{ backgroundColor: 'white'}}
-                                        titleStyle={{ color: '#7389D9', fontWeight: 'bold', fontSize: 17 }}
+                                        titleStyle={styles.signUpButtonStyle}
                                     />
                                 </View>
                             </View>
@@ -158,8 +156,6 @@ const styles = StyleSheet.create({
     container: {
         width: wp('100%'),
         height: hp('100%'),
-        top: hp('5%')
-        //justifyContent: 'center'
     },
     modalContainerView: {
         backgroundColor: 'white',
@@ -184,9 +180,9 @@ const styles = StyleSheet.create({
     scrollView: {
     },
     loginTextImage: {
-        marginTop: hp('10%'),
+        marginTop: hp('31%'),
         width: wp('35%'),
-        height: wp('8%'),
+        height: wp('14%'),
         resizeMode: 'contain',
     },
     formContainer: {
@@ -202,27 +198,64 @@ const styles = StyleSheet.create({
         marginBottom: hp('3%'),
     },
     form: {
-        marginTop: wp('6%')
+        marginTop: wp('12%'),
     },
     formText: {
         fontSize: 14,
         color: 'silver',
     },
-    toForgotPassworButton: {
-        marginTop: -hp('2%')
-    },
     toSignupButton: {
         marginTop: wp('8%')
     },
     nextButton: {
-        flex: 1,
         position: 'absolute',
-        bottom: hp('17%'),
-        right: wp('8%'),
+        bottom: hp('12%'),
+        right: wp('10%'),
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.3,
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.2,
         shadowRadius: 20,
         borderRadius: 30,
+    },
+    forgotPasswordView: {
+        marginTop: hp('1%'),
+        marginLeft: -wp('2.5%')
+    },
+    forgotPasswordButton: {
+        color: 'silver',
+        fontSize: 13,
+        fontWeight: '400',
+        marginTop: hp('0.3%')
+    },
+    forgotPasswordIcon: {
+        color: 'silver',
+        marginTop: hp('0.3%')
+    },
+    signUpButtonStyle: {
+        color: '#7389D9',
+        fontWeight: '800',
+        fontSize: 15,
+        letterSpacing: 1.2,
+        marginLeft: -wp('2%')
+    },
+    textInput: {
+        borderBottomColor: 'silver',
+        borderBottomWidth: 1.2,
+        marginTop: hp('3%'),
+        fontSize: 20
+    },
+    alertView: {
+        flexDirection: 'row',
+        height: hp('3%'),
+        top: hp('5%')
+    },
+    alertIcon: {
+        color: '#A60000'
+    },
+    alertText: {
+        marginLeft: wp('2%'),
+        marginTop: 1.2,
+        color: '#A60000',
+        fontWeight: '500'
     }
 })
