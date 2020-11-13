@@ -96,20 +96,23 @@ export default class CartTab extends React.Component {
             //最新のカートログに入っているアイテムデータを取得
             const itemCartLogArr = []
             cartLogRes?.data?.searchCartLogs?.items[0]?.itemCartLogs?.items.forEach(obj => itemCartLogArr.push(obj.item))
-            //次回レンタル可能な日付データを取得
-            const canNextRentalDate = new Date(cartLogRes?.data?.searchCartLogs?.items[0]?.createdAt)
-            canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
-            console.log('canNextRentalDate ' + canNextRentalDate)
-            const today = new Date()
-            const canNextRental = canNextRentalDate.getTime() < new Date(today).getTime()
-            console.log('canNextRental ' + canNextRental)
+            //次回レンタル可能な日付データを取得(CartLogが存在しない場合はレンタル可能判定にする)
+            let canNextRental = true
+            let canNextRentalDate = new Date()
+            if(cartLogRes.data.searchCartLogs.items.length) {
+                canNextRentalDate = new Date(cartLogRes?.data?.searchCartLogs?.items[0]?.createdAt)
+                canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
+                const today = new Date()
+                canNextRental = canNextRentalDate.getTime() < new Date(today).getTime()
+            } else {
+                canNextRental = true
+            }
             //現在レンタル中かのデータを取得
             const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: this.state.currentUserEmail }))
+            console.log(userRes)
             const isRental = userRes.data.getUser.rental
-            console.log('isRental ' + isRental)
             //レンタルが可能かどうか
             const canRental = canNextRental && !isRental
-            console.log('canRental ' + canRental)
             this.setState({
                 itemCartLog: itemCartLogArr,
                 canNextRental: canNextRental,
