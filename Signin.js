@@ -32,9 +32,14 @@ export default class Signin extends React.Component {
             console.log('successfully logined!')
             console.log(user)
         } catch(error) {
-            console.log('error signing in ', error)
-            this.setState({ alert: true })
-            setTimeout(() => this.setState({ alert: false }), 3000)
+            console.error(error)
+            if(error.code === 'UserNotConfirmedException') {
+                Auth.resendSignUp(inputedEmail)
+                this.props.onStateChange('confirmSignUp', { email: inputedEmail })
+            } else {
+                this.setState({ alert: true })
+                setTimeout(() => this.setState({ alert: false }), 3000)
+            }
         }
     }
 
