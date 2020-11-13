@@ -75,19 +75,19 @@ export default class Signin extends React.Component {
                     <Modal isVisible={this.state.isForgotPasswordModalVisible}>
                         <View style={styles.modalContainerView}>
                             <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>パスワードの再発行を行いますか？</Text>
+                                <Text style={styles.modalText}>パスワードの再発行を{'\n'}行いますか？</Text>
                                 <View style={styles.modalButtonView}>
                                     <Button
                                         title='戻る'
                                         onPress={this.toggleModal}
-                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#333333' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                        buttonStyle={styles.modalLeftButtonStyle}
+                                        titleStyle={styles.modalLeftTitleStyle}
                                     />
                                     <Button
                                         title='再発行へ'
                                         onPress={this.navigateForgotPassword}
-                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                        buttonStyle={styles.modalRightButtonStyle}
+                                        titleStyle={styles.modalRightTitleStyle}
                                     />
                                 </View>
                             </View>
@@ -138,11 +138,11 @@ export default class Signin extends React.Component {
                             </View>
                         </View>
                     </ScrollView>
-                    <View style={styles.nextButton}>
+                    <View style={styles.nextButtonView}>
                         <Button
                             title='next →'
-                            buttonStyle={{ borderRadius: 30, width: wp('42%'), height: hp('8%'), backgroundColor: 'white' }}
-                            titleStyle={{ color: '#7389D9', fontSize: 18, fontWeight: 'bold' }}
+                            buttonStyle={styles.nextButtonStyle}
+                            titleStyle={styles.nextTitleStyle}
                             onPress={(this.props.authState === 'signIn') ? this.onPressSignin : this.onPressConfirmSignin}
                         />
                     </View>
@@ -172,15 +172,36 @@ const styles = StyleSheet.create({
     },
     modalText: {
         marginBottom: hp('2%'),
-        fontWeight: '500'
+        fontWeight: '400',
+        textAlign: 'center'
     },
     modalButtonView: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: hp('2%')
     },
-    scrollView: {
+    modalLeftButtonStyle: {
+        borderRadius: 30,
+        width: wp('25%'),
+        height: hp('7%'),
+        backgroundColor: '#333333'
+    },
+    modalLeftTitleStyle: {
+        fontSize: 14,
+        color: 'white',
+    },
+    modalRightButtonStyle: {
+        marginLeft: wp('3%'),
+        borderRadius: 30,
+        width: wp('25%'),
+        height: hp('7%'),
+        backgroundColor: '#7389D9'
+    },
+    modalRightTitleStyle: {
+        fontSize: 14,
+        color: 'white'
     },
     loginTextImage: {
-        marginTop: hp('31%'),
+        marginTop: hp('27%'),
         width: wp('35%'),
         height: wp('14%'),
         resizeMode: 'contain',
@@ -207,7 +228,7 @@ const styles = StyleSheet.create({
     toSignupButton: {
         marginTop: wp('8%')
     },
-    nextButton: {
+    nextButtonView: {
         position: 'absolute',
         bottom: hp('12%'),
         right: wp('10%'),
@@ -216,6 +237,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 20,
         borderRadius: 30,
+    },
+    nextButtonStyle: {
+        borderRadius: 30,
+        width: wp('42%'),
+        height: hp('8%'),
+        backgroundColor: 'white'
+    },
+    nextTitleStyle: {
+        color: '#7389D9',
+        fontSize: 18,
+        fontWeight: 'bold'
     },
     forgotPasswordView: {
         marginTop: hp('1%'),
@@ -240,7 +272,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         borderBottomColor: 'silver',
-        borderBottomWidth: 1.2,
+        borderBottomWidth: 1.3,
         marginTop: hp('3%'),
         fontSize: 20
     },

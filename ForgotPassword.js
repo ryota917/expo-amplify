@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import { Auth, formContainer } from 'aws-amplify';
-import { Input, Button } from 'react-native-elements'
+import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { Auth } from 'aws-amplify';
+import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
@@ -37,8 +37,10 @@ export default class Signin extends React.Component {
             return(
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Icon name='angle-left' size={30} onPress={this.navigateSignin}/>
-                        <Text style={styles.headerText}>パスワードの再設定</Text>
+                        <View style={styles.headerInner}>
+                            <Icon name='angle-left' size={40} onPress={this.navigateSignin}/>
+                            <Text style={styles.headerText}>パスワードの再設定</Text>
+                        </View>
                     </View>
                     <View style={styles.innerContainer}>
                         <View>
@@ -47,16 +49,15 @@ export default class Signin extends React.Component {
                             </View>
                             <View style={styles.formView}>
                                 <Text style={styles.formText}>メールアドレス</Text>
-                                <Input
+                                <TextInput
                                     onChangeText={val => this.setState({ email: val })}
-                                    placeholder='半角英数字8文字以上'
+                                    style={styles.textInput}
                                 />
                             </View>
-                            <View>
+                            <View style={styles.sendButtonView}>
                                 <Button
                                     title='送信'
-                                    titleStyle={{}}
-                                    buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 30, height: hp('7%') }}
+                                    buttonStyle={styles.sendButtonStyle}
                                     onPress={this.onPressForgotPasswordButton}
                                 />
                             </View>
@@ -74,27 +75,49 @@ const styles = StyleSheet.create({
         height: hp('100%')
     },
     header: {
-        flexDirection: 'row',
         alignItems: 'center',
-        left: wp('7%'),
-        top: wp('3%'),
-        height: hp('8%')
+        top: hp('2%'),
+        height: hp('8%'),
+    },
+    headerInner: {
+        flexDirection: 'row',
+        width: wp('86%'),
+        height: hp('6%'),
+        marginTop: hp('1%'),
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('16%'),
+        marginLeft: wp('17%'),
+        marginTop: hp('2%'),
+        fontSize: 18,
     },
     innerContainer: {
         width: wp('70%'),
         height: hp('100%'),
-        left: wp('12%'),
+        left: wp('15%'),
         top: hp('4%')
     },
     alertText: {
-        marginBottom: hp('8%')
-    },
-    formView: {
+        lineHeight: 22,
+        marginTop: hp('2%'),
+        marginBottom: hp('10%'),
+        fontSize: 16,
     },
     formText: {
+        color: 'silver'
+    },
+    textInput: {
+        borderBottomColor: 'silver',
+        borderBottomWidth: 1.3,
+        marginTop: hp('3%'),
+        fontSize: 20
+    },
+    sendButtonView: {
+        marginTop: hp('10%'),
+    },
+    sendButtonStyle: {
+        backgroundColor: '#7389D9',
+        borderRadius: 30,
+        height: hp('8%'),
     }
 })
