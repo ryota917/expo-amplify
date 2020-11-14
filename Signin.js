@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     modalInnerView: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     nextButtonStyle: {
-        borderRadius: 30,
+        borderRadius: 50,
         width: wp('42%'),
         height: hp('8%'),
         backgroundColor: 'white'

@@ -38,7 +38,7 @@ export default class Signin extends React.Component {
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <View style={styles.headerInner}>
-                            <Icon name='angle-left' size={40} onPress={this.navigateSignin}/>
+                            <Icon name='angle-left' size={45} onPress={this.navigateSignin}/>
                             <Text style={styles.headerText}>パスワードの再設定</Text>
                         </View>
                     </View>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     },
     header: {
         alignItems: 'center',
-        top: hp('2%'),
+        top: hp('5%'),
         height: hp('8%'),
     },
     headerInner: {

@@ -274,7 +274,7 @@ export default class ItemDetail extends React.Component {
                             }
                             title="カートに入れる"
                             titleStyle={{ color: 'white' }}
-                            buttonStyle={{ backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
+                            buttonStyle={[styles.cartButtonStyle, { backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9' }]}
                             onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
                         />
                     </View>
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
         marginTop: hp('2%')
     },
     footerView: {
-        height: hp('20%'),
+        height: hp('21%'),
     },
     footerInnerView: {
         flex: 1,
@@ -417,5 +417,10 @@ const styles = StyleSheet.create({
         padding: 2,
         backgroundColor: 'white',
         fontSize: 13
+    },
+    cartButtonStyle: {
+        borderRadius: 40,
+        width: wp('80%'),
+        height: hp('7%')
     }
 })
