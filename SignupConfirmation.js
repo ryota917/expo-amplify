@@ -74,7 +74,7 @@ export default class Signin extends React.Component {
     }
 
     render() {
-        if(false) {
+        if(this.props.authState !== 'confirmSignUp') {
             return null;
         } else {
             return(

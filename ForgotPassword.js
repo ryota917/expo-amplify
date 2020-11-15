@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TextInput, SafeAreaView } from 'react-native'
 import { Auth } from 'aws-amplify';
 import { Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 
@@ -39,7 +39,7 @@ export default class Signin extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <View style={styles.headerInner}>
-                                <Icon name='angle-left' size={45} onPress={this.navigateSignin}/>
+                                <Icon name='chevron-left' size={55} onPress={this.navigateSignin}/>
                                 <Text style={styles.headerText}>パスワードの再設定</Text>
                             </View>
                         </View>
@@ -82,15 +82,15 @@ const styles = StyleSheet.create({
     },
     headerInner: {
         flexDirection: 'row',
+        marginLeft: -wp('5%'),
         width: wp('86%'),
         height: hp('6%'),
         marginTop: hp('2%')
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('17%'),
-        marginTop: hp('2%'),
-        fontSize: 18,
+        marginLeft: wp('10%'),
+        marginTop: hp('2.5%'),
     },
     innerContainer: {
         width: wp('70%'),

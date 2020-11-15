@@ -67,7 +67,7 @@ export default class Signin extends React.Component {
 
 
     render() {
-        if(true) {
+        if(this.props.authState !== 'signIn' && this.props.authState !== 'confirmSignIn') {
             return null;
         } else {
             return(
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     modalInnerView: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -5,7 +5,6 @@ import * as gqlMutations from './src/graphql/mutations'
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-// import DateTimePicker from '@react-native-community/datetimepicker'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 export default class Signin extends React.Component {
@@ -138,7 +137,7 @@ export default class Signin extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <View style={styles.headerInner}>
-                                <Icon name='chevron-left' size={45} onPress={this.navigateSignin} style={styles.backIcon}/>
+                                <Icon name='chevron-left' size={55} onPress={this.navigateSignin} />
                             </View>
                         </View>
                         <ScrollView ref={'_scrollView'} style={styles.scrollView}>
@@ -289,7 +288,7 @@ export default class Signin extends React.Component {
                                             <Text style={styles.alertText}>適切に入力されていません</Text>
                                         </View>
                                         <TextInput
-                                            placeholder='半角英数字8文字以上'
+                                            placeholder='半角英数字8桁以上'
                                             onChangeText={val => this.setState({ password: val })}
                                             style={styles.textInput}
                                             secureTextEntry={true}
@@ -325,12 +324,10 @@ const styles = StyleSheet.create({
     },
     headerInner: {
         flexDirection: 'row',
+        marginLeft: -wp('5%'),
         width: wp('86%'),
         height: hp('6%'),
         marginTop: hp('2%')
-    },
-    backIcon: {
-        left: -wp('4%'),
     },
     scrollView: {
         width: wp('100%'),
@@ -348,10 +345,10 @@ const styles = StyleSheet.create({
         marginBottom: hp('3%')
     },
     form: {
-        marginTop: hp('4%')
+        marginTop: hp('6%')
     },
     title: {
-        fontSize: 16,
+        fontSize: 14,
         marginBottom: hp('2%'),
     },
     checkbox: {
@@ -379,6 +376,7 @@ const styles = StyleSheet.create({
         width: wp('43%'),
         height: wp('8%'),
         resizeMode: 'contain',
+        marginBottom: hp('5%')
     },
     genderText: {
         marginRight: wp('9%')

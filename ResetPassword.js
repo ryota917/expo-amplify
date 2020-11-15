@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
-import { Auth, formContainer } from 'aws-amplify';
-import { Input, Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { StyleSheet, Text, TextInput, View, SafeAreaView } from 'react-native'
+import { Auth } from 'aws-amplify';
+import { Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 
@@ -35,9 +35,6 @@ export default class ResetPassword extends React.Component {
         }
     }
 
-    // onPressResendConfirmationmail = async () => {
-    // }
-
     render() {
         if(this.props.authState !== 'requireNewPassword') {
             return null;
@@ -46,33 +43,33 @@ export default class ResetPassword extends React.Component {
                 <SafeAreaView style={{ flex: 1 }}>
                     <View style={styles.container}>
                         <View style={styles.header}>
-                            <Icon name='angle-left' size={30} onPress={this.navigateSignin}/>
-                            <Text style={styles.headerText}>新しいパスワードの設定</Text>
+                            <View style={styles.headerInner}>
+                                <Icon name='chevron-left' size={55} onPress={this.navigateSignin} />
+                                <Text style={styles.headerText}>新しいパスワードの設定</Text>
+                            </View>
                         </View>
                         <View style={styles.innerContainer}>
                             <View>
                                 <View style={styles.formView}>
                                     <Text style={styles.formText}>確認コード</Text>
-                                    <Input
+                                    <TextInput
                                         onChangeText={val => this.setState({ verificationCode: val })}
+                                        style={styles.textInput}
                                     />
                                 </View>
-                                {/* <View> */}
-                                    {/* <Button */}
-                                        {/* onPress={this.onPressResendConfirmationmail} */}
-                                    {/* /> */}
-                                {/* </View> */}
                                 <View style={styles.formView}>
                                     <Text style={styles.formText}>新しいパスワード</Text>
-                                    <Input
+                                    <TextInput
+                                        placeholder='半角英数字8桁以上'
                                         onChangeText={val => this.setState({ newPassword: val })}
                                         secureTextEntry={true}
+                                        style={styles.textInput}
                                     />
                                 </View>
-                                <View>
+                                <View style={styles.confirmButtonView}>
                                     <Button
                                         title='設定'
-                                        buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 30, height: hp('7%') }}
+                                        buttonStyle={styles.confirmButtonStyle}
                                         onPress={this.onPressResetPassword}
                                     />
                                 </View>
@@ -91,25 +88,45 @@ const styles = StyleSheet.create({
         height: hp('100%')
     },
     header: {
-        flexDirection: 'row',
         alignItems: 'center',
-        left: wp('7%'),
-        top: wp('3%'),
-        height: hp('8%')
+        height: hp('9%')
+    },
+    headerInner: {
+        flexDirection: 'row',
+        marginLeft: -wp('5%'),
+        width: wp('86%'),
+        height: hp('6%'),
+        marginTop: hp('2%')
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('16%'),
+        marginLeft: wp('10%'),
+        marginTop: hp('2.5%'),
     },
     innerContainer: {
         width: wp('70%'),
         height: hp('100%'),
-        left: wp('12%'),
+        left: wp('15%'),
         top: hp('4%')
     },
     formView: {
-
+        marginTop: hp('7%')
     },
     formText: {
+    },
+    textInput: {
+        padding: wp('2%'),
+        borderBottomColor: 'silver',
+        borderBottomWidth: 1.3,
+        marginTop: hp('2%'),
+        fontSize: 20
+    },
+    confirmButtonView: {
+        marginTop: hp('10%')
+    },
+    confirmButtonStyle: {
+        backgroundColor: '#7389D9',
+        borderRadius: 50,
+        height: hp('8%')
     }
 })
