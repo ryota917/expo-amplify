@@ -390,10 +390,10 @@ const styles = StyleSheet.create({
     modalContainerView: {
         backgroundColor: 'white',
         width: wp('70%'),
-        height: hp('40%'),
+        height: hp('30%'),
         left: wp('10%'),
         textAlign: 'center',
-        borderRadius: 70
+        borderRadius: 30
     },
     modalInnerView: {
         flex: 1,

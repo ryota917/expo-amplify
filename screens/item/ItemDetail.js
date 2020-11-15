@@ -257,29 +257,29 @@ export default class ItemDetail extends React.Component {
                                     <Text style={styles.descriptionText}>{item.description}</Text>
                                 </View>
                             </View>
-                            <View style={styles.footerView }>
-                                <View style={styles.footerInnerView}>
-                                    {isRental ?
-                                        <View style={styles.cartAlertView}>
-                                            <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
-                                            <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
-                                        </View>
-                                    :  null
-                                    }
-                                    <Button
-                                        icon={
-                                            <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
-                                        }
-                                        title="カートに入れる"
-                                        titleStyle={{ color: 'white' }}
-                                        buttonStyle={[styles.cartButtonStyle, { backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9' }]}
-                                        onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
-                                    />
-                                </View>
-                            </View>
-                            <View style={{ height: hp('30%') }}></View>
+                            <View style={{ height: hp('40%') }}></View>
                         </View>
                     </ScrollView>
+                </View>
+                <View style={styles.footerView }>
+                    <View style={styles.footerInnerView}>
+                        {isRental ?
+                            <View style={styles.cartAlertView}>
+                                <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
+                                <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
+                            </View>
+                        :  null
+                        }
+                        <Button
+                            icon={
+                                <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
+                            }
+                            title="カートに入れる"
+                            titleStyle={{ color: 'white' }}
+                            buttonStyle={[styles.cartButtonStyle, { backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9' }]}
+                            onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
+                        />
+                    </View>
                 </View>
             </SafeAreaView>
         )
@@ -291,11 +291,6 @@ const styles = StyleSheet.create({
     container: {
         width: wp('100%'),
         height: hp('100%'),
-    },
-    scrollView: {
-        width: wp('100%'),
-        height: hp('100%'),
-        flex: 1
     },
     innerContainer: {
         width: wp('80%'),
@@ -384,9 +379,10 @@ const styles = StyleSheet.create({
         marginTop: hp('2%')
     },
     footerView: {
+        position: 'absolute',
+        bottom: hp('2%'),
         width: wp('100%'),
         height: hp('7%'),
-        marginTop: hp('9%')
     },
     footerInnerView: {
         alignItems: 'center',

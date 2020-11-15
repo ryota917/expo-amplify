@@ -344,14 +344,14 @@ class SearchConditionModal extends React.Component {
                         </View>
                         <View style={{ height: hp('25%') }}></View>
                     </ScrollView>
-                    <View style={styles.searchButtonView}>
-                        <Button
-                            title='検索する →'
-                            buttonStyle={styles.searchButtonStyle}
-                            titleStyle={styles.searchTitleStyle}
-                            onPress={this.searchWithCondition}
-                            />
-                    </View>
+                </View>
+                <View style={styles.searchButtonView}>
+                    <Button
+                        title='検索する →'
+                        buttonStyle={styles.searchButtonStyle}
+                        titleStyle={styles.searchTitleStyle}
+                        onPress={this.searchWithCondition}
+                        />
                 </View>
             </SafeAreaView>
         );
@@ -398,12 +398,12 @@ const styles = StyleSheet.create({
     },
     searchButtonView: {
         position: 'absolute',
-        right: wp('10%'),
-        bottom: hp('20%'),
+        right: wp('6%'),
+        bottom: hp('4%'),
         shadowColor: 'black',
         shadowOffset: { width: 10, height: 10 },
         shadowOpacity: 0.2,
-        shadowRadius: 20,
+        shadowRadius: 60,
     },
     searchButtonStyle: {
         borderRadius: 50,

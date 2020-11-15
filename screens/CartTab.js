@@ -225,26 +225,24 @@ export default class CartTab extends React.Component {
                                 </View>
                             )
                         }
-                        <View style={{ height: isRental ? canNextRental ? hp('20%') : hp('5%') : hp('34%') }}></View>
+                        <View style={{ height: hp('45%') }}></View>
                     </ScrollView>
-                    {isRental ?
-                        canNextRental ? null :
-                        <View style={{ height: hp('27%'), backgroundColor: '#7389D9' }}>
-                            <Text style={{ textAlign: 'center', marginTop: hp('3%'), color: 'white', fontSize: 15}}>次は<Text style={{ fontSize: 24 }}>{nextRentalText}</Text>からレンタルできます。</Text>
-                            {/* この注意書きを入れるかは相談 */}
-                            {/* <Text style={{ textAlign: 'center', marginTop: hp('1%'), color: 'white', fontSize: 16}}>レンタル可能です。{'\n'}(現在レンタル中のアイテムを返却すると{"\n"}レンタルが可能になります。)</Text> */}
-                        </View>
-                    :
-                        <View style={styles.rentalButtonView}>
-                            <Button
-                                title='レンタル手続きへ →'
-                                buttonStyle={[styles.rentalButtonStyle, { backgroundColor: (isCartFilled && canRental) ? 'white': 'rgba(255,255,255,0.5)' }]}
-                                titleStyle={styles.rentalTitleStyle}
-                                onPress={(isCartFilled && canRental) ? () => this.navigateConfirmPage() : () => this.toggleAlertModal()}
-                            />
-                        </View>
-                    }
                 </View>
+                {isRental ?
+                    canNextRental ? null :
+                    <View style={{ height: hp('27%'), backgroundColor: '#7389D9' }}>
+                        <Text style={{ textAlign: 'center', marginTop: hp('3%'), color: 'white', fontSize: 15}}>次は<Text style={{ fontSize: 24 }}>{nextRentalText}</Text>からレンタルできます。</Text>
+                    </View>
+                :
+                    <View style={styles.rentalButtonView}>
+                        <Button
+                            title='レンタル手続きへ →'
+                            buttonStyle={[styles.rentalButtonStyle, { backgroundColor: (isCartFilled && canRental) ? 'white': 'rgba(255,255,255,0.5)' }]}
+                            titleStyle={styles.rentalTitleStyle}
+                            onPress={(isCartFilled && canRental) ? () => this.navigateConfirmPage() : () => this.toggleAlertModal()}
+                        />
+                    </View>
+                }
             </SafeAreaView>
         )
     }
@@ -323,17 +321,16 @@ const styles = StyleSheet.create({
     rentalButtonView: {
         position: 'absolute',
         right: wp('6%'),
-        bottom: hp('20%'),
-        backgroundColor: 'transparent',
+        bottom: hp('4%'),
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.4,
-        shadowRadius: 20
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.2,
+        shadowRadius: 80
     },
     rentalButtonStyle: {
         borderRadius: 30,
         width: wp('50%'),
-        height: hp('7%'),
+        height: hp('8%'),
     },
     rentalTitleStyle: {
         color: '#7389D9',
