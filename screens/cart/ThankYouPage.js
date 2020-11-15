@@ -71,15 +71,13 @@ const styles = StyleSheet.create({
   },
   confirmMessageContainer: {},
   confirmMessage: {
-    // fontFamily: "Noto Sans JP",
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
     marginBottom: hp('3%')
   },
   thankYouMassageContainer: {},
   thankYouMessage: {
-    // fontFamily: "Noto Sans JP",
-    fontSize: 12,
+    fontSize: 16,
     textAlign: "center",
     marginBottom: hp('4%')
   },

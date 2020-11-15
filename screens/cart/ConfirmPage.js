@@ -181,16 +181,16 @@ export default class ConfirmPage extends React.Component {
                                 </Text>
                             </View>
                         </View>
-                        <View style={{ height: hp('34%') }}></View>
+                        <View style={{ height: hp('40%') }}></View>
                     </ScrollView>
-                    <View style={styles.rentalButtonView}>
-                        <Button
-                            title='レンタル確定 →'
-                            buttonStyle={styles.rentalButtonStyle}
-                            titleStyle={styles.rentalTitleStyle}
-                            onPress={() => this.toggleModal()}
-                        />
-                    </View>
+                </View>
+                <View style={styles.rentalButtonView}>
+                    <Button
+                        title='レンタル確定 →'
+                        buttonStyle={styles.rentalButtonStyle}
+                        titleStyle={styles.rentalTitleStyle}
+                        onPress={() => this.toggleModal()}
+                    />
                 </View>
             </SafeAreaView>
         )
@@ -249,17 +249,16 @@ const styles = StyleSheet.create({
     rentalButtonView: {
         position: 'absolute',
         right: wp('6%'),
-        bottom: hp('20%'),
-        backgroundColor: 'transparent',
+        bottom: hp('4%'),
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.4,
-        shadowRadius: 20
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.2,
+        shadowRadius: 80
     },
     rentalButtonStyle: {
         borderRadius: 30,
         width: wp('50%'),
-        height: hp('7%'),
+        height: hp('8%'),
         backgroundColor: 'white'
     },
     rentalTitleStyle: {
@@ -270,7 +269,7 @@ const styles = StyleSheet.create({
     modalContainerView: {
         backgroundColor: 'white',
         width: wp('70%'),
-        height: hp('35%'),
+        height: hp('30%'),
         left: wp('10%'),
         textAlign: 'center',
         borderRadius: 15
@@ -282,11 +281,12 @@ const styles = StyleSheet.create({
     },
     modalText: {
         marginBottom: hp('2%'),
-        fontWeight: '500',
+        fontWeight: '400',
         textAlign: 'center'
     },
     modalButtonView: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: hp('2%')
     },
     foodImage: {
         width: wp('20%'),

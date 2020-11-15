@@ -158,7 +158,6 @@ export default class CartTab extends React.Component {
     }
 
     render() {
-
         const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate, cartNum } = this.state
         const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
         const rentalAlertText = canRental ? 'カートに4つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
@@ -182,7 +181,7 @@ export default class CartTab extends React.Component {
                     </Modal>
                     {isRental ?
                         <View style={styles.isRentalView}>
-                            <Image source={require('../assets/error.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginTop: wp('3%'), marginRight: wp('2%') }}/>
+                            <Image source={require('../assets/error.png')} style={styles.errorImage}/>
                             <Text style={styles.isRentalText}>以下のアイテムを現在レンタル中です。</Text>
                         </View>
                     :
@@ -264,6 +263,13 @@ const styles = StyleSheet.create({
         color: '#7288D7',
         marginTop: hp('2%'),
         fontWeight: '500'
+    },
+    errorImage: {
+        width: wp('6%'),
+        height: wp('6%'),
+        resizeMode: 'contain',
+        marginTop: wp('3.4%'),
+        marginRight: wp('2%')
     },
     isCartNumView: {
         backgroundColor: 'white',
