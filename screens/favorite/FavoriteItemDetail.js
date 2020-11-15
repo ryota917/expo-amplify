@@ -155,107 +155,105 @@ export default class FavoriteItemDetail extends React.Component {
         }
         return(
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <Modal isVisible={this.state.isCartModalVisible}>
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                            <Image source={require('../../assets/taggu-cart.png')} style={{ width: wp('25%'), height: hp('25%'), resizeMode: 'contain' }} />
-                                <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
-                                <View style={styles.modalButtonView}>
-                                    <Button
-                                        title='戻る'
-                                        buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#333333' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                        onPress={() => this.toggleCartModal()}
-                                    />
-                                    <Button
-                                        title='カートを見る'
-                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('27%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                        onPress={() => this.navigateCartTab()}
-                                    />
-                                </View>
+                <Modal isVisible={this.state.isCartModalVisible}>
+                    <View style={styles.modalContainerView}>
+                        <View style={styles.modalInnerView}>
+                        <Image source={require('../../assets/taggu-cart.png')} style={{ width: wp('25%'), height: hp('25%'), resizeMode: 'contain' }} />
+                            <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title='戻る'
+                                    buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#333333' }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                    onPress={() => this.toggleCartModal()}
+                                />
+                                <Button
+                                    title='カートを見る'
+                                    buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('27%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                    onPress={() => this.navigateCartTab()}
+                                />
                             </View>
                         </View>
-                    </Modal>
-                    <Modal isVisible={this.state.isAlertModalVisible}>
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>{alertText}</Text>
-                                    <Button
-                                        title='OK'
-                                        buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#7389D9', marginTop: hp('2%') }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                        onPress={() => this.toggleAlertModal()}
+                    </View>
+                </Modal>
+                <Modal isVisible={this.state.isAlertModalVisible}>
+                    <View style={styles.modalContainerView}>
+                        <View style={styles.modalInnerView}>
+                            <Text style={styles.modalText}>{alertText}</Text>
+                                <Button
+                                    title='OK'
+                                    buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#7389D9', marginTop: hp('2%') }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                    onPress={() => this.toggleAlertModal()}
+                                />
+                        </View>
+                    </View>
+                </Modal>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.innerContainer}>
+                        <View style={styles.imagesView}>
+                            <Swiper
+                                style={styles.swiper}
+                                showButtons={true}
+                                activeDotColor='#7389D9'
+                                dotStyle={{ top: hp('7%')}}
+                                activeDotStyle={{ top: hp('7%')}}
+                            >
+                                {imagesDom}
+                            </Swiper>
+                        </View>
+                        <View style={styles.textView}>
+                            <View style={styles.flexRowView}>
+                                <View style={styles.titleView}>
+                                    {/* ブランド */}
+                                    <View style={styles.brandView}>
+                                        <Text style={styles.brandText}>{item.brand}</Text>
+                                    </View>
+                                    {/* アイテム名 */}
+                                    <View style={styles.nameView}>
+                                        <Text style={styles.nameText}>{item.name}</Text>
+                                    </View>
+                                    {/* カテゴリ名 */}
+                                    <View style={styles.categoryView}>
+                                        <Text style={styles.categoryText}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.iconView}>
+                                    {/* bookmark-minus-outline */}
+                                    <Icon
+                                        name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline'}
+                                        size={40}
+                                        onPress={isFavorited ? () => this.deleteItemFromFavorite() : () => this.saveItemToFavorite()}
                                     />
+                                </View>
+                            </View>
+                            {/* サイズ */}
+                            <View style={styles.sizeView}>
+                                <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
+                                <View style={styles.sizeTextView}>
+                                    <Text style={styles.sizeText}>①着丈 {item.dressLength}cm</Text>
+                                    <Text style={styles.sizeText}>②身幅 {item.dressWidth}cm</Text>
+                                    <Text style={styles.sizeText}>③袖幅 {item.sleeveLength}cm</Text>
+                                </View>
+                            </View>
+                            {/* 状態 */}
+                            <View style={styles.stateView}>
+                                <Text style={styles.stateTitleText}>状態</Text>
+                                <View style={styles.stateInnerView}>
+                                    <Text style={styles.stateRankText}>{item.rank}ランク</Text>
+                                    <Text style={styles.stateDescriptionText}>{item.stateDescription}</Text>
+                                </View>
+                            </View>
+                            {/* 説明 */}
+                            <View style={styles.descriptionView}>
+                                <Text style={styles.descriptionTitleText}>説明</Text>
+                                <Text style={styles.descriptionText}>{item.description}</Text>
                             </View>
                         </View>
-                    </Modal>
-                    <ScrollView style={styles.scrollView}>
-                        <View style={styles.innerContainer}>
-                            <View style={styles.imagesView}>
-                                <Swiper
-                                    style={styles.swiper}
-                                    showButtons={true}
-                                    activeDotColor='#7389D9'
-                                    dotStyle={{ top: hp('7%')}}
-                                    activeDotStyle={{ top: hp('7%')}}
-                                >
-                                    {imagesDom}
-                                </Swiper>
-                            </View>
-                            <View style={styles.textView}>
-                                <View style={styles.flexRowView}>
-                                    <View style={styles.titleView}>
-                                        {/* ブランド */}
-                                        <View style={styles.brandView}>
-                                            <Text style={styles.brandText}>{item.brand}</Text>
-                                        </View>
-                                        {/* アイテム名 */}
-                                        <View style={styles.nameView}>
-                                            <Text style={styles.nameText}>{item.name}</Text>
-                                        </View>
-                                        {/* カテゴリ名 */}
-                                        <View style={styles.categoryView}>
-                                            <Text style={styles.categoryText}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.iconView}>
-                                        {/* bookmark-minus-outline */}
-                                        <Icon
-                                            name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline'}
-                                            size={40}
-                                            onPress={isFavorited ? () => this.deleteItemFromFavorite() : () => this.saveItemToFavorite()}
-                                        />
-                                    </View>
-                                </View>
-                                {/* サイズ */}
-                                <View style={styles.sizeView}>
-                                    <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
-                                    <View style={styles.sizeTextView}>
-                                        <Text style={styles.sizeText}>①着丈 {item.dressLength}cm</Text>
-                                        <Text style={styles.sizeText}>②身幅 {item.dressWidth}cm</Text>
-                                        <Text style={styles.sizeText}>③袖幅 {item.sleeveLength}cm</Text>
-                                    </View>
-                                </View>
-                                {/* 状態 */}
-                                <View style={styles.stateView}>
-                                    <Text style={styles.stateTitleText}>状態</Text>
-                                    <View style={styles.stateInnerView}>
-                                        <Text style={styles.stateRankText}>{item.rank}ランク</Text>
-                                        <Text style={styles.stateDescriptionText}>{item.stateDescription}</Text>
-                                    </View>
-                                </View>
-                                {/* 説明 */}
-                                <View style={styles.descriptionView}>
-                                    <Text style={styles.descriptionTitleText}>説明</Text>
-                                    <Text style={styles.descriptionText}>{item.description}</Text>
-                                </View>
-                            </View>
-                            <View style={{ height: isRental ? hp('46%') : hp('40%') }}></View>
-                        </View>
-                    </ScrollView>
-                </View>
+                        <View style={{ height: isRental ? hp('20%') : hp('15%') }}></View>
+                    </View>
+                </ScrollView>
                 <View style={isRental ? styles.isRentalFooterView : styles.footerView }>
                     <View style={styles.footerInnerView}>
                         {isRental ?
