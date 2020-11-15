@@ -23,7 +23,7 @@ export default class ConfirmPage extends React.Component {
 
     static navigationOptions = ({ navigation: { navigate } }) => ({
         title: 'レンタルお手続き',
-        headerLeft:() => <Icon name="chevron-left" size={28} onPress={() => { navigate('CartTab') }} style={{ paddingLeft: wp('3%')}} />
+        headerLeft:() => <Icon name="chevron-left" size={42} onPress={() => { navigate('CartTab') }} style={{ paddingLeft: wp('3%')}} />
     })
 
     componentDidMount = async () => {

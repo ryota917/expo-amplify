@@ -33,7 +33,7 @@ export default class CartTab extends React.Component {
         headerTitle: () => (
             <Image source={require('../assets/pretapo-logo-header.png')} style={{ resizeMode: 'contain', width: wp('25%'), height: hp('10%') }}/>
         ),
-        headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
+        headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
     });
 
     componentDidMount = async () => {

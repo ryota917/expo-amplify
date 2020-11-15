@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, SafeAreaView } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
 import {
   withAuthenticator, VerifyContact } from 'aws-amplify-react-native';
@@ -167,7 +167,9 @@ class App extends React.Component {
   render() {
     const Layout = createAppContainer(Drawer);
       return (
-        <Layout />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Layout />
+        </SafeAreaView>
       )
     }
 }

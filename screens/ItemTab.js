@@ -26,8 +26,8 @@ export default class ItemTab extends React.Component {
                 headerTitle: () => (
                 <Image source={require('../assets/pretapo-logo-header.png')} style={{ resizeMode: 'contain', width: wp('25%'), height: hp('10%') }}/>
             ),
-            headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
-            headerRight:() => <Icon name='search' size={24} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>
+            headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+            headerRight:() => <Icon name='search' size={28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>
         }
     };
 

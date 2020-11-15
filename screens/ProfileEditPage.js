@@ -28,7 +28,7 @@ export default class ProfileEditPage extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         title: '登録情報の修正',
-        headerLeft: () => <Icon name="chevron-left" size={28} onPress={()=>{navigation.goBack()}} style={{ paddingLeft: wp('4%') }}/>,
+        headerLeft: () => <Icon name="chevron-left" size={42} onPress={()=>{navigation.goBack()}} style={{ paddingLeft: wp('4%') }}/>,
     });
 
     componentDidMount = async () => {

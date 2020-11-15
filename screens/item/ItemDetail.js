@@ -29,7 +29,7 @@ export default class ItemDetail extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'アイテム詳細',
-        headerLeft:() => <Icon name="chevron-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}} />
+        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}} />
     });
 
     componentDidMount = async () => {
@@ -256,7 +256,7 @@ export default class ItemDetail extends React.Component {
                                     <Text style={styles.descriptionTitleText}>説明</Text>
                                     <Text style={styles.descriptionText}>{item.description}</Text>
                                 </View>
-                                <View style={{ height: hp('17%') }}></View>
+                                <View style={{ height: hp('26%') }}></View>
                             </View>
                         </View>
                     </ScrollView>
@@ -289,16 +289,17 @@ export default class ItemDetail extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'yellow',
         width: wp('100%'),
-        height: hp('100%')
+        height: hp('80%'),
     },
     scrollView: {
         width: wp('100%'),
-        height: hp('100%'),
+        height: hp('70%'),
         flex: 1
     },
     innerContainer: {
-        width: wp('80%')
+        width: wp('80%'),
     },
     imagesView: {
         width: wp('100%'),
@@ -384,10 +385,12 @@ const styles = StyleSheet.create({
         marginTop: hp('2%')
     },
     footerView: {
-        height: hp('21%'),
+        backgroundColor: 'red',
+        width: wp('100%'),
+        height: hp('7%'),
+        marginBottom: -hp('5%')
     },
     footerInnerView: {
-        flex: 1,
         alignItems: 'center',
     },
     modalContainerView: {
@@ -421,8 +424,8 @@ const styles = StyleSheet.create({
         fontSize: 13
     },
     cartButtonStyle: {
-        borderRadius: 40,
+        borderRadius: 50,
         width: wp('80%'),
-        height: hp('7%')
+        height: hp('7%'),
     }
 })
