@@ -163,18 +163,18 @@ export default class ItemDetail extends React.Component {
                 <Modal isVisible={this.state.isCartModalVisible}>
                     <View style={styles.modalContainerView}>
                         <View style={styles.modalInnerView}>
-                        <Image source={require('../../assets/taggu-cart.png')} style={{ width: wp('25%'), height: hp('25%'), resizeMode: 'contain' }} />
+                        <Image source={require('../../assets/taggu-cart.png')} style={styles.tagguImage} />
                             <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
                             <View style={styles.modalButtonView}>
                                 <Button
                                     title='買い物を続ける'
-                                    buttonStyle={{ borderRadius: 25, width: wp('30%'), height: hp('6%'), backgroundColor: '#333333' }}
+                                    buttonStyle={{ borderRadius: 40, width: wp('30%'), height: hp('7%'), backgroundColor: '#333333' }}
                                     titleStyle={{ fontSize: 14, color: 'white' }}
                                     onPress={() => this.toggleCartModal()}
                                 />
                                 <Button
                                     title='カートを見る'
-                                    buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('27%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                    buttonStyle={{ marginLeft: wp('3%'), borderRadius: 40, width: wp('27%'), height: hp('7%'), backgroundColor: '#7389D9' }}
                                     titleStyle={{ fontSize: 14, color: 'white' }}
                                     onPress={() => this.navigateCartTab()}
                                 />
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
     modalContainerView: {
         backgroundColor: 'white',
         width: wp('70%'),
-        height: hp('30%'),
+        height: hp('35%'),
         left: wp('10%'),
         textAlign: 'center',
         borderRadius: 30
@@ -406,8 +406,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    tagguImage: {
+        width: wp('20%'),
+        height: hp('20%'),
+        resizeMode: 'contain'
+    },
     modalText: {
-        fontWeight: '500',
+        fontWeight: '400',
         marginBottom: hp('2%')
     },
     modalButtonView: {
