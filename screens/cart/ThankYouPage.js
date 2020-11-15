@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
+import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { Button } from "react-native-elements";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
@@ -15,37 +15,39 @@ export default class ItemDetail extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.mainImageContainer}>
-          <Image
-            style={styles.mainImage}
-            source={require("../../assets/thankYouTaggu.png")}
-          />
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.mainImageContainer}>
+            <Image
+              style={styles.mainImage}
+              source={require("../../assets/thankYouTaggu.png")}
+            />
+          </View>
+          <View style={styles.confirmMessageContainer}>
+            <Text style={styles.confirmMessage}>
+              {"レンタルの\nお申込みが完了しました!"}
+            </Text>
+          </View>
+          <View style={styles.thankYouMassageContainer}>
+            <Text style={styles.thankYouMessage}>
+              {"ご利用ありがとうございます！\nお届けまでお待ちください。"}
+            </Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="戻る"
+              titleStyle={{ color: "white", fontSize: 19 }}
+              buttonStyle={{
+                backgroundColor: "#7389D9",
+                borderRadius: 23,
+                width: wp("80%"),
+                height: hp("7%")
+              }}
+              onPress={() => this.props.navigation.navigate('CartTab')}
+            />
+          </View>
         </View>
-        <View style={styles.confirmMessageContainer}>
-          <Text style={styles.confirmMessage}>
-            {"レンタルの\nお申込みが完了しました!"}
-          </Text>
-        </View>
-        <View style={styles.thankYouMassageContainer}>
-          <Text style={styles.thankYouMessage}>
-            {"ご利用ありがとうございます！\nお届けまでお待ちください。"}
-          </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="戻る"
-            titleStyle={{ color: "white", fontSize: 19 }}
-            buttonStyle={{
-              backgroundColor: "#7389D9",
-              borderRadius: 23,
-              width: wp("80%"),
-              height: hp("7%")
-            }}
-            onPress={() => this.props.navigation.navigate('CartTab')}
-          />
-        </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

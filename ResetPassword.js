@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import { Auth, formContainer } from 'aws-amplify';
 import { Input, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -43,41 +43,43 @@ export default class ResetPassword extends React.Component {
             return null;
         } else {
             return(
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Icon name='angle-left' size={30} onPress={this.navigateSignin}/>
-                        <Text style={styles.headerText}>新しいパスワードの設定</Text>
-                    </View>
-                    <View style={styles.innerContainer}>
-                        <View>
-                            <View style={styles.formView}>
-                                <Text style={styles.formText}>確認コード</Text>
-                                <Input
-                                    onChangeText={val => this.setState({ verificationCode: val })}
-                                />
-                            </View>
-                            {/* <View> */}
-                                {/* <Button */}
-                                    {/* onPress={this.onPressResendConfirmationmail} */}
-                                {/* /> */}
-                            {/* </View> */}
-                            <View style={styles.formView}>
-                                <Text style={styles.formText}>新しいパスワード</Text>
-                                <Input
-                                    onChangeText={val => this.setState({ newPassword: val })}
-                                    secureTextEntry={true}
-                                />
-                            </View>
+                <SafeAreaView style={{ flex: 1 }}>
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <Icon name='angle-left' size={30} onPress={this.navigateSignin}/>
+                            <Text style={styles.headerText}>新しいパスワードの設定</Text>
+                        </View>
+                        <View style={styles.innerContainer}>
                             <View>
-                                <Button
-                                    title='設定'
-                                    buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 30, height: hp('7%') }}
-                                    onPress={this.onPressResetPassword}
-                                />
+                                <View style={styles.formView}>
+                                    <Text style={styles.formText}>確認コード</Text>
+                                    <Input
+                                        onChangeText={val => this.setState({ verificationCode: val })}
+                                    />
+                                </View>
+                                {/* <View> */}
+                                    {/* <Button */}
+                                        {/* onPress={this.onPressResendConfirmationmail} */}
+                                    {/* /> */}
+                                {/* </View> */}
+                                <View style={styles.formView}>
+                                    <Text style={styles.formText}>新しいパスワード</Text>
+                                    <Input
+                                        onChangeText={val => this.setState({ newPassword: val })}
+                                        secureTextEntry={true}
+                                    />
+                                </View>
+                                <View>
+                                    <Button
+                                        title='設定'
+                                        buttonStyle={{ backgroundColor: '#7389D9', borderRadius: 30, height: hp('7%') }}
+                                        onPress={this.onPressResetPassword}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
+                </SafeAreaView>
             )
         }
     }

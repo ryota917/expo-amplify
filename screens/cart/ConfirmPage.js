@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, Image } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
@@ -122,75 +122,77 @@ export default class ConfirmPage extends React.Component {
 
     render() {
         return(
-            <View style={styles.container}>
-                <Modal isVisible={this.state.isConfirmModalVisible}>
-                    <View style={styles.modalContainerView}>
-                        <View style={styles.modalInnerView}>
-                            <Text style={styles.modalText}>レンタルの申し込みを{"\n"}確定してよろしいですか？</Text>
-                            <View style={styles.modalButtonView}>
-                                <Button
-                                    title='戻る'
-                                    onPress={() => this.toggleModal()}
-                                    buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#333333' }}
-                                    titleStyle={{ fontSize: 14, color: 'white' }}
-                                />
-                                <Button
-                                    title='確定する'
-                                    onPress={() => this.onPressRental()}
-                                    buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                    titleStyle={{ fontSize: 14, color: 'white' }}
-                                />
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <Modal isVisible={this.state.isConfirmModalVisible}>
+                        <View style={styles.modalContainerView}>
+                            <View style={styles.modalInnerView}>
+                                <Text style={styles.modalText}>レンタルの申し込みを{"\n"}確定してよろしいですか？</Text>
+                                <View style={styles.modalButtonView}>
+                                    <Button
+                                        title='戻る'
+                                        onPress={() => this.toggleModal()}
+                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#333333' }}
+                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                    />
+                                    <Button
+                                        title='確定する'
+                                        onPress={() => this.onPressRental()}
+                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                    />
+                                </View>
+                                <Image source={require('../../assets/food.png')} style={styles.foodImage} />
                             </View>
-                            <Image source={require('../../assets/food.png')} style={styles.foodImage} />
                         </View>
+                    </Modal>
+                    <View style={styles.confirmView}>
+                        <Text style={styles.confirmText}>これらのアイテムをお届けします。</Text>
                     </View>
-                </Modal>
-                <View style={styles.confirmView}>
-                    <Text style={styles.confirmText}>これらのアイテムをお届けします。</Text>
-                </View>
-                <ScrollView style={styles.scrollView}>
-                    {this.state.itemCart.map((item, i) =>
-                        <View style={styles.cardContainer} key={i}>
-                            <Card wrapperStyle={{ height: wp('27%')}}>
-                                <Card.Image
-                                    source={{ uri: item.imageURLs[0] }}
-                                    style={styles.image}
-                                    onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                />
-                                <Card.Title style={styles.brand} >ブランド</Card.Title>
-                                <Card.Title style={styles.name} >{item.name}</Card.Title>
-                                <Card.Title style={styles.category} >アウター</Card.Title>
-                                <Card.Title style={styles.rank} >Sランク</Card.Title>
-                            </Card>
+                    <ScrollView style={styles.scrollView}>
+                        {this.state.itemCart.map((item, i) =>
+                            <View style={styles.cardContainer} key={i}>
+                                <Card wrapperStyle={{ height: wp('27%')}}>
+                                    <Card.Image
+                                        source={{ uri: item.imageURLs[0] }}
+                                        style={styles.image}
+                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                    />
+                                    <Card.Title style={styles.brand} >ブランド</Card.Title>
+                                    <Card.Title style={styles.name} >{item.name}</Card.Title>
+                                    <Card.Title style={styles.category} >アウター</Card.Title>
+                                    <Card.Title style={styles.rank} >Sランク</Card.Title>
+                                </Card>
+                            </View>
+                        )}
+                        <View style={styles.addressView}>
+                            <Text style={styles.addressTitleText}> お届け先</Text>
+                            <Text style={styles.addressText}>京都市左京区大久保西区プレタポルテ245</Text>
+                            <View style={styles.addressAlertView} >
+                                <Icon name='alert-circle' size={19} style={{ color: '#BCBCBC'}}/>
+                                <Text style={styles.addressAlertText}>
+                                    違う住所にお届けを希望の際は、プロフィール編集画面から登録された住所を更新してからもう一度手続きを行ってください。
+                                    <Button
+                                        title='プロフィール編集画面へ'
+                                        buttonStyle={{ backgroundColor: 'transparent' }}
+                                        titleStyle={{ color: '#BCBCBC', textDecorationLine: 'underline', fontSize: 14 }}
+                                        onPress={() => this.props.navigation.navigate('ProfileEditPage')}
+                                    />
+                                </Text>
+                            </View>
                         </View>
-                    )}
-                    <View style={styles.addressView}>
-                        <Text style={styles.addressTitleText}> お届け先</Text>
-                        <Text style={styles.addressText}>京都市左京区大久保西区プレタポルテ245</Text>
-                        <View style={styles.addressAlertView} >
-                            <Icon name='alert-circle' size={19} style={{ color: '#BCBCBC'}}/>
-                            <Text style={styles.addressAlertText}>
-                                違う住所にお届けを希望の際は、プロフィール編集画面から登録された住所を更新してからもう一度手続きを行ってください。
-                                <Button
-                                    title='プロフィール編集画面へ'
-                                    buttonStyle={{ backgroundColor: 'transparent' }}
-                                    titleStyle={{ color: '#BCBCBC', textDecorationLine: 'underline', fontSize: 14 }}
-                                    onPress={() => this.props.navigation.navigate('ProfileEditPage')}
-                                />
-                            </Text>
-                        </View>
+                        <View style={{ height: hp('34%') }}></View>
+                    </ScrollView>
+                    <View style={styles.rentalButtonView}>
+                        <Button
+                            title='レンタル確定 →'
+                            buttonStyle={styles.rentalButtonStyle}
+                            titleStyle={styles.rentalTitleStyle}
+                            onPress={() => this.toggleModal()}
+                        />
                     </View>
-                    <View style={{ height: hp('34%') }}></View>
-                </ScrollView>
-                <View style={styles.rentalButtonView}>
-                    <Button
-                        title='レンタル確定 →'
-                        buttonStyle={styles.rentalButtonStyle}
-                        titleStyle={styles.rentalTitleStyle}
-                        onPress={() => this.toggleModal()}
-                    />
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput, StyleSheet, Image, Text, View, ScrollView } from 'react-native'
+import { TextInput, StyleSheet, Image, Text, View, ScrollView, SafeAreaView } from 'react-native'
 import { Auth } from 'aws-amplify';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
@@ -67,86 +67,88 @@ export default class Signin extends React.Component {
 
 
     render() {
-        if(this.props.authState !== 'signIn' && this.props.authState !== 'confirmSignIn') {
+        if(true) {
             return null;
         } else {
             return(
-                <View style={styles.container}>
-                    <Modal isVisible={this.state.isForgotPasswordModalVisible}>
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>パスワードの再発行を{'\n'}行いますか？</Text>
-                                <View style={styles.modalButtonView}>
-                                    <Button
-                                        title='戻る'
-                                        onPress={this.toggleModal}
-                                        buttonStyle={styles.modalLeftButtonStyle}
-                                        titleStyle={styles.modalLeftTitleStyle}
-                                    />
-                                    <Button
-                                        title='再発行へ'
-                                        onPress={this.navigateForgotPassword}
-                                        buttonStyle={styles.modalRightButtonStyle}
-                                        titleStyle={styles.modalRightTitleStyle}
-                                    />
+                    <SafeAreaView style={{ flex: 1 }}>
+                    <View style={styles.container}>
+                        <Modal isVisible={this.state.isForgotPasswordModalVisible}>
+                            <View style={styles.modalContainerView}>
+                                <View style={styles.modalInnerView}>
+                                    <Text style={styles.modalText}>パスワードの再発行を{'\n'}行いますか？</Text>
+                                    <View style={styles.modalButtonView}>
+                                        <Button
+                                            title='戻る'
+                                            onPress={this.toggleModal}
+                                            buttonStyle={styles.modalLeftButtonStyle}
+                                            titleStyle={styles.modalLeftTitleStyle}
+                                        />
+                                        <Button
+                                            title='再発行へ'
+                                            onPress={this.navigateForgotPassword}
+                                            buttonStyle={styles.modalRightButtonStyle}
+                                            titleStyle={styles.modalRightTitleStyle}
+                                        />
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </Modal>
-                    <ScrollView style={styles.scrollView}>
-                        <View style={styles.formContainer}>
-                            <View>
-                                <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
-                                {/* アラートView */}
-                                <View style={styles.alertView}>
-                                    <Icon name='alert-circle' size={17} style={[styles.alertIcon, { display: this.state.alert ? 'block' : 'none' }]} />
-                                    <Text style={[styles.alertText, { display: this.state.alert ? 'flex' : 'none' }]}>ログインに失敗しました</Text>
-                                </View>
-                                <View style={styles.form}>
-                                    <Text style={styles.formText}>メールアドレス</Text>
-                                    <TextInput
-                                        onChangeText={val => this.setState({ inputedEmail: val })}
-                                        style={styles.textInput}
-                                    />
-                                </View>
-                                <View style={styles.form}>
-                                    <Text style={styles.formText}>パスワード</Text>
-                                    <TextInput
-                                        onChangeText={val => this.setState({ inputedPassword: val })}
-                                        secureTextEntry={true}
-                                        style={styles.textInput}
-                                    />
-                                </View>
-                                <View style={styles.forgotPasswordView}>
-                                    <Icon.Button
-                                        name='alert-circle'
-                                        backgroundColor='white'
-                                        iconStyle={styles.forgotPasswordIcon}
-                                        onPress={() => this.toggleModal()}
-                                    >
-                                        <Text style={styles.forgotPasswordButton}>パスワードを忘れた方はこちら</Text>
-                                    </Icon.Button>
-                                </View>
-                                <View style={styles.toSignupButton}>
-                                    <Button
-                                        title='アカウントをお持ちでない方はこちら'
-                                        onPress={this.navigateSignup}
-                                        buttonStyle={{ backgroundColor: 'white'}}
-                                        titleStyle={styles.signUpButtonStyle}
-                                    />
+                        </Modal>
+                        <ScrollView style={styles.scrollView}>
+                            <View style={styles.formContainer}>
+                                <View>
+                                    <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
+                                    {/* アラートView */}
+                                    <View style={styles.alertView}>
+                                        <Icon name='alert-circle' size={17} style={[styles.alertIcon, { display: this.state.alert ? 'block' : 'none' }]} />
+                                        <Text style={[styles.alertText, { display: this.state.alert ? 'flex' : 'none' }]}>ログインに失敗しました</Text>
+                                    </View>
+                                    <View style={styles.form}>
+                                        <Text style={styles.formText}>メールアドレス</Text>
+                                        <TextInput
+                                            onChangeText={val => this.setState({ inputedEmail: val })}
+                                            style={styles.textInput}
+                                        />
+                                    </View>
+                                    <View style={styles.form}>
+                                        <Text style={styles.formText}>パスワード</Text>
+                                        <TextInput
+                                            onChangeText={val => this.setState({ inputedPassword: val })}
+                                            secureTextEntry={true}
+                                            style={styles.textInput}
+                                        />
+                                    </View>
+                                    <View style={styles.forgotPasswordView}>
+                                        <Icon.Button
+                                            name='alert-circle'
+                                            backgroundColor='white'
+                                            iconStyle={styles.forgotPasswordIcon}
+                                            onPress={() => this.toggleModal()}
+                                        >
+                                            <Text style={styles.forgotPasswordButton}>パスワードを忘れた方はこちら</Text>
+                                        </Icon.Button>
+                                    </View>
+                                    <View style={styles.toSignupButton}>
+                                        <Button
+                                            title='アカウントをお持ちでない方はこちら'
+                                            onPress={this.navigateSignup}
+                                            buttonStyle={{ backgroundColor: 'white'}}
+                                            titleStyle={styles.signUpButtonStyle}
+                                        />
+                                    </View>
                                 </View>
                             </View>
+                        </ScrollView>
+                        <View style={styles.nextButtonView}>
+                            <Button
+                                title='next →'
+                                buttonStyle={styles.nextButtonStyle}
+                                titleStyle={styles.nextTitleStyle}
+                                onPress={(this.props.authState === 'signIn') ? this.onPressSignin : this.onPressConfirmSignin}
+                            />
                         </View>
-                    </ScrollView>
-                    <View style={styles.nextButtonView}>
-                        <Button
-                            title='next →'
-                            buttonStyle={styles.nextButtonStyle}
-                            titleStyle={styles.nextTitleStyle}
-                            onPress={(this.props.authState === 'signIn') ? this.onPressSignin : this.onPressConfirmSignin}
-                        />
                     </View>
-                </View>
+                </SafeAreaView>
             )
         }
     }

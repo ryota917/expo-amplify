@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Image, Text, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
@@ -163,87 +163,89 @@ export default class CartTab extends React.Component {
         const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
         const rentalAlertText = canRental ? 'カートに4つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
         return(
-            <View style={styles.container}>
-                <Modal isVisible={this.state.isRentalAlertVisible}>
-                    <View style={styles.modalContainerView}>
-                        <View style={styles.modalInnerView}>
-                            <Text style={styles.modalText}>{rentalAlertText}</Text>
-                            <View style={styles.modalButtonView}>
-                                <Button
-                                    title='OK'
-                                    onPress={() => this.toggleAlertModal()}
-                                    buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                    titleStyle={{ fontSize: 14, color: 'white' }}
-                                />
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <Modal isVisible={this.state.isRentalAlertVisible}>
+                        <View style={styles.modalContainerView}>
+                            <View style={styles.modalInnerView}>
+                                <Text style={styles.modalText}>{rentalAlertText}</Text>
+                                <View style={styles.modalButtonView}>
+                                    <Button
+                                        title='OK'
+                                        onPress={() => this.toggleAlertModal()}
+                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                        titleStyle={{ fontSize: 14, color: 'white' }}
+                                    />
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
-                {isRental ?
-                    <View style={styles.isRentalView}>
-                        <Image source={require('../assets/error.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginTop: wp('3%'), marginRight: wp('2%') }}/>
-                        <Text style={styles.isRentalText}>以下のアイテムを現在レンタル中です。</Text>
-                    </View>
-                :
-                    <View style={styles.isCartNumView}>
-                        <Text style={styles.isCartNumText}>カートにアイテムが{cartNum}点入っています。</Text>
-                    </View>
-                }
-                <ScrollView style={styles.scrollView}>
+                    </Modal>
                     {isRental ?
-                        this.state.itemCartLog.map((item, i) =>
-                            <View style={styles.cardContainer} key={i}>
-                                <Card wrapperStyle={{ height: wp('27%')}}>
-                                    <Card.Image
-                                        source={{ uri: item.imageURLs[0] }}
-                                        style={styles.image}
-                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                    />
-                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
-                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
-                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
-                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
-                                </Card>
-                            </View>
-                        )
+                        <View style={styles.isRentalView}>
+                            <Image source={require('../assets/error.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginTop: wp('3%'), marginRight: wp('2%') }}/>
+                            <Text style={styles.isRentalText}>以下のアイテムを現在レンタル中です。</Text>
+                        </View>
                     :
-                        this.state.itemCart.map((item, i) =>
-                            <View style={styles.cardContainer} key={i}>
-                                <Card wrapperStyle={{ height: wp('27%')}}>
-                                    <Card.Image
-                                        source={{ uri: item.imageURLs[0] }}
-                                        style={styles.image}
-                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                    />
-                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
-                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
-                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
-                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
-                                    <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
-                                </Card>
-                            </View>
-                        )
+                        <View style={styles.isCartNumView}>
+                            <Text style={styles.isCartNumText}>カートにアイテムが{cartNum}点入っています。</Text>
+                        </View>
                     }
-                    <View style={{ height: isRental ? canNextRental ? hp('20%') : hp('5%') : hp('34%') }}></View>
-                </ScrollView>
-                {isRental ?
-                    canNextRental ? null :
-                    <View style={{ height: hp('27%'), backgroundColor: '#7389D9' }}>
-                        <Text style={{ textAlign: 'center', marginTop: hp('3%'), color: 'white', fontSize: 15}}>次は<Text style={{ fontSize: 24 }}>{nextRentalText}</Text>からレンタルできます。</Text>
-                        {/* この注意書きを入れるかは相談 */}
-                        {/* <Text style={{ textAlign: 'center', marginTop: hp('1%'), color: 'white', fontSize: 16}}>レンタル可能です。{'\n'}(現在レンタル中のアイテムを返却すると{"\n"}レンタルが可能になります。)</Text> */}
-                    </View>
-                :
-                    <View style={styles.rentalButtonView}>
-                        <Button
-                            title='レンタル手続きへ →'
-                            buttonStyle={[styles.rentalButtonStyle, { backgroundColor: (isCartFilled && canRental) ? 'white': 'rgba(255,255,255,0.5)' }]}
-                            titleStyle={styles.rentalTitleStyle}
-                            onPress={(isCartFilled && canRental) ? () => this.navigateConfirmPage() : () => this.toggleAlertModal()}
-                        />
-                    </View>
-                }
-            </View>
+                    <ScrollView style={styles.scrollView}>
+                        {isRental ?
+                            this.state.itemCartLog.map((item, i) =>
+                                <View style={styles.cardContainer} key={i}>
+                                    <Card wrapperStyle={{ height: wp('27%')}}>
+                                        <Card.Image
+                                            source={{ uri: item.imageURLs[0] }}
+                                            style={styles.image}
+                                            onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                        />
+                                        <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
+                                        <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                        <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                        <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
+                                    </Card>
+                                </View>
+                            )
+                        :
+                            this.state.itemCart.map((item, i) =>
+                                <View style={styles.cardContainer} key={i}>
+                                    <Card wrapperStyle={{ height: wp('27%')}}>
+                                        <Card.Image
+                                            source={{ uri: item.imageURLs[0] }}
+                                            style={styles.image}
+                                            onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                        />
+                                        <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
+                                        <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                        <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                        <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
+                                        <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
+                                    </Card>
+                                </View>
+                            )
+                        }
+                        <View style={{ height: isRental ? canNextRental ? hp('20%') : hp('5%') : hp('34%') }}></View>
+                    </ScrollView>
+                    {isRental ?
+                        canNextRental ? null :
+                        <View style={{ height: hp('27%'), backgroundColor: '#7389D9' }}>
+                            <Text style={{ textAlign: 'center', marginTop: hp('3%'), color: 'white', fontSize: 15}}>次は<Text style={{ fontSize: 24 }}>{nextRentalText}</Text>からレンタルできます。</Text>
+                            {/* この注意書きを入れるかは相談 */}
+                            {/* <Text style={{ textAlign: 'center', marginTop: hp('1%'), color: 'white', fontSize: 16}}>レンタル可能です。{'\n'}(現在レンタル中のアイテムを返却すると{"\n"}レンタルが可能になります。)</Text> */}
+                        </View>
+                    :
+                        <View style={styles.rentalButtonView}>
+                            <Button
+                                title='レンタル手続きへ →'
+                                buttonStyle={[styles.rentalButtonStyle, { backgroundColor: (isCartFilled && canRental) ? 'white': 'rgba(255,255,255,0.5)' }]}
+                                titleStyle={styles.rentalTitleStyle}
+                                onPress={(isCartFilled && canRental) ? () => this.navigateConfirmPage() : () => this.toggleAlertModal()}
+                            />
+                        </View>
+                    }
+                </View>
+            </SafeAreaView>
         )
     }
 }

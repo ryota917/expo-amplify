@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, SafeAreaView } from 'react-native'
 import { Auth, formContainer } from 'aws-amplify';
 import { Input, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -74,86 +74,90 @@ export default class Signin extends React.Component {
     }
 
     render() {
-        if(this.props.authState !== 'confirmSignUp') {
+        if(false) {
             return null;
         } else {
             return(
-                <View style={styles.container}>
-                    <Modal
-                        isVisible={this.state.isResendConfimationModalVisile}
-                        onModalHide={() => this.showSendedModal()}
-                        onBackdropPress={() => this.toggleResendConfirmationModal()}
-                    >
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>確認コードを再送信しますか？</Text>
-                                <View style={styles.modalButtonView}>
-                                    <Button
-                                        title='戻る'
-                                        onPress={() => this.toggleResendConfirmationModal()}
-                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#333333' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                    />
-                                    <Button
-                                        title='再送信'
-                                        onPress={() => this.toggleResendConfirmationModalWithConfirmed()}
-                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                    />
+                <SafeAreaView style={{ flex: 1 }}>
+                    <View style={styles.container}>
+                        <Modal
+                            isVisible={this.state.isResendConfimationModalVisile}
+                            onModalHide={() => this.showSendedModal()}
+                            onBackdropPress={() => this.toggleResendConfirmationModal()}
+                        >
+                            <View style={styles.modalContainerView}>
+                                <View style={styles.modalInnerView}>
+                                    <Text style={styles.modalText}>確認コードを再送信しますか？</Text>
+                                    <View style={styles.modalButtonView}>
+                                        <Button
+                                            title='戻る'
+                                            onPress={() => this.toggleResendConfirmationModal()}
+                                            buttonStyle={styles.modalLeftButtonStyle}
+                                            titleStyle={styles.modalLeftTitleStyle}
+                                        />
+                                        <Button
+                                            title='再送信'
+                                            onPress={() => this.toggleResendConfirmationModalWithConfirmed()}
+                                            buttonStyle={styles.modalRightButtonStyle}
+                                            titleStyle={styles.modalRightTitleStyle}
+                                        />
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </Modal>
-                    <Modal
-                        isVisible={this.state.isSendedModalVisible}
-                    >
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>確認コードを再送信しました。{"\n"}メールが届くまで数分程度{"\n"}かかる可能性があります。</Text>
-                                <View style={styles.modalButtonView}>
-                                    <Button
-                                        title='コード入力'
-                                        onPress={() => this.hideSendedModal()}
-                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                    />
+                        </Modal>
+                        <Modal
+                            isVisible={this.state.isSendedModalVisible}
+                        >
+                            <View style={styles.modalContainerView}>
+                                <View style={styles.modalInnerView}>
+                                    <Text style={styles.modalText}>確認コードを再送信しました。{"\n"}メールが届くまで数分程度{"\n"}かかる可能性があります。</Text>
+                                    <View style={styles.modalButtonView}>
+                                        <Button
+                                            title='コード入力'
+                                            onPress={() => this.hideSendedModal()}
+                                            buttonStyle={styles.modalRightButtonStyle}
+                                            titleStyle={styles.modalRightTitleStyle}
+                                        />
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </Modal>
-                    <View style={styles.header}>
-                        <Icon name='chevron-left' size={30} onPress={this.navigateSignIn}/>
-                        <Text style={styles.headerText}>確認コード入力</Text>
-                    </View>
-                    <View style={styles.innerContainer}>
-                        <View style={styles.formContainer}>
-                            {/* アラートView */}
-                            <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: this.state.confirmationAlert ? 'block' : 'none' }}>
-                                <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
-                                <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>認証に失敗しました</Text>
-                            </View>
-                            <View style={styles.formView}>
-                                <Input onChangeText={val => this.setState({ verificationCode: val })} />
+                        </Modal>
+                        <View style={styles.header}>
+                            <View style={styles.headerInner}>
+                                <Icon name='chevron-left' size={45} onPress={this.navigateSignIn}/>
+                                <Text style={styles.headerText}>確認コード入力</Text>
                             </View>
                         </View>
-                        <View style={styles.resendButtonView}>
+                        <View style={styles.innerContainer}>
+                            <View style={styles.formContainer}>
+                                {/* アラートView */}
+                                <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: this.state.confirmationAlert ? 'block' : 'none' }}>
+                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
+                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>認証に失敗しました</Text>
+                                </View>
+                                <View style={styles.formView}>
+                                    <Input onChangeText={val => this.setState({ verificationCode: val })} />
+                                </View>
+                            </View>
+                            <View style={styles.resendButtonView}>
+                                <Button
+                                    title='確認コードを再送する'
+                                    buttonStyle={{ backgroundColor: 'transparent', marginLeft: wp('30%'), marginTop: hp('3%') }}
+                                    titleStyle={{ color: 'silver', fontSize: 16, textDecorationLine: 'underline' }}
+                                    onPress={this.toggleResendConfirmationModal}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.confirmButtonView}>
                             <Button
-                                title='確認コードを再送する'
-                                buttonStyle={{ backgroundColor: 'transparent', marginLeft: wp('30%'), marginTop: hp('3%') }}
-                                titleStyle={{ color: 'silver', fontSize: 16, textDecorationLine: 'underline' }}
-                                onPress={this.toggleResendConfirmationModal}
+                                title='確認 →'
+                                buttonStyle={styles.confirmButtonStyle}
+                                titleStyle={styles.confirmTitleStyle}
+                                onPress={this.onPressConfirmationSignup}
                             />
                         </View>
                     </View>
-                    <View style={styles.confirmButtonView}>
-                        <Button
-                            title='確認 →'
-                            buttonStyle={{ borderRadius: 30, width: wp('30%'), height: hp('6%'), backgroundColor: 'white' }}
-                            titleStyle={{ color: '#7389D9', fontSize: 16, fontWeight: 'bold' }}
-                            onPress={this.onPressConfirmationSignup}
-                        />
-                    </View>
-                </View>
+                </SafeAreaView>
             )
         }
     }
@@ -165,15 +169,20 @@ const styles = StyleSheet.create({
         height: hp('100%')
     },
     header: {
-        flexDirection: 'row',
         alignItems: 'center',
-        left: wp('4%'),
-        top: wp('3%'),
-        height: hp('8%')
+        height: hp('9%'),
+    },
+    headerInner: {
+        flexDirection: 'row',
+        width: wp('86%'),
+        height: hp('6%'),
+        marginTop: hp('2%'),
     },
     headerText: {
         fontSize: 18,
-        marginLeft: wp('21%')
+        marginLeft: wp('17%'),
+        marginTop: hp('2%'),
+        fontSize: 18,
     },
     innerContainer: {
         width: wp('80%'),
@@ -189,15 +198,25 @@ const styles = StyleSheet.create({
 
     },
     confirmButtonView: {
-        flex: 1,
         position: 'absolute',
-        bottom: hp('10%'),
-        right: wp('8%'),
+        bottom: hp('12%'),
+        right: wp('10%'),
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.3,
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.2,
         shadowRadius: 20,
         borderRadius: 30,
+    },
+    confirmButtonStyle: {
+        borderRadius: 50,
+        width: wp('42%'),
+        height: hp('8%'),
+        backgroundColor: 'white'
+    },
+    confirmTitleStyle: {
+        color: '#7389D9',
+        fontSize: 18,
+        fontWeight: 'bold'
     },
     modalContainerView: {
         backgroundColor: 'white',
@@ -214,9 +233,31 @@ const styles = StyleSheet.create({
     },
     modalText: {
         marginBottom: hp('2%'),
-        fontWeight: '500'
+        fontWeight: '400'
     },
     modalButtonView: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: hp('2%')
+    },
+    modalLeftButtonStyle: {
+        borderRadius: 30,
+        width: wp('25%'),
+        height: hp('7%'),
+        backgroundColor: '#333333'
+    },
+    modalLeftTitleStyle: {
+        fontSize: 14,
+        color: 'white',
+    },
+    modalRightButtonStyle: {
+        marginLeft: wp('3%'),
+        borderRadius: 30,
+        width: wp('25%'),
+        height: hp('7%'),
+        backgroundColor: '#7389D9'
+    },
+    modalRightTitleStyle: {
+        fontSize: 14,
+        color: 'white'
     },
 })

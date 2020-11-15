@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -324,35 +324,37 @@ export default class ItemTab extends React.Component {
         const activityIndicator = <ActivityIndicator size='large' />
         const { canLoad, items, isLoading, isRefreshing } = this.state
         return (
-            <FlatList
-                refreshing={isRefreshing}
-                onRefresh={() => this.onRefresh()}
-                data={items}
-                numColumns={3}
-                columnWrapperStyle={styles.columnWrapperStyle}
-                renderItem={({ item }) => (
-                    <Card
-                        containerStyle={styles.cardContainer}
-                        wrapperStyle={styles.cardWrapper}
-                    >
-                        <Card.Image
-                            source={{ uri: item.imageURLs[0] }}
-                            style={styles.itemImage}
-                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                        />
-                        <Card.Title
-                            style={styles.itemText}
-                            onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+            <SafeAreaView style={{ flex: 1 }}>
+                <FlatList
+                    refreshing={isRefreshing}
+                    onRefresh={() => this.onRefresh()}
+                    data={items}
+                    numColumns={3}
+                    columnWrapperStyle={styles.columnWrapperStyle}
+                    renderItem={({ item }) => (
+                        <Card
+                            containerStyle={styles.cardContainer}
+                            wrapperStyle={styles.cardWrapper}
                         >
-                            {item.name}
-                        </Card.Title>
-                            </Card>
-                )}
-                onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : () => null}
-                onEndReachedThreshold={1}
-                ListFooterComponent={canLoad ? activityIndicator : null}
-                ListFooterComponentStyle={{ marginTop : hp('2%') }}
-            />
+                            <Card.Image
+                                source={{ uri: item.imageURLs[0] }}
+                                style={styles.itemImage}
+                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                            />
+                            <Card.Title
+                                style={styles.itemText}
+                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                            >
+                                {item.name}
+                            </Card.Title>
+                                </Card>
+                    )}
+                    onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : () => null}
+                    onEndReachedThreshold={1}
+                    ListFooterComponent={canLoad ? activityIndicator : null}
+                    ListFooterComponentStyle={{ marginTop : hp('2%') }}
+                />
+            </SafeAreaView>
         );
     }
 }
