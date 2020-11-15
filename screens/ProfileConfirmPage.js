@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     changeButtonStyle: {
-        borderRadius: 30,
+        borderRadius: 50,
         width: wp('46%'),
         height: hp('8%'),
         backgroundColor: 'white',
