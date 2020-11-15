@@ -1,8 +1,8 @@
 import React from 'react'
-import { Text, View ,ScrollView, StyleSheet, Platform, SafeAreaView } from 'react-native'
+import { Text, View ,ScrollView, StyleSheet, Platform, SafeAreaView, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import { Input, Button } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import Modal from 'react-native-modal'
@@ -77,7 +77,7 @@ export default class ProfileConfirmPage extends React.Component {
                                     <Button
                                         title='OK'
                                         onPress={() => this.toggleModal()}
-                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                        buttonStyle={{ borderRadius: 50, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
                                         titleStyle={{ fontSize: 14, color: 'white' }}
                                     />
                                 </View>
@@ -91,13 +91,15 @@ export default class ProfileConfirmPage extends React.Component {
                                     <Text style={styles.titleText}>名前</Text>
                                     <Text style={styles.mustText}>必須</Text>
                                 </View>
-                                <Input
-                                    defaultValue={user.name}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.name}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
-                                <Input
-                                    defaultValue={user.nameKana}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.nameKana}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
                             </View>
                             <View style={styles.formView}>
@@ -131,30 +133,34 @@ export default class ProfileConfirmPage extends React.Component {
                                     <Text style={styles.titleText}>お届け先</Text>
                                     <Text style={styles.mustText}>必須</Text>
                                 </View>
-                                <Input
-                                    defaultValue={user.postalCode}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.postalCode}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
-                                <Input
-                                    defaultValue={user.address}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.address}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
                             </View>
                             {Platform.OS === 'android' ? null
                             :
                                 <View style={styles.formView}>
                                     <Text style={styles.titleText}>生年月日</Text>
-                                    <Input
-                                        defaultValue={birthdayText}
-                                        disabled={true}
+                                    <TextInput
+                                        placeholder={birthdayText}
+                                        style={styles.textInput}
+                                        editable={false}
                                     />
                                 </View>
                             }
                             <View style={styles.formView}>
                                 <Text style={styles.titleText}>電話番号</Text>
-                                <Input
-                                    defaultValue={user.phoneNumber}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.phoneNumber}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
                             </View>
                             <View style={styles.formView}>
@@ -162,33 +168,25 @@ export default class ProfileConfirmPage extends React.Component {
                                     <Text style={styles.titleText}>メールアドレス</Text>
                                     <Text style={styles.mustText}>必須</Text>
                                 </View>
-                                <Input
-                                    defaultValue={user.id}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.id}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
                             </View>
                             <View style={styles.formView}>
                                 <Text style={styles.titleText}>身長</Text>
-                                <Input
-                                    defaultValue={user.height}
-                                    disabled={true}
+                                <TextInput
+                                    placeholder={user.height + 'cm'}
+                                    style={styles.textInput}
+                                    editable={false}
                                 />
                             </View>
-                            <View style={styles.changeButton}>
+                            <View style={styles.changeButtonView}>
                                 <Button
                                     title='情報を変更する →'
-                                    buttonStyle={{
-                                        borderRadius: 30,
-                                        width: wp('46%'),
-                                        height: hp('7%'),
-                                        backgroundColor: 'white',
-                                        marginLeft: wp('32%')
-                                    }}
-                                    titleStyle={{
-                                        color: '#7389D9',
-                                        fontSize: 16,
-                                        fontWeight: 'bold'
-                                    }}
+                                    buttonStyle={styles.changeButtonStyle}
+                                    titleStyle={styles.changeTitleStyle}
                                     onPress={() => this.navigateEditPage()}
                                 />
                             </View>
@@ -199,34 +197,26 @@ export default class ProfileConfirmPage extends React.Component {
                                 </View>
                             <View style={styles.formView}>
                                 <Text style={styles.titleText}>現在のパスワード</Text>
-                                <Input
-                                    onChangeText={val => this.setState({ nowPassword: val })}
+                                <TextInput
+                                    style={styles.textInput}
                                     secureTextEntry={true}
+                                    onChangeText={val => this.setState({ nowPassword: val })}
                                 />
                             </View>
                             <View style={styles.formView}>
                                 <Text style={styles.titleText}>変更後のパスワード</Text>
-                                <Input
+                                <TextInput
+                                    style={styles.textInput}
                                     placeholder='半角英数字8文字以上'
                                     onChangeText={val => this.setState({ newPassword: val })}
                                     secureTextEntry={true}
                                 />
                             </View>
-                            <View style={styles.changeButton}>
+                            <View style={styles.changeButtonView}>
                                 <Button
                                     title='パスワードを再設定する →'
-                                    buttonStyle={{
-                                        borderRadius: 30,
-                                        width: wp('62%'),
-                                        height: hp('7%'),
-                                        backgroundColor: 'white',
-                                        marginLeft: wp('20%'),
-                                    }}
-                                    titleStyle={{
-                                        color: '#7389D9',
-                                        fontSize: 16,
-                                        fontWeight: 'bold'
-                                    }}
+                                    buttonStyle={styles.resetPasswordButtonStyle}
+                                    titleStyle={styles.resetPasswordButtonTitleStyle}
                                     onPress={() => this.onPressResetPassword()}
                                 />
                             </View>
@@ -267,13 +257,13 @@ const styles = StyleSheet.create({
         width: wp('9%'),
         marginLeft: wp('3%')
     },
-    changeButton: {
+    changeButtonView: {
+        marginTop: hp('6%'),
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.3,
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.2,
         shadowRadius: 20,
         borderRadius: 30,
-        marginTop: hp('2%'),
     },
     modalContainerView: {
         backgroundColor: 'white',
@@ -281,7 +271,7 @@ const styles = StyleSheet.create({
         height: hp('30%'),
         left: wp('10%'),
         textAlign: 'center',
-        borderRadius: 15
+        borderRadius: 50
     },
     modalInnerView: {
         flex: 1,
@@ -294,6 +284,37 @@ const styles = StyleSheet.create({
     },
     modalButtonView: {
         marginTop: hp('2%')
+    },
+    textInput: {
+        padding: wp('2%'),
+        borderBottomColor: 'silver',
+        borderBottomWidth: 1.3,
+        marginTop: hp('2%'),
+        fontSize: 20
+    },
+    changeButtonStyle: {
+        borderRadius: 30,
+        width: wp('46%'),
+        height: hp('8%'),
+        backgroundColor: 'white',
+        marginLeft: wp('32%'),
+    },
+    changeTitleStyle: {
+        color: '#7389D9',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    resetPasswordButtonStyle: {
+        borderRadius: 50,
+        width: wp('62%'),
+        height: hp('8%'),
+        backgroundColor: 'white',
+        marginLeft: wp('20%'),
+    },
+    resetPasswordButtonTitleStyle: {
+        color: '#7389D9',
+        fontSize: 16,
+        fontWeight: 'bold'
     }
 })
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Image, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
@@ -23,7 +23,7 @@ class SearchConditionModal extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'さがす',
-        headerLeft:() => <Icon name="angle-left" size={28} onPress={()=>{navigate('ItemTab')}} style={{paddingLeft:20}}/>
+        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}}/>
     });
 
     searchWithCondition = () => {
@@ -106,7 +106,7 @@ class SearchConditionModal extends React.Component {
                             <View style={styles.conditionView}>
                                 <Button
                                     icon={
-                                        <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
+                                        <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
                                     }
                                     iconRight={true}
                                     title='カテゴリで検索'
@@ -141,7 +141,7 @@ class SearchConditionModal extends React.Component {
                             <View style={styles.conditionView}>
                                 <Button
                                     icon={
-                                        <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
+                                        <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
                                     }
                                     iconRight={true}
                                     title='色で検索'
@@ -239,7 +239,7 @@ class SearchConditionModal extends React.Component {
                             <View style={styles.conditionView}>
                                 <Button
                                     icon={
-                                        <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
+                                        <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
                                     }
                                     iconRight={true}
                                     title='サイズで検索'
@@ -301,7 +301,7 @@ class SearchConditionModal extends React.Component {
                             <View style={styles.conditionView}>
                                 <Button
                                     icon={
-                                        <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={14} style={{ color: 'grey' }}  />
+                                        <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
                                     }
                                     iconRight={true}
                                     title='ランクで検索'
@@ -373,10 +373,9 @@ const styles = StyleSheet.create({
         paddingBottom: hp('2%'),
     },
     dropDownButtonStyle: {
-        borderRadius: 30,
+        borderRadius: 40,
         width: wp('40%'),
         marginLeft: wp('10%'),
-        marginBottom: hp('1%'),
         backgroundColor: 'white',
         justifyContent: 'flex-start',
         backgroundColor: 'white'
@@ -401,16 +400,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: wp('10%'),
         bottom: hp('20%'),
-        backgroundColor: 'transparent',
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.4,
-        shadowRadius: 20
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.2,
+        shadowRadius: 20,
     },
     searchButtonStyle: {
-        borderRadius: 30,
+        borderRadius: 50,
         width: wp('40%'),
-        height: hp('6%'),
+        height: hp('8%'),
         backgroundColor: 'white',
     },
     searchTitleStyle: {

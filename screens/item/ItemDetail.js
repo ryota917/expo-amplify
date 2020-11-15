@@ -256,30 +256,30 @@ export default class ItemDetail extends React.Component {
                                     <Text style={styles.descriptionTitleText}>説明</Text>
                                     <Text style={styles.descriptionText}>{item.description}</Text>
                                 </View>
-                                <View style={{ height: hp('26%') }}></View>
                             </View>
+                            <View style={styles.footerView }>
+                                <View style={styles.footerInnerView}>
+                                    {isRental ?
+                                        <View style={styles.cartAlertView}>
+                                            <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
+                                            <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
+                                        </View>
+                                    :  null
+                                    }
+                                    <Button
+                                        icon={
+                                            <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
+                                        }
+                                        title="カートに入れる"
+                                        titleStyle={{ color: 'white' }}
+                                        buttonStyle={[styles.cartButtonStyle, { backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9' }]}
+                                        onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ height: hp('30%') }}></View>
                         </View>
                     </ScrollView>
-                    <View style={[styles.footerView, { bottom: isRental ? hp('12%') : hp('7%') }]}>
-                        <View style={styles.footerInnerView}>
-                            {isRental ?
-                                <View style={styles.cartAlertView}>
-                                    <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
-                                    <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
-                                </View>
-                            :  null
-                            }
-                            <Button
-                                icon={
-                                    <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
-                                }
-                                title="カートに入れる"
-                                titleStyle={{ color: 'white' }}
-                                buttonStyle={[styles.cartButtonStyle, { backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9' }]}
-                                onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
-                            />
-                        </View>
-                    </View>
                 </View>
             </SafeAreaView>
         )
@@ -289,13 +289,12 @@ export default class ItemDetail extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'yellow',
         width: wp('100%'),
-        height: hp('80%'),
+        height: hp('100%'),
     },
     scrollView: {
         width: wp('100%'),
-        height: hp('70%'),
+        height: hp('100%'),
         flex: 1
     },
     innerContainer: {
@@ -385,10 +384,9 @@ const styles = StyleSheet.create({
         marginTop: hp('2%')
     },
     footerView: {
-        backgroundColor: 'red',
         width: wp('100%'),
         height: hp('7%'),
-        marginBottom: -hp('5%')
+        marginTop: hp('9%')
     },
     footerInnerView: {
         alignItems: 'center',
@@ -396,10 +394,10 @@ const styles = StyleSheet.create({
     modalContainerView: {
         backgroundColor: 'white',
         width: wp('70%'),
-        height: hp('40%'),
+        height: hp('30%'),
         left: wp('10%'),
         textAlign: 'center',
-        borderRadius: 15
+        borderRadius: 30
     },
     modalInnerView: {
         flex: 1,

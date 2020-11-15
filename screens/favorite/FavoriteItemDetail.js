@@ -251,30 +251,30 @@ export default class FavoriteItemDetail extends React.Component {
                                     <Text style={styles.descriptionTitleText}>説明</Text>
                                     <Text style={styles.descriptionText}>{item.description}</Text>
                                 </View>
-                                <View style={{ height: hp('17%') }}></View>
                             </View>
+                            <View style={styles.footerView}>
+                                <View style={styles.footerInnerView}>
+                                    {isRental ?
+                                        <View style={styles.cartAlertView}>
+                                            <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
+                                            <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
+                                        </View>
+                                    :  null
+                                    }
+                                    <Button
+                                        icon={
+                                            <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
+                                        }
+                                        title="カートに入れる"
+                                        titleStyle={{ color: 'white' }}
+                                        buttonStyle={{ backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 50, width: wp('80%'), height: hp('7%') }}
+                                        onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ height: hp('30%') }}></View>
                         </View>
                     </ScrollView>
-                    <View style={[styles.footerView, { bottom: isRental ? hp('12%') : hp('7%') }]}>
-                        <View style={styles.footerInnerView}>
-                            {isRental ?
-                                <View style={styles.cartAlertView}>
-                                    <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
-                                    <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
-                                </View>
-                            :  null
-                            }
-                            <Button
-                                icon={
-                                    <Icon name='cart' size={20} style={{ color: 'white', marginRight: wp('4%') }}  />
-                                }
-                                title="カートに入れる"
-                                titleStyle={{ color: 'white' }}
-                                buttonStyle={{ backgroundColor: (isCarted || isCartFilled || isRental) ? 'rgba(115,137,217, 0.65)' : '#7389D9', borderRadius: 23, width: wp('80%'), height: hp('7%') }}
-                                onPress={isRental ? () => null : (isCarted || isCartFilled) ? () => this.toggleAlertModal() : () => this.saveItemToCart()}
-                            />
-                        </View>
-                    </View>
                 </View>
             </SafeAreaView>
         )
@@ -379,8 +379,9 @@ const styles = StyleSheet.create({
         marginTop: hp('2%')
     },
     footerView: {
-        height: hp('20%'),
-        bottom: hp('7%'),
+        width: wp('100%'),
+        height: hp('7%'),
+        marginTop: hp('9%')
     },
     footerInnerView: {
         flex: 1,
@@ -392,7 +393,7 @@ const styles = StyleSheet.create({
         height: hp('40%'),
         left: wp('10%'),
         textAlign: 'center',
-        borderRadius: 15
+        borderRadius: 70
     },
     modalInnerView: {
         flex: 1,

@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
     },
     nextButtonStyle: {
-        borderRadius: 50,
+        borderRadius: 60,
         width: wp('42%'),
         height: hp('8%'),
         backgroundColor: 'white'
