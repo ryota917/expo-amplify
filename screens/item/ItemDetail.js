@@ -257,11 +257,11 @@ export default class ItemDetail extends React.Component {
                                     <Text style={styles.descriptionText}>{item.description}</Text>
                                 </View>
                             </View>
-                            <View style={{ height: hp('40%') }}></View>
+                            <View style={{ height: isRental ? hp('46%') : hp('40%') }}></View>
                         </View>
                     </ScrollView>
                 </View>
-                <View style={styles.footerView }>
+                <View style={isRental ? styles.isRentalFooterView : styles.footerView }>
                     <View style={styles.footerInnerView}>
                         {isRental ?
                             <View style={styles.cartAlertView}>
@@ -377,6 +377,12 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         marginTop: hp('2%')
+    },
+    isRentalFooterView: {
+        position: 'absolute',
+        bottom: hp('7.5%'),
+        width: wp('100%'),
+        height: hp('7%'),
     },
     footerView: {
         position: 'absolute',
