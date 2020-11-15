@@ -221,7 +221,9 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     nameView: {
-        marginTop: hp('0.3%')
+        width: wp('60%'),
+        marginTop: hp('1%'),
+        marginBottom: hp('0.5%')
     },
     nameText: {
         fontSize: 20

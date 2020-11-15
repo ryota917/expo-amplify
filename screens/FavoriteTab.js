@@ -139,15 +139,15 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 0,
         width: wp('33%'),
+        height: hp('27%')
     },
     itemImage: {
         width: wp('33%'),
-        height: hp('20%'),
+        height: hp('19%'),
     },
     itemText: {
         width: wp('32%'),
-        height: hp('5%'),
-        fontSize: 13,
-        marginTop: hp('1%')
+        fontSize: 12,
+        marginTop: hp('1.5%')
     }
 })

@@ -334,7 +334,6 @@ export default class ItemTab extends React.Component {
                     renderItem={({ item }) => (
                         <Card
                             containerStyle={styles.cardContainer}
-                            wrapperStyle={styles.cardWrapper}
                         >
                             <Card.Image
                                 source={{ uri: item.imageURLs[0] }}
@@ -367,15 +366,15 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 0,
         width: wp('33%'),
+        height: hp('27%')
     },
     itemImage: {
         width: wp('33%'),
-        height: hp('20%'),
+        height: hp('19%'),
     },
     itemText: {
         width: wp('32%'),
-        height: hp('5%'),
         fontSize: 12,
-        marginTop: hp('1%')
+        marginTop: hp('1.5%')
     }
 })
