@@ -21,6 +21,8 @@ type Item @model @searchable {
   itemCarts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
   itemCartLogs: [ItemCartLog] @connection(keyName: "byItem", fields: ["id"])
   favoriteUser: [ItemFavorite] @connection(keyName: "byItem", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type User @model {

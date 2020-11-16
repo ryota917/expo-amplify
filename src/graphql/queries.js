@@ -116,6 +116,21 @@ export const getUser = /* GraphQL */ `
       cart {
         id
         userId
+        user {
+          id
+          name
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
+          rental
+          cartId
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
         itemCarts {
@@ -735,13 +750,6 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         favoriteUser {
-          items {
-            id
-            itemId
-            userId
-            createdAt
-            updatedAt
-          }
           nextToken
         }
         createdAt
@@ -768,46 +776,25 @@ export const searchCartLogs = /* GraphQL */ `
       items {
         id
         userId
-        itemCartLogs {
-          items {
-            id
-            itemId
-            item {
-              id
-              name
-              description
-              stateDescription
-              imageURLs
-              status
-              season
-              bigCategory
-              smallCategory
-              color
-              dressLength
-              dressWidth
-              sleeveLength
-              size
-              brand
-              supplierName
-              material
-              rank
-              favoriteUser {
-                items {
-                  id
-                  itemId
-                  userId
-                  createdAt
-                  updatedAt
-                }
-                nextToken
-              }
-            }
-            cartLogId
-            createdAt
-            updatedAt
-          }
-        }
         createdAt
+        user {
+          id
+          name
+          nameKana
+          phoneNumber
+          address
+          postalCode
+          height
+          birthday
+          gender
+          rental
+          cartId
+          createdAt
+          updatedAt
+        }
+        itemCartLogs {
+          nextToken
+        }
         updatedAt
       }
       nextToken
@@ -851,16 +838,6 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
-          favoriteUser {
-            items {
-              id
-              itemId
-              userId
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
           createdAt
           updatedAt
         }
@@ -914,16 +891,6 @@ export const searchItemCartLogs = /* GraphQL */ `
           supplierName
           material
           rank
-          favoriteUser {
-            items {
-              id
-              itemId
-              userId
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
           createdAt
           updatedAt
         }

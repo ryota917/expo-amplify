@@ -103,7 +103,7 @@ export default class FavoriteItemDetail extends React.Component {
     render() {
         const { item, isFavorited, isCarted } = this.state
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
-            <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('100%') }}/>
+        <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
         )
         return(
             <SafeAreaView style={{ flex: 1 }}>
@@ -163,10 +163,10 @@ export default class FavoriteItemDetail extends React.Component {
                                 </View>
                             </View>
                             {/* 説明 */}
-                            <View style={styles.descriptionView}>
+                            {/* <View style={styles.descriptionView}>
                                 <Text style={styles.descriptionTitleText}>説明</Text>
                                 <Text style={styles.descriptionText}>{item.description}</Text>
-                            </View>
+                            </View> */}
                             <View style={{ height: hp('15%') }}></View>
                         </View>
                     </View>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     },
     imagesView: {
         width: wp('100%'),
-        height: wp('80%')
+        height: wp('133%')
     },
     swiper: {
     },
@@ -217,6 +217,8 @@ const styles = StyleSheet.create({
     brandView: {
     },
     brandText: {
+        width: wp('60%'),
+        marginTop: hp('2%'),
         color: '#7389D9',
         fontSize: 16
     },

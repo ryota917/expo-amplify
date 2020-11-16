@@ -114,8 +114,14 @@ export default class FavoriteTab extends React.Component {
                                 onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
                             />
                             <Card.Title
-                                style={styles.itemText}
-                                onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
+                                style={styles.brandText}
+                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                            >
+                                {item.brand}
+                            </Card.Title>
+                            <Card.Title
+                                style={styles.nameText}
+                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
                             >
                                 {item.name}
                             </Card.Title>
@@ -145,9 +151,21 @@ const styles = StyleSheet.create({
         width: wp('33%'),
         height: hp('19%'),
     },
-    itemText: {
-        width: wp('32%'),
+    brandText: {
+        color: '#7389D9',
+        marginTop: hp('0.5%'),
+        paddingLeft: wp('1%'),
+        paddingRight: wp('1%'),
+        textAlign: 'left',
+        width: wp('33%'),
+        fontSize: 10,
+    },
+    nameText: {
+        paddingLeft: wp('1%'),
+        paddingRight: wp('1%'),
+        textAlign: 'left',
+        marginTop: -hp('1%'),
+        width: wp('33%'),
         fontSize: 12,
-        marginTop: hp('1.5%')
     }
 })
