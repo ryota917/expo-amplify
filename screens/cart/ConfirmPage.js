@@ -132,13 +132,13 @@ export default class ConfirmPage extends React.Component {
                                     <Button
                                         title='戻る'
                                         onPress={() => this.toggleModal()}
-                                        buttonStyle={{ borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#333333' }}
+                                        buttonStyle={{ borderRadius: 40, width: wp('25%'), height: hp('7%'), backgroundColor: '#333333' }}
                                         titleStyle={{ fontSize: 14, color: 'white' }}
                                     />
                                     <Button
                                         title='確定する'
                                         onPress={() => this.onPressRental()}
-                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 25, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                        buttonStyle={{ marginLeft: wp('3%'), borderRadius: 40, width: wp('25%'), height: hp('7%'), backgroundColor: '#7389D9' }}
                                         titleStyle={{ fontSize: 14, color: 'white' }}
                                     />
                                 </View>
