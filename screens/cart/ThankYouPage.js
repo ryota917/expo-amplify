@@ -39,7 +39,7 @@ export default class ItemDetail extends React.Component {
               titleStyle={{ color: "white", fontSize: 19 }}
               buttonStyle={{
                 backgroundColor: "#7389D9",
-                borderRadius: 23,
+                borderRadius: 40,
                 width: wp("80%"),
                 height: hp("7%")
               }}
