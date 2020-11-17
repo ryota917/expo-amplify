@@ -195,6 +195,7 @@ export default class ProfileEditPage extends React.Component {
                                                 isVisible={isDatePickerVisible}
                                                 date={inputedBirthday}
                                                 mode="date"
+                                                isDardModeEnabled={false}
                                                 onConfirm={(value) => this.setState({
                                                     inputedBirthday: value,
                                                     isDatePickerVisible: false

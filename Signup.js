@@ -234,6 +234,7 @@ export default class Signin extends React.Component {
                                                 isVisible={isDatePickerVisible}
                                                 date={birthday}
                                                 mode="date"
+                                                isDardModeEnabled={false}
                                                 onConfirm={(value) => this.setState({
                                                     birthday: value,
                                                     isDatePickerVisible: false,
