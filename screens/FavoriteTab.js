@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 0,
         width: wp('33%'),
-        height: hp('27%')
+        height: wp('63%')
     },
     itemImage: {
         width: wp('33%'),
-        height: hp('19%'),
+        height: wp('44%'),
     },
     brandText: {
         color: '#7389D9',
