@@ -355,7 +355,7 @@ export default class ItemTab extends React.Component {
                         </Card>
                     )}
                     onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : () => null}
-                    onEndReachedThreshold={1}
+                    onEndReachedThreshold={0.5}
                     ListFooterComponent={canLoad ? activityIndicator : null}
                     ListFooterComponentStyle={{ marginTop : hp('2%') }}
                 />

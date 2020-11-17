@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, ScrollView, StyleSheet, Platform, SafeAreaView, TextInput } from 'react-native'
+import { Text, View, StyleSheet, Platform, SafeAreaView, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
@@ -7,6 +7,7 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -68,7 +69,7 @@ export default class ProfileEditPage extends React.Component {
             nameAlert: nameAlert,
             addressAlert: addressAlert
         })
-        if(nameAlert || addressAlert) this.refs._scrollView.scrollTo({ x: 5, y: 5, animated: false })
+        if(nameAlert || addressAlert) this.refs._scrollView.scrollToPosition(5, 5, false)
         if(this.state.inputedName && this.state.inputedNameKana && this.state.inputedAddress && this.state.inputedPostalCode) {
             await API.graphql(graphqlOperation(gqlMutations.updateUser, {
                 input: {
@@ -105,160 +106,159 @@ export default class ProfileEditPage extends React.Component {
         const birthdayText = inputedBirthday.getFullYear() + '年' + (inputedBirthday.getMonth() + 1) + '月' + inputedBirthday.getDate() + '日'
         return(
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <ScrollView ref={'_scrollView'} style={styles.scrollView}>
-                        <View style={styles.innerContainer}>
-                            <View style={styles.formView}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.titleText}>名前</Text>
-                                    <Text style={styles.mustText}>必須</Text>
-                                </View>
-                                {/* アラートView */}
-                                <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: nameAlert ? 'block' : 'none' }}>
-                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
-                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>適切に入力されていません</Text>
-                                </View>
-                                <TextInput
-                                    defaultValue={inputedName}
-                                    style={styles.textInput}
-                                    onChangeText={val => this.setState({ inputedName: val })}
-                                    placeholder='姓名(漢字)'
-                                />
-                                <TextInput
-                                    defaultValue={inputedNameKana}
-                                    style={styles.textInput}
-                                    onChangeText={val => this.setState({ inputedNameKana: val })}
-                                    placeholder='姓名(カナ)'
-                                />
+                <KeyboardAwareScrollView style={styles.scrollView} ref="_scrollView">
+                    <View style={styles.innerContainer}>
+                        <View style={styles.formView}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.titleText}>名前</Text>
+                                <Text style={styles.mustText}>必須</Text>
                             </View>
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>性別</Text>
-                                <View style={{ flexDirection: 'row' }}>
-                                <Icon.Button
-                                    name={inputedGender === 'male' ? 'check-circle' : 'checkbox-blank-circle-outline' }
-                                    onPress={() => this.onGenderCheck('male')}
-                                    backgroundColor='white'
-                                    iconStyle={{ color: '#7389D9' }}
-                                >
-                                    <Text style={styles.genderText}>男性</Text>
-                                </Icon.Button>
-                                <Icon.Button
-                                    name={inputedGender === 'female' ? 'check-circle' : 'checkbox-blank-circle-outline' }
-                                    onPress={() => this.onGenderCheck('female')}
-                                    backgroundColor='white'
-                                    iconStyle={{ color: '#7389D9' }}
-                                >
-                                    <Text style={styles.genderText}>女性</Text>
-                                </Icon.Button>
-                                <Icon.Button
-                                    name={inputedGender === 'other' ? 'check-circle' : 'checkbox-blank-circle-outline' }
-                                    onPress={() => this.onGenderCheck('other')}
-                                    backgroundColor='white'
-                                    iconStyle={{ color: '#7389D9' }}
-                                >
-                                    <Text style={styles.genderText}>その他</Text>
-                                </Icon.Button>
-                                </View>
+                            {/* アラートView */}
+                            <View style={styles.alertView}>
+                                <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: nameAlert ? 'block' : 'none' }} />
+                                <Text style={[styles.alertText, { display: nameAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                             </View>
-                            <View style={styles.formView}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.titleText}>お届け先</Text>
-                                    <Text style={styles.mustText}>必須</Text>
-                                </View>
-                                {/* アラートView */}
-                                <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: addressAlert ? 'block' : 'none' }}>
-                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
-                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>適切に入力されていません</Text>
-                                </View>
-                                <TextInput
-                                    style={styles.textInput}
-                                    defaultValue={inputedPostalCode}
-                                    onChangeText={val => this.setState({ inputedPostalCode: val })}
-                                />
-                                <TextInput
-                                    style={styles.textInput}
-                                    defaultValue={inputedAddress}
-                                    onChangeText={val => this.setState({ inputedAddress: val })}
-                                />
-                            </View>
-                            {Platform.OS === 'android' ? null
-                                    :
-                                        <View style={styles.formView}>
-                                            <Text style={styles.titleText}>生年月日</Text>
-                                            <Button
-                                                title={birthdayText}
-                                                buttonStyle={styles.selectBirthdayButton}
-                                                titleStyle={styles.selectBirthdayText}
-                                                onPress={() => this.setState({ isDatePickerVisible: true })}
-                                            />
-                                            <DateTimePickerModal
-                                                isVisible={isDatePickerVisible}
-                                                date={inputedBirthday}
-                                                mode="date"
-                                                isDardModeEnabled={false}
-                                                onConfirm={(value) => this.setState({
-                                                    inputedBirthday: value,
-                                                    isDatePickerVisible: false
-                                                })}
-                                                onCancel={() => this.setState({ isDatePickerVisible: false })}
-                                                headerTextIOS='生年月日を選択してください'
-                                                cancelTextIOS='戻る'
-                                                confirmTextIOS='決定'
-                                            />
-                                        </View>
-                                    }
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>電話番号</Text>
-                                <TextInput
-                                    placeholder='電話番号'
-                                    style={styles.textInput}
-                                    defaultValue={inputedPhoneNumber}
-                                    onChangeText={val => this.setState({ inputedPhoneNumber: val })}
-                                />
-                            </View>
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>身長</Text>
-                                <TextInput
-                                    placeholder='cm'
-                                    defaultValue={String(inputedHeight)}
-                                    onChangeText={val => this.setState({ inputedHeight: Number(val) })}
-                                    style={styles.textInput}
-                                />
-                            </View>
-                            <View style={{ flexDirection: 'row', marginTop: hp('3%') }}>
-                                <View style={styles.changeButtonView}>
-                                    <Button
-                                        title='戻る'
-                                        buttonStyle={styles.backButtonStyle}
-                                        titleStyle={styles.backButtonTitleStyle}
-                                        onPress={() => this.props.navigation.goBack()}
-                                    />
-                                </View>
-                                <View style={styles.changeButtonView}>
-                                    <Button
-                                        title='変更確定 →'
-                                        buttonStyle={styles.changeButtonStyle}
-                                        titleStyle={styles.changeButtonTitle}
-                                        onPress={() => this.onPressChangeProfile()}
-                                    />
-                                </View>
-                            </View>
-                            <View style={{ height: hp('20%') }}></View>
+                            <TextInput
+                                defaultValue={inputedName}
+                                style={styles.textInput}
+                                onChangeText={val => this.setState({ inputedName: val })}
+                                placeholder='姓名(漢字)'
+                            />
+                            <TextInput
+                                defaultValue={inputedNameKana}
+                                style={styles.textInput}
+                                onChangeText={val => this.setState({ inputedNameKana: val })}
+                                placeholder='姓名(カナ)'
+                            />
                         </View>
-                    </ScrollView>
-                </View>
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>性別</Text>
+                            <View style={styles.alertView}></View>
+                            <View style={{ flexDirection: 'row' }}>
+                            <Icon.Button
+                                name={inputedGender === 'male' ? 'check-circle' : 'checkbox-blank-circle-outline' }
+                                onPress={() => this.onGenderCheck('male')}
+                                backgroundColor='white'
+                                iconStyle={{ color: '#7389D9' }}
+                            >
+                                <Text style={styles.genderText}>男性</Text>
+                            </Icon.Button>
+                            <Icon.Button
+                                name={inputedGender === 'female' ? 'check-circle' : 'checkbox-blank-circle-outline' }
+                                onPress={() => this.onGenderCheck('female')}
+                                backgroundColor='white'
+                                iconStyle={{ color: '#7389D9' }}
+                            >
+                                <Text style={styles.genderText}>女性</Text>
+                            </Icon.Button>
+                            <Icon.Button
+                                name={inputedGender === 'other' ? 'check-circle' : 'checkbox-blank-circle-outline' }
+                                onPress={() => this.onGenderCheck('other')}
+                                backgroundColor='white'
+                                iconStyle={{ color: '#7389D9' }}
+                            >
+                                <Text style={styles.genderText}>その他</Text>
+                            </Icon.Button>
+                            </View>
+                        </View>
+                        <View style={styles.formView}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.titleText}>お届け先</Text>
+                                <Text style={styles.mustText}>必須</Text>
+                            </View>
+                            {/* アラートView */}
+                            <View style={styles.alertView}>
+                                <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: addressAlert ? 'block' : 'none' }} />
+                                <Text style={[styles.alertText, { display: addressAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
+                            </View>
+                            <TextInput
+                                style={styles.textInput}
+                                defaultValue={inputedPostalCode}
+                                onChangeText={val => this.setState({ inputedPostalCode: val })}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                defaultValue={inputedAddress}
+                                onChangeText={val => this.setState({ inputedAddress: val })}
+                            />
+                        </View>
+                        {Platform.OS === 'android' ? null
+                                :
+                                    <View style={styles.formView}>
+                                        <Text style={styles.titleText}>生年月日</Text>
+                                        <View style={styles.alertView}></View>
+                                        <Button
+                                            title={birthdayText}
+                                            buttonStyle={styles.selectBirthdayButton}
+                                            titleStyle={styles.selectBirthdayText}
+                                            onPress={() => this.setState({ isDatePickerVisible: true })}
+                                        />
+                                        <DateTimePickerModal
+                                            isVisible={isDatePickerVisible}
+                                            date={inputedBirthday}
+                                            mode="date"
+                                            isDardModeEnabled={false}
+                                            onConfirm={(value) => this.setState({
+                                                inputedBirthday: value,
+                                                isDatePickerVisible: false
+                                            })}
+                                            onCancel={() => this.setState({ isDatePickerVisible: false })}
+                                            headerTextIOS='生年月日を選択してください'
+                                            cancelTextIOS='戻る'
+                                            confirmTextIOS='決定'
+                                        />
+                                    </View>
+                                }
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>電話番号</Text>
+                            <View style={styles.alertView}></View>
+                            <TextInput
+                                placeholder='電話番号'
+                                style={styles.textInput}
+                                defaultValue={inputedPhoneNumber}
+                                onChangeText={val => this.setState({ inputedPhoneNumber: val })}
+                            />
+                        </View>
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>身長</Text>
+                            <View style={styles.alertView}></View>
+                            <TextInput
+                                placeholder='cm'
+                                defaultValue={String(inputedHeight)}
+                                onChangeText={val => this.setState({ inputedHeight: Number(val) })}
+                                style={styles.textInput}
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: hp('3%') }}>
+                            <View style={styles.changeButtonView}>
+                                <Button
+                                    title='戻る'
+                                    buttonStyle={styles.backButtonStyle}
+                                    titleStyle={styles.backButtonTitleStyle}
+                                    onPress={() => this.props.navigation.goBack()}
+                                />
+                            </View>
+                            <View style={styles.changeButtonView}>
+                                <Button
+                                    title='変更確定 →'
+                                    buttonStyle={styles.changeButtonStyle}
+                                    titleStyle={styles.changeButtonTitle}
+                                    onPress={() => this.onPressChangeProfile()}
+                                />
+                            </View>
+                        </View>
+                        <View style={{ height: hp('20%') }}></View>
+                    </View>
+                </KeyboardAwareScrollView>
             </SafeAreaView>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: hp('100%'),
-        width: wp('100%'),
+    scrollView: {
         backgroundColor: 'white'
     },
-    scrollView: {},
     innerContainer: {
         width: wp('80%'),
         left: wp('10%')
@@ -268,17 +268,15 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 14,
-        marginBottom: hp('2%')
     },
     mustText: {
         backgroundColor: '#7389D9',
-        textAlign: 'center',
         color: 'white',
         fontSize: 13,
-        height: hp('2.5%'),
-        paddingTop: wp('0.5%'),
-        width: wp('9%'),
-        marginLeft: wp('3%')
+        height: 20,
+        padding: wp('1%'),
+        marginLeft: wp('3%'),
+        bottom: hp('0.4%')
     },
     changeButtonView: {
         shadowColor: 'black',
@@ -334,6 +332,17 @@ const styles = StyleSheet.create({
     },
     genderText: {
         marginRight: wp('9%')
-    }
+    },
+    alertView: {
+        paddingTop: hp('1%'),
+        flexDirection: 'row',
+        marginTop: hp('1%'),
+        height: hp('4%')
+    },
+    alertText: {
+        marginLeft: wp('2%'),
+        color: '#A60000',
+        fontWeight: '500'
+    },
 })
 

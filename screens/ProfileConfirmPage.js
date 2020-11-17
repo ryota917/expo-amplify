@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import Modal from 'react-native-modal'
+import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class ProfileConfirmPage extends React.Component {
     constructor(props) {
@@ -21,7 +22,7 @@ export default class ProfileConfirmPage extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         title: '登録情報の確認',
-        headerLeft: () => <Icon name="bars" size={24} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
+        headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
     });
 
     componentDidMount = async () => {
@@ -68,174 +69,169 @@ export default class ProfileConfirmPage extends React.Component {
         const birthdayText = birthday.getFullYear() + '年' + birthday.getMonth() + '月' + birthday.getDate() + '日'
         return(
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <Modal isVisible={this.state.isPasswordModalVisible}>
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>パスワードの再設定に成功しました。</Text>
-                                <View style={styles.modalButtonView}>
-                                    <Button
-                                        title='OK'
-                                        onPress={() => this.toggleModal()}
-                                        buttonStyle={{ borderRadius: 50, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
-                                        titleStyle={{ fontSize: 14, color: 'white' }}
-                                    />
-                                </View>
+                <Modal isVisible={this.state.isPasswordModalVisible}>
+                    <View style={styles.modalContainerView}>
+                        <View style={styles.modalInnerView}>
+                            <Text style={styles.modalText}>パスワードの再設定に成功しました。</Text>
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title='OK'
+                                    onPress={() => this.toggleModal()}
+                                    buttonStyle={{ borderRadius: 50, width: wp('25%'), height: hp('6%'), backgroundColor: '#7389D9' }}
+                                    titleStyle={{ fontSize: 14, color: 'white' }}
+                                />
                             </View>
                         </View>
-                    </Modal>
-                    <ScrollView style={styles.scrollView}>
-                        <View style={styles.innerContainer}>
-                            <View style={styles.formView}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.titleText}>名前</Text>
-                                    <Text style={styles.mustText}>必須</Text>
-                                </View>
-                                <TextInput
-                                    placeholder={user.name}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
-                                <TextInput
-                                    placeholder={user.nameKana}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
+                    </View>
+                </Modal>
+                <KeyboardAwareScrollView style={styles.scrollView}>
+                    <View style={styles.innerContainer}>
+                        <View style={styles.formView}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.titleText}>名前</Text>
+                                <Text style={styles.mustText}>必須</Text>
                             </View>
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>性別</Text>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Icon.Button
-                                        name='check-circle'
-                                        backgroundColor='white'
-                                        iconStyle={{ color: (user.gender === 'male') ? '#7389D9' : 'white' }}
-                                    >
-                                        <Text style={{ color: 'black' }}>男性</Text>
-                                    </Icon.Button>
-                                    <Icon.Button
-                                        name='check-circle'
-                                        backgroundColor='white'
-                                        iconStyle={{ color: (user.gender === 'female') ? '#7389D9' : 'white' }}                                    style={{ marginLeft: wp('5%') }}
-                                    >
-                                        <Text style={{ color: 'black' }}>女性</Text>
-                                    </Icon.Button>
-                                    <Icon.Button
-                                        name='check-circle'
-                                        backgroundColor='white'
-                                        iconStyle={{ color: (user.gender === 'other') ? '#7389D9' : 'white' }}                                    style={{ marginLeft: wp('5%') }}
-                                    >
-                                        <Text style={{ color: 'black' }}>その他</Text>
-                                    </Icon.Button>
-                                </View>
-                            </View>
-                            <View style={styles.formView}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.titleText}>お届け先</Text>
-                                    <Text style={styles.mustText}>必須</Text>
-                                </View>
-                                <TextInput
-                                    placeholder={user.postalCode}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
-                                <TextInput
-                                    placeholder={user.address}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
-                            </View>
-                            {Platform.OS === 'android' ? null
-                            :
-                                <View style={styles.formView}>
-                                    <Text style={styles.titleText}>生年月日</Text>
-                                    <TextInput
-                                        placeholder={birthdayText}
-                                        style={styles.textInput}
-                                        editable={false}
-                                    />
-                                </View>
-                            }
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>電話番号</Text>
-                                <TextInput
-                                    placeholder={user.phoneNumber}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
-                            </View>
-                            <View style={styles.formView}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.titleText}>メールアドレス</Text>
-                                    <Text style={styles.mustText}>必須</Text>
-                                </View>
-                                <TextInput
-                                    placeholder={user.id}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
-                            </View>
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>身長</Text>
-                                <TextInput
-                                    placeholder={user.height + 'cm'}
-                                    style={styles.textInput}
-                                    editable={false}
-                                />
-                            </View>
-                            <View style={styles.changeButtonView}>
-                                <Button
-                                    title='情報を変更する →'
-                                    buttonStyle={styles.changeButtonStyle}
-                                    titleStyle={styles.changeTitleStyle}
-                                    onPress={() => this.navigateEditPage()}
-                                />
-                            </View>
-                            <View style={{ height: hp('8%')}}></View>
-                            {/* アラートView */}
-                            <View style={{ flexDirection: 'row', display: this.state.passwordAlert ? 'block' : 'none' }}>
-                                    <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>パスワードの変更に失敗しました。</Text>
-                                </View>
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>現在のパスワード</Text>
-                                <TextInput
-                                    style={styles.textInput}
-                                    secureTextEntry={true}
-                                    onChangeText={val => this.setState({ nowPassword: val })}
-                                />
-                            </View>
-                            <View style={styles.formView}>
-                                <Text style={styles.titleText}>変更後のパスワード</Text>
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder='半角英数字8文字以上'
-                                    onChangeText={val => this.setState({ newPassword: val })}
-                                    secureTextEntry={true}
-                                />
-                            </View>
-                            <View style={styles.changeButtonView}>
-                                <Button
-                                    title='パスワードを再設定する →'
-                                    buttonStyle={styles.resetPasswordButtonStyle}
-                                    titleStyle={styles.resetPasswordButtonTitleStyle}
-                                    onPress={() => this.onPressResetPassword()}
-                                />
-                            </View>
-                            <View style={{ height: hp('20%') }}></View>
+                            <TextInput
+                                placeholder={user.name}
+                                style={styles.textInput}
+                                editable={false}
+                            />
+                            <TextInput
+                                placeholder={user.nameKana}
+                                style={styles.textInput}
+                                editable={false}
+                            />
                         </View>
-                    </ScrollView>
-                </View>
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>性別</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Icon.Button
+                                    name='check-circle'
+                                    backgroundColor='white'
+                                    iconStyle={{ color: (user.gender === 'male') ? '#7389D9' : 'white' }}
+                                >
+                                    <Text style={{ color: 'black' }}>男性</Text>
+                                </Icon.Button>
+                                <Icon.Button
+                                    name='check-circle'
+                                    backgroundColor='white'
+                                    iconStyle={{ color: (user.gender === 'female') ? '#7389D9' : 'white' }}                                    style={{ marginLeft: wp('5%') }}
+                                >
+                                    <Text style={{ color: 'black' }}>女性</Text>
+                                </Icon.Button>
+                                <Icon.Button
+                                    name='check-circle'
+                                    backgroundColor='white'
+                                    iconStyle={{ color: (user.gender === 'other') ? '#7389D9' : 'white' }}                                    style={{ marginLeft: wp('5%') }}
+                                >
+                                    <Text style={{ color: 'black' }}>その他</Text>
+                                </Icon.Button>
+                            </View>
+                        </View>
+                        <View style={styles.formView}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.titleText}>お届け先</Text>
+                                <Text style={styles.mustText}>必須</Text>
+                            </View>
+                            <TextInput
+                                placeholder={user.postalCode}
+                                style={styles.textInput}
+                                editable={false}
+                            />
+                            <TextInput
+                                placeholder={user.address}
+                                style={styles.textInput}
+                                editable={false}
+                            />
+                        </View>
+                        {Platform.OS === 'android' ? null
+                        :
+                            <View style={styles.formView}>
+                                <Text style={styles.titleText}>生年月日</Text>
+                                <TextInput
+                                    placeholder={birthdayText}
+                                    style={styles.textInput}
+                                    editable={false}
+                                />
+                            </View>
+                        }
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>電話番号</Text>
+                            <TextInput
+                                placeholder={user.phoneNumber}
+                                style={styles.textInput}
+                                editable={false}
+                            />
+                        </View>
+                        <View style={styles.formView}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.titleText}>メールアドレス</Text>
+                                <Text style={styles.mustText}>必須</Text>
+                            </View>
+                            <TextInput
+                                placeholder={user.id}
+                                style={styles.textInput}
+                                editable={false}
+                            />
+                        </View>
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>身長</Text>
+                            <TextInput
+                                placeholder={user.height + 'cm'}
+                                style={styles.textInput}
+                                editable={false}
+                            />
+                        </View>
+                        <View style={styles.changeButtonView}>
+                            <Button
+                                title='情報を変更する →'
+                                buttonStyle={styles.changeButtonStyle}
+                                titleStyle={styles.changeTitleStyle}
+                                onPress={() => this.navigateEditPage()}
+                            />
+                        </View>
+                        <View style={{ height: hp('8%')}}></View>
+                        {/* アラートView */}
+                        <View style={{ flexDirection: 'row', display: this.state.passwordAlert ? 'block' : 'none' }}>
+                                <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>パスワードの変更に失敗しました。</Text>
+                            </View>
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>現在のパスワード</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                secureTextEntry={true}
+                                onChangeText={val => this.setState({ nowPassword: val })}
+                            />
+                        </View>
+                        <View style={styles.formView}>
+                            <Text style={styles.titleText}>変更後のパスワード</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='半角英数字8文字以上'
+                                onChangeText={val => this.setState({ newPassword: val })}
+                                secureTextEntry={true}
+                            />
+                        </View>
+                        <View style={styles.changeButtonView}>
+                            <Button
+                                title='パスワードを再設定する →'
+                                buttonStyle={styles.resetPasswordButtonStyle}
+                                titleStyle={styles.resetPasswordButtonTitleStyle}
+                                onPress={() => this.onPressResetPassword()}
+                            />
+                        </View>
+                        <View style={{ height: hp('20%') }}></View>
+                    </View>
+                </KeyboardAwareScrollView>
             </SafeAreaView>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: hp('100%'),
-        width: wp('100%'),
+    scrollView: {
         backgroundColor: 'white'
     },
-    scrollView: {},
     innerContainer: {
         width: wp('80%'),
         left: wp('10%')
@@ -249,13 +245,12 @@ const styles = StyleSheet.create({
     },
     mustText: {
         backgroundColor: '#7389D9',
-        textAlign: 'center',
         color: 'white',
         fontSize: 13,
-        height: hp('2.5%'),
-        paddingTop: wp('0.5%'),
-        width: wp('9%'),
-        marginLeft: wp('3%')
+        height: 20,
+        padding: wp('1%'),
+        marginLeft: wp('3%'),
+        bottom: hp('0.4%')
     },
     changeButtonView: {
         marginTop: hp('6%'),
