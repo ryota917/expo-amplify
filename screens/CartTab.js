@@ -67,7 +67,7 @@ export default class CartTab extends React.Component {
             const itemArray = []
             res.data.searchItemCarts.items.forEach(obj => itemArray.push(obj.item))
             const cartNum = res.data.searchItemCarts.items.length
-            const isCartFilled = res.data.searchItemCarts.items.length >= 4
+            const isCartFilled = res.data.searchItemCarts.items.length >= 5
             this.setState({
                 itemCart: itemArray,
                 isCartFilled: isCartFilled,
@@ -101,7 +101,7 @@ export default class CartTab extends React.Component {
             let canNextRentalDate = new Date()
             if(cartLogRes.data.searchCartLogs.items.length) {
                 canNextRentalDate = new Date(cartLogRes?.data?.searchCartLogs?.items[0]?.createdAt)
-                canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 1)
+                canNextRentalDate.setMonth(canNextRentalDate.getMonth() + 2)
                 const today = new Date()
                 canNextRental = canNextRentalDate.getTime() < new Date(today).getTime()
             } else {
@@ -140,7 +140,7 @@ export default class CartTab extends React.Component {
         }))
         //削除したアイテムをstateから削除(再レンダリングしなくてもアイテムが消えるように)
         const newArray = this.state.itemCart.filter(ele => !(ele.id === res.data.deleteItemCart.itemId))
-        const isCartFilled = newArray.length >= 4
+        const isCartFilled = newArray.length >= 5
         this.setState({
             itemCart: newArray,
             isCartFilled: isCartFilled,
@@ -159,7 +159,7 @@ export default class CartTab extends React.Component {
     render() {
         const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate, cartNum } = this.state
         const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
-        const rentalAlertText = canRental ? 'カートに4つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
+        const rentalAlertText = canRental ? 'カートに5つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
         return(
             <SafeAreaView style={{ flex: 1 }}>
                 <Modal isVisible={this.state.isRentalAlertVisible}>

@@ -65,7 +65,7 @@ export default class ItemDetail extends React.Component {
     //カートにアイテムが4つ入っているかを確認
     fetchCartData = async () => {
         const cart = await API.graphql(graphqlOperation(gqlQueries.getCart, { id: this.state.currentUserEmail }))
-        const isCartFilled = cart.data.getCart.itemCarts.items.length >= 4
+        const isCartFilled = cart.data.getCart.itemCarts.items.length >= 5
         this.setState({ isCartFilled: isCartFilled })
     }
 

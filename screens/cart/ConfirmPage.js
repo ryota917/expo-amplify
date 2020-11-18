@@ -15,7 +15,6 @@ export default class ConfirmPage extends React.Component {
         this.state = {
             itemCart: this.props.navigation.state.params.itemCart,
             currentUserEmail: '',
-            isCartFilled: false,
             isConfirmModalVisible: false,
             cartLogId: ''
         }
