@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator, TouchableHighlight, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -108,20 +108,21 @@ export default class FavoriteTab extends React.Component {
                             containerStyle={styles.cardContainer}
                             wrapperStyle={styles.cardWrapper}
                         >
-                            <Card.Image
-                                source={{ uri: item.imageURLs[0] }}
-                                style={styles.itemImage}
-                                onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
-                            />
+                            <TouchableHighlight onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })} underlayColor='white' >
+                                <Image
+                                    source={{ uri: item.imageURLs[0] }}
+                                    style={styles.itemImage}
+                                />
+                            </TouchableHighlight>
                             <Card.Title
                                 style={styles.brandText}
-                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                                onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
                             >
                                 {item.brand}
                             </Card.Title>
                             <Card.Title
                                 style={styles.nameText}
-                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
+                                onPress={() => this.props.navigation.navigate('FavoriteItemDetail', { item: item })}
                             >
                                 {item.name}
                             </Card.Title>

@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator, TouchableHighlight, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
-import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
@@ -335,11 +334,12 @@ export default class ItemTab extends React.Component {
                         <Card
                             containerStyle={styles.cardContainer}
                         >
-                            <Card.Image
-                                source={{ uri: item.imageURLs[0] }}
-                                style={styles.itemImage}
-                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                            />
+                            <TouchableHighlight onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} underlayColor='white' >
+                                <Image
+                                    source={{ uri: item.imageURLs[0] }}
+                                    style={styles.itemImage}
+                                />
+                            </TouchableHighlight>
                             <Card.Title
                                 style={styles.brandText}
                                 onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
