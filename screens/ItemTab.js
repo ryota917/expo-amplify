@@ -6,7 +6,6 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Item from './item/Item'
 
-//pretapoEjectからの更新
 export default class ItemTab extends React.Component {
     constructor(props) {
         super(props);

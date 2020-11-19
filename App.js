@@ -43,7 +43,6 @@ import ResetPassword from './ResetPassword'
 //aws接続設定
 Amplify.configure(awsmobile);
 
-//pretapoEjectからの更新
 const ItemTabStack = createStackNavigator(
   {
     ItemTab: {screen: ItemTab},
