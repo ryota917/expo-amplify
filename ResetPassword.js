@@ -28,7 +28,6 @@ export default class ResetPassword extends React.Component {
                 verificationCode,
                 newPassword
             )
-            console.log(resetPassword)
             this.props.onStateChange('signIn')
         } catch(err) {
             console.error(err)

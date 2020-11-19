@@ -23,7 +23,6 @@ export default class Signin extends React.Component {
             const { email } = this.state
             const ForgotPassword = await Auth.forgotPassword(email)
             //認証されていないユーザーはinvalidparameterexception
-            console.log(ForgotPassword)
             this.props.onStateChange('requireNewPassword', email)
         } catch(err) {
             console.error(err)

@@ -38,10 +38,7 @@ export default class Signup extends React.Component {
         const { email, password } = this.state
         try {
             const user = await Auth.signIn(email, password)
-            console.log('successfully signuped!')
-            console.log(user)
         } catch(error) {
-            console.log('error signing up ', error)
         }
     }
 
@@ -59,10 +56,6 @@ export default class Signup extends React.Component {
 
     onPressSignup = async () => {
         const { name, nameKana, email, password, phoneNumber, address, postalCode, height, birthday, isBirthdaySelected, gender } = this.state
-        console.log('生年月日です')
-        console.log(birthday)
-        console.log('身長です')
-        console.log(height)
         //空の値に対してバリデーション
         const nameAlert = !(name && nameKana)
         const addressAlert = !(address && postalCode)
@@ -83,7 +76,6 @@ export default class Signup extends React.Component {
         }), 10000)
         try {
             if(name && nameKana && email && password && postalCode && address) {
-                console.log('Cognitoにサインアップします')
                 await Auth.signUp(email, password)
                 await API.graphql(graphqlOperation(gqlMutations.createUser, {
                     input: {
@@ -110,7 +102,6 @@ export default class Signup extends React.Component {
             }
         } catch(error) {
             console.error(error)
-            console.log(error.name)
             switch(error.name) {
                 case 'UsernameExistsException':
                     this.setState({ signUpAlertText: 'このメールアドレスは既に使われています'})

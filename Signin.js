@@ -25,8 +25,6 @@ export default class Signin extends React.Component {
         const { inputedEmail, inputedPassword } = this.state
         try {
             const user = await Auth.signIn(inputedEmail, inputedPassword)
-            console.log('successfully logined!')
-            console.log(user)
         } catch(error) {
             console.error(error)
             if(error.code === 'UserNotConfirmedException') {
@@ -40,7 +38,6 @@ export default class Signin extends React.Component {
     }
 
     onPressConfirmSignin = async () => {
-        console.log(this.props.authData)
         const { inputedEmail, inputedPassword } = this.state
         const { authData, verificationCode } = this.props.authData
         try{

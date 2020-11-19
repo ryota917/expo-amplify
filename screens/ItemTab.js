@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Image, FlatList, ActivityIndicator, TouchableHighlight, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
-import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import Item from './item/Item'
 
 export default class ItemTab extends React.Component {
     constructor(props) {
@@ -164,7 +164,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 10,
+                    limit: 30,
                     nextToken: this.state.nextToken
                 }
         }
@@ -270,7 +270,7 @@ export default class ItemTab extends React.Component {
                             }
                         }
                     },
-                    limit: 30
+                    limit: 30,
                 }
                 break;
             case 0:
@@ -280,7 +280,7 @@ export default class ItemTab extends React.Component {
                             eq: 'WAITING'
                         }
                     },
-                    limit: 30
+                    limit: 30,
                 }
         }
     }
@@ -304,6 +304,9 @@ export default class ItemTab extends React.Component {
         this.setState({ isLoading: true })
         const query = await this.loadQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
+        //You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc. Object
+        //このエラーが出るようであればパフォーマンス改善が必要
+        console.log(res)
         const canLoad = !!(res.data.searchItems.nextToken)
         this.setState(prevState => ({
             items: prevState.items.concat(res.data.searchItems.items),
@@ -331,33 +334,13 @@ export default class ItemTab extends React.Component {
                     numColumns={3}
                     columnWrapperStyle={styles.columnWrapperStyle}
                     renderItem={({ item }) => (
-                        <Card
-                            containerStyle={styles.cardContainer}
-                        >
-                            <TouchableHighlight onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })} underlayColor='white' >
-                                <Image
-                                    source={{ uri: item.imageURLs[0] }}
-                                    style={styles.itemImage}
-                                />
-                            </TouchableHighlight>
-                            <Card.Title
-                                style={styles.brandText}
-                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                            >
-                                {item.brand}
-                            </Card.Title>
-                            <Card.Title
-                                style={styles.nameText}
-                                onPress={() => this.props.navigation.navigate('ItemDetail', { item: item })}
-                            >
-                                {item.name}
-                            </Card.Title>
-                        </Card>
+                        <Item item={item} navigation={this.props.navigation}/>
                     )}
                     onEndReached={(canLoad && !isLoading) ? () => this.continueLoading() : () => null}
                     onEndReachedThreshold={1}
                     ListFooterComponent={canLoad ? activityIndicator : null}
                     ListFooterComponentStyle={{ marginTop : hp('2%') }}
+                    initialNumToRender={9}
                 />
             </SafeAreaView>
         );
@@ -367,32 +350,5 @@ export default class ItemTab extends React.Component {
 const styles = StyleSheet.create({
     columnWrapperStyle: {
         margin: 1,
-    },
-    cardContainer: {
-        padding: 0,
-        margin: 0,
-        width: wp('33%'),
-        height: wp('63%')
-    },
-    itemImage: {
-        width: wp('33%'),
-        height: wp('44%'),
-    },
-    brandText: {
-        color: '#7389D9',
-        marginTop: hp('0.5%'),
-        paddingLeft: wp('1%'),
-        paddingRight: wp('1%'),
-        textAlign: 'left',
-        width: wp('33%'),
-        fontSize: 10,
-    },
-    nameText: {
-        paddingLeft: wp('1%'),
-        paddingRight: wp('1%'),
-        textAlign: 'left',
-        marginTop: -hp('1%'),
-        width: wp('33%'),
-        fontSize: 12,
     }
 })
