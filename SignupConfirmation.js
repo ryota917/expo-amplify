@@ -129,7 +129,7 @@ export default class Signin extends React.Component {
                         <View style={styles.innerContainer}>
                             <View style={styles.formContainer}>
                                 {/* アラートView */}
-                                <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: this.state.confirmationAlert ? 'block' : 'none' }}>
+                                <View style={{ flexDirection: 'row', marginBottom: hp('3%'), display: this.state.confirmationAlert ? 'flex' : 'none' }}>
                                     <Icon name='alert-circle' size={17} style={{ color: '#A60000' }} />
                                     <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>認証に失敗しました</Text>
                                 </View>

@@ -143,7 +143,7 @@ export default class Signup extends React.Component {
                                 <Image source={require('./assets/signup.png')} style={styles.signUpTextImage} />
                                 {/* アラートView */}
                                 <View style={styles.topAlertView}>
-                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: signUpAlert ? 'block' : 'none' }} />
+                                    <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: signUpAlert ? 'flex' : 'none' }} />
                                     <Text style={{ marginLeft: wp('2%'), color: '#A60000', fontWeight: '500', display: signUpAlert ? 'flex' : 'none' }}>{signUpAlertText}</Text>
                                 </View>
                                 <View style={styles.nameForm}>
@@ -153,7 +153,7 @@ export default class Signup extends React.Component {
                                     </View>
                                     {/* アラートView */}
                                     <View style={styles.alertView}>
-                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: nameAlert ? 'block' : 'none' }} />
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: nameAlert ? 'flex' : 'none' }} />
                                         <Text style={[styles.alertText, { display: nameAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                                     </View>
                                     <TextInput
@@ -204,7 +204,7 @@ export default class Signup extends React.Component {
                                     </View>
                                     {/* アラートView */}
                                     <View style={styles.alertView}>
-                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: addressAlert ? 'block' : 'none' }} />
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: addressAlert ? 'flex' : 'none' }} />
                                         <Text style={[styles.alertText, { display: addressAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                                     </View>
                                     <TextInput
@@ -262,7 +262,7 @@ export default class Signup extends React.Component {
                                     </View>
                                     {/* アラートView */}
                                     <View style={styles.alertView}>
-                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: emailAlert ? 'block' : 'none' }} />
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: emailAlert ? 'flex' : 'none' }} />
                                         <Text style={[styles.alertText, { display: emailAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                                     </View>
                                     <TextInput
@@ -285,7 +285,7 @@ export default class Signup extends React.Component {
                                     </View>
                                     {/* アラートView */}
                                     <View style={styles.alertView}>
-                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: passwordAlert ? 'block' : 'none' }} />
+                                        <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: passwordAlert ? 'flex' : 'none' }} />
                                         <Text style={[styles.alertText, { display: passwordAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                                     </View>
                                     <TextInput

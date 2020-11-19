@@ -192,7 +192,7 @@ export default class ProfileConfirmPage extends React.Component {
                         </View>
                         <View style={{ height: hp('8%')}}></View>
                         {/* アラートView */}
-                        <View style={{ flexDirection: 'row', display: this.state.passwordAlert ? 'block' : 'none' }}>
+                        <View style={{ flexDirection: 'row', display: this.state.passwordAlert ? 'flex' : 'none' }}>
                                 <Text style={{ marginLeft: wp('2%'), color: '#A60000' }}>パスワードの変更に失敗しました。</Text>
                             </View>
                         <View style={styles.formView}>

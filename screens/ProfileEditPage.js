@@ -115,7 +115,7 @@ export default class ProfileEditPage extends React.Component {
                             </View>
                             {/* アラートView */}
                             <View style={styles.alertView}>
-                                <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: nameAlert ? 'block' : 'none' }} />
+                                <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: nameAlert ? 'flex' : 'none' }} />
                                 <Text style={[styles.alertText, { display: nameAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                             </View>
                             <TextInput
@@ -168,7 +168,7 @@ export default class ProfileEditPage extends React.Component {
                             </View>
                             {/* アラートView */}
                             <View style={styles.alertView}>
-                                <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: addressAlert ? 'block' : 'none' }} />
+                                <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: addressAlert ? 'flex' : 'none' }} />
                                 <Text style={[styles.alertText, { display: addressAlert ? 'flex' : 'none' }]}>適切に入力されていません</Text>
                             </View>
                             <TextInput

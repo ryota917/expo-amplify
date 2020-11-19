@@ -96,7 +96,7 @@ export default class Signin extends React.Component {
                                 <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
                                 {/* アラートView */}
                                 <View style={styles.alertView}>
-                                    <Icon name='alert-circle' size={17} style={[styles.alertIcon, { display: this.state.alert ? 'block' : 'none' }]} />
+                                    <Icon name='alert-circle' size={17} style={[styles.alertIcon, { display: this.state.alert ? 'flex' : 'none' }]} />
                                     <Text style={[styles.alertText, { display: this.state.alert ? 'flex' : 'none' }]}>ログインに失敗しました</Text>
                                 </View>
                                 <View style={styles.form}>

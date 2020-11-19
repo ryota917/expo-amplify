@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { StyleSheet, TouchableHighlight, Image } from 'react-native'
 import { Card } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import FastImage from 'react-native-fast-image'
 
 export default class Item extends PureComponent {
     render() {
@@ -11,7 +12,7 @@ export default class Item extends PureComponent {
                 containerStyle={styles.cardContainer}
             >
                 <TouchableHighlight onPress={() => navigation.navigate('ItemDetail', { item: item })} underlayColor='white' >
-                    <Image
+                    <FastImage
                         source={{ uri: item.imageURLs[0] }}
                         style={styles.itemImage}
                     />
