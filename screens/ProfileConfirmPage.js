@@ -67,7 +67,7 @@ export default class ProfileConfirmPage extends React.Component {
         const { user } = this.state
         const birthday = new Date(user.birthday)
         let birthdayText = '未設定'
-        if(user.birthday.length) {
+        if(user.birthday) {
             birthdayText = birthday.getFullYear() + '年' + (birthday.getMonth() + 1) + '月' + birthday.getDate() + '日'
         }
         return(
