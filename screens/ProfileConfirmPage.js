@@ -66,7 +66,10 @@ export default class ProfileConfirmPage extends React.Component {
     render() {
         const { user } = this.state
         const birthday = new Date(user.birthday)
-        const birthdayText = birthday.getFullYear() + '年' + birthday.getMonth() + '月' + birthday.getDate() + '日'
+        let birthdayText = '未設定'
+        if(user.birthday.length) {
+            birthdayText = birthday.getFullYear() + '年' + (birthday.getMonth() + 1) + '月' + birthday.getDate() + '日'
+        }
         return(
             <SafeAreaView style={{ flex: 1 }}>
                 <Modal isVisible={this.state.isPasswordModalVisible}>

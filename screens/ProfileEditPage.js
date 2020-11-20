@@ -225,7 +225,7 @@ export default class ProfileEditPage extends React.Component {
                             <TextInput
                                 placeholder='cm'
                                 defaultValue={String(inputedHeight)}
-                                onChangeText={val => this.setState({ inputedHeight: Number(val) })}
+                                onChangeText={val => this.setState({ inputedHeight: val })}
                                 style={styles.textInput}
                             />
                         </View>

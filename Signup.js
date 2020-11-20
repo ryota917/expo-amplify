@@ -55,7 +55,7 @@ export default class Signup extends React.Component {
     }
 
     onPressSignup = async () => {
-        const { name, nameKana, email, password, phoneNumber, address, postalCode, height, birthday, isBirthdaySelected, gender } = this.state
+        const { name, nameKana, email, password, phoneNumber, address, postalCode, height, isHeightSelected, birthday, isBirthdaySelected, gender } = this.state
         //空の値に対してバリデーション
         const nameAlert = !(name && nameKana)
         const addressAlert = !(address && postalCode)
@@ -86,8 +86,8 @@ export default class Signup extends React.Component {
                         phoneNumber: phoneNumber,
                         address: address,
                         postalCode: postalCode,
-                        height: isHeightSelected ? height : null,
-                        birthday: isBirthdaySelected ? birthday : null,
+                        height: isHeightSelected ? height : '',
+                        birthday: isBirthdaySelected ? birthday : '',
                         gender: gender,
                         rental: false
                     }
@@ -274,7 +274,7 @@ export default class Signup extends React.Component {
                                     <Text style={styles.title}>身長</Text>
                                     <TextInput
                                         placeholder='cm'
-                                        onChangeText={val => this.setState({ height: Number(val) })}
+                                        onChangeText={val => this.setState({ height: val })}
                                         style={styles.textInput}
                                     />
                                 </View>
