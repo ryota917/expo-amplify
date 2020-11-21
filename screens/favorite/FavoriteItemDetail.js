@@ -8,6 +8,7 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
+import FastImage from 'react-native-fast-image'
 
 export default class FavoriteItemDetail extends React.Component {
     constructor(props) {
@@ -146,7 +147,7 @@ export default class FavoriteItemDetail extends React.Component {
     render() {
         const { item, isFavorited, isCarted, isCartFilled, isRental } = this.state
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
-        <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
+        <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
         )
         let alertText = ''
         if(isRental) {

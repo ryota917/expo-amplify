@@ -8,6 +8,7 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
 import Modal from 'react-native-modal'
+import FastImage from 'react-native-fast-image'
 
 export default class ItemDetail extends React.Component {
     constructor(props) {
@@ -151,7 +152,7 @@ export default class ItemDetail extends React.Component {
         const { item, isFavorited, isCarted, isCartFilled, isRental } = this.state
         const bigCategory = this.state.bigCategory === 'OUTER' ? 'アウター' : 'トップス'
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
-            <Image key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
+            <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
         )
         let alertText = ''
         if(isRental) {
