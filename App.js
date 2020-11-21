@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text, SafeAreaView } from 'react-native';
+import { Image, View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
 import {
   withAuthenticator, VerifyContact } from 'aws-amplify-react-native';
@@ -128,36 +128,34 @@ const Drawer = createDrawerNavigator(
     'ホーム': {
       screen: Tab,
       navigationOptions: {
-        drawerIcon: <Icon name='home' size={24} color='white' />
+        drawerIcon: <Icon name='home' size={24} color='white' style={{ left: wp('5%') }} />
       }
     },
     '登録情報を編集': {
       screen: ProfileStack,
       navigationOptions: {
-        drawerIcon: <Icon name='account-circle' size={24}  color='white'/>,
+        drawerIcon: <Icon name='account-circle' size={24}  color='white' style={{ left: wp('5%') }} />,
       }
     }
   },
   {
     contentComponent: (props) => (
       <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
-        <Image source={require('./assets/pretapo-white.png')} style={{ width: wp('25%'), height: hp('15%'), marginLeft: wp('20%'), marginTop: hp('5%'), marginBottom: -hp('2%'), resizeMode: 'contain' }} />
+        <Image source={require('./assets/pretapo-white.png')} style={styles.drawerImage} />
           <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
-          <Text style={{ position: 'absolute', bottom: hp('4%') }}>
-            <View style={{ paddingTop:10, width: 60, height: 47, alignItems: 'center'}}>
-              <Icon name="logout" size={24} color={'white'} />
-            </View>
-            <View style={{ width: 80, height: 47, justifyContent:'center'}}>
-              <Text
-                style={{ fontWeight: '700', color: 'white'}}
-                onPress={() => Auth.signOut()}
-              >ログアウト
-              </Text>
-            </View>
-          </Text>
+          <View style={styles.logoutView}>
+            <Icon name="logout" size={24} color={'white'} />
+            <Text
+              style={styles.logoutText}
+              onPress={() => Auth.signOut()}
+            >ログアウト
+            </Text>
+          </View>
       </View>
     ),
     initialRouteName: "ホーム",
+    edgeWidth: wp('100%'),
+    drawerWidth: wp('60%')
   }
 )
 
@@ -184,3 +182,28 @@ export default withAuthenticator(App, false,
     <VerifyContact />,
   ]
 )
+
+const styles = StyleSheet.create({
+  logoutView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: wp('30%'),
+    position: 'absolute',
+    bottom: hp('5%'),
+    marginLeft: wp('15%')
+  },
+  logoutText: {
+    marginLeft: wp('2%'),
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 16
+  },
+  drawerImage: {
+    width: wp('25%'),
+    height: hp('5%'),
+    marginLeft: wp('17.5%'),
+    marginTop: hp('10%'),
+    marginBottom: hp('2%'),
+    resizeMode: 'contain'
+  }
+})
