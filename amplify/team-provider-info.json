@@ -16,5 +16,23 @@
         "expoamplify5487402a": {}
       }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-pretapo-prod-121107-authRole",
+      "UnauthRoleArn": "arn:aws:iam::797806246810:role/amplify-pretapo-prod-121107-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::797806246810:role/amplify-pretapo-prod-121107-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-pretapo-prod-121107-deployment",
+      "UnauthRoleName": "amplify-pretapo-prod-121107-unauthRole",
+      "StackName": "amplify-pretapo-prod-121107",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:797806246810:stack/amplify-pretapo-prod-121107/093cd4e0-2ade-11eb-96e6-0a4084594d18",
+      "AmplifyAppId": "d1m2f76hxfhsh3"
+    },
+    "categories": {
+      "auth": {
+        "expoamplify5487402a": {}
+      }
+    }
   }
 }
