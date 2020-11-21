@@ -7,6 +7,7 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
+import FastImage from 'react-native-fast-image'
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -211,7 +212,7 @@ export default class CartTab extends React.Component {
                         this.state.itemCart.map((item, i) =>
                             <View style={styles.cardContainer} key={i}>
                                 <Card wrapperStyle={{ height: wp('27%')}}>
-                                    <Card.Image
+                                    <FastImage
                                         source={{ uri: item.imageURLs[0] }}
                                         style={styles.image}
                                         onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}

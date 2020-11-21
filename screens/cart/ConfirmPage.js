@@ -8,6 +8,7 @@ import Modal from 'react-native-modal'
 import send_message from '../../src/messaging/slack'
 import * as gqlQueries from '../../src/graphql/queries' // read
 import * as gqlMutations from '../../src/graphql/mutations' // create, update, delete
+import FastImage from 'react-native-fast-image'
 
 export default class ConfirmPage extends React.Component {
     constructor(props) {
@@ -155,7 +156,7 @@ export default class ConfirmPage extends React.Component {
                         {this.state.itemCart.map((item, i) =>
                             <View style={styles.cardContainer} key={i}>
                                 <Card wrapperStyle={{ height: wp('27%')}}>
-                                    <Card.Image
+                                    <FastImage
                                         source={{ uri: item.imageURLs[0] }}
                                         style={styles.image}
                                         onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
