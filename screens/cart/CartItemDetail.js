@@ -21,7 +21,10 @@ export default class FavoriteItemDetail extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'アイテム詳細',
-        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('CartTab')}} style={{ paddingLeft: wp('3%')}} />
+        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('CartTab')}} style={{ paddingLeft: wp('3%')}} />,
+        headerStyle: {
+            height: hp('6%')
+        }
     });
 
     componentDidMount = async () => {

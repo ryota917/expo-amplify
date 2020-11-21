@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, View, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -23,10 +23,13 @@ export default class ItemTab extends React.Component {
         const { params } = navigation.state
         return {
                 headerTitle: () => (
-                <Image source={require('../assets/pretapo-logo-header.png')} style={{ resizeMode: 'contain', width: wp('25%'), height: hp('10%') }}/>
+                <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
             ),
             headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
-            headerRight:() => <Icon name='search' size={28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>
+            headerRight:() => <Icon name='search' size={28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>,
+            headerStyle: {
+                height: hp('6%')
+            }
         }
     };
 
@@ -326,7 +329,7 @@ export default class ItemTab extends React.Component {
         const activityIndicator = <ActivityIndicator size='large' />
         const { canLoad, items, isLoading, isRefreshing } = this.state
         return (
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
                 <FlatList
                     refreshing={isRefreshing}
                     onRefresh={() => this.onRefresh()}
@@ -348,7 +351,12 @@ export default class ItemTab extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    logoImage: {
+        resizeMode: 'contain',
+        width: wp('23%'),
+        height: hp('10%')
+    },
     columnWrapperStyle: {
-        margin: 1,
+        marginBottom: 10
     }
 })

@@ -13,8 +13,13 @@ export default class CartTab extends React.Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        title: 'ボックス',
+        headerTitle: () => (
+            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
+        ),
         headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
+        headerStyle: {
+            height: hp('6%')
+        }
     });
 
     componentDidMount() {
@@ -37,6 +42,11 @@ export default class CartTab extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    logoImage: {
+        resizeMode: 'contain',
+        width: wp('23%'),
+        height: hp('10%')
+    },
     container: {
         width: wp('100%'),
         height: hp('100%')

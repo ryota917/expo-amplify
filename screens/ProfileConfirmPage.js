@@ -23,6 +23,9 @@ export default class ProfileConfirmPage extends React.Component {
     static navigationOptions = ({navigation}) => ({
         title: '登録情報の確認',
         headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
+        headerStyle: {
+            height: hp('6%')
+        }
     });
 
     componentDidMount = async () => {

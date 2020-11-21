@@ -22,9 +22,12 @@ export default class FavoriteTab extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         headerTitle: () => (
-            <Image source={require('../assets/pretapo-logo-header.png')} style={{ resizeMode: 'contain', width: wp('25%'), height: hp('10%') }}/>
+            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
         ),
-        headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>
+        headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+        headerStyle: {
+            height: hp('6%')
+        }
     });
 
     componentDidMount = async () => {
@@ -118,7 +121,12 @@ export default class FavoriteTab extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    logoImage: {
+        resizeMode: 'contain',
+        width: wp('23%'),
+        height: hp('10%')
+    },
     columnWrapperStyle: {
-        margin: 1,
+        marginBottom: 10,
     }
 })
