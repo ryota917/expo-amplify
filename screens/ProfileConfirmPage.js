@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
         height: hp('30%'),
         left: wp('10%'),
         textAlign: 'center',
-        borderRadius: 50
+        borderRadius: 15
     },
     modalInnerView: {
         flex: 1,
