@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     marginLeft: wp('2%'),
     color: 'white',
     fontWeight: '600',
-    fontSize: 16
+    fontSize: 14
   },
   drawerImage: {
     width: wp('25%'),

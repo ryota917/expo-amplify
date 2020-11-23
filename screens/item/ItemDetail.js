@@ -150,7 +150,18 @@ export default class ItemDetail extends React.Component {
 
     render() {
         const { item, isFavorited, isCarted, isCartFilled, isRental } = this.state
-        const bigCategory = this.state.bigCategory === 'OUTER' ? 'アウター' : 'トップス'
+        let bigCategoryText = ''
+        switch(item.bigCategory[0]) {
+            case 'OUTER':
+                bigCategoryText = 'アウター'
+                break;
+            case 'TOPS':
+                bigCategoryText = 'トップス'
+                break;
+            case 'BOTTOMS':
+                bigCategoryText = 'ボトムス'
+                break;
+        }
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
             <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
         )
@@ -223,9 +234,13 @@ export default class ItemDetail extends React.Component {
                                     <View style={styles.nameView}>
                                         <Text style={styles.nameText}>{item.name}</Text>
                                     </View>
+                                    {/* サイズ */}
+                                    <View style={styles.sizeView}>
+                                        <Text style={styles.sizeText}>{item.size}サイズ</Text>
+                                    </View>
                                     {/* カテゴリ名 */}
                                     <View style={styles.categoryView}>
-                                        <Text style={styles.categoryText}>{bigCategory}</Text>
+                                        <Text style={styles.categoryText}>{bigCategoryText}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.iconView}>
@@ -237,15 +252,28 @@ export default class ItemDetail extends React.Component {
                                     />
                                 </View>
                             </View>
-                            {/* サイズ */}
-                            <View style={styles.sizeView}>
-                                <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
-                                <View style={styles.sizeTextView}>
-                                    <Text style={styles.sizeText}>①着丈 {item.dressLength}cm</Text>
-                                    <Text style={styles.sizeText}>②身幅 {item.dressWidth}cm</Text>
-                                    <Text style={styles.sizeText}>③袖幅 {item.sleeveLength}cm</Text>
+                            {/* 長さ */}
+                            {item.bigCategory[0] === 'TOPS' ?
+                                <View style={styles.lengthView}>
+                                    <Image source={require('../../assets/bottoms.png')} style={{ width: wp('30%'), height: wp('43%'), resizeMode: 'contain' }} />
+                                    <View style={styles.sizeTextView}>
+                                        <Text style={styles.lengthText}>①ウエスト {item.waist}cm</Text>
+                                        <Text style={styles.lengthText}>②ヒップ {item.hip}cm</Text>
+                                        <Text style={styles.lengthText}>③股上 {item.rise}cm</Text>
+                                        <Text style={styles.lengthText}>③股下 {item.inseam}cm</Text>
+                                        <Text style={styles.lengthText}>③裾幅 {item.hemWidth}cm</Text>
+                                    </View>
                                 </View>
-                            </View>
+                            :
+                                <View style={styles.lengthView}>
+                                    <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
+                                    <View style={styles.sizeTextView}>
+                                        <Text style={styles.lengthText}>①着丈 {item.dressLength}cm</Text>
+                                        <Text style={styles.lengthText}>②身幅 {item.dressWidth}cm</Text>
+                                        <Text style={styles.lengthText}>③袖幅 {item.sleeveLength}cm</Text>
+                                    </View>
+                                </View>
+                            }
                             {/* 状態 */}
                             <View style={styles.stateView}>
                                 <Text style={styles.stateTitleText}>状態</Text>
@@ -332,26 +360,34 @@ const styles = StyleSheet.create({
     nameView: {
         width: wp('65%'),
         marginTop: hp('1%'),
-        marginBottom: hp('0.5%')
+        marginBottom: hp('0.5%'),
     },
     nameText: {
         fontSize: 20
     },
+    sizeView: {
+        marginTop: wp('1.5%'),
+        marginLeft: wp('1.3%'),
+    },
+    sizeText: {
+        fontSize: 13,
+    },
     categoryView: {
-        marginTop: hp('1%')
+        marginTop: hp('1.5%')
     },
     categoryText: {
         fontSize: 13,
-        color: 'grey'
+        color: 'grey',
+        marginLeft: wp('1%')
     },
-    sizeView: {
+    lengthView: {
         marginTop: hp('2%'),
         flexDirection: 'row'
     },
     sizeTextView: {
         marginLeft: wp('10%')
     },
-    sizeText: {
+    lengthText: {
         marginBottom: hp('0.5%')
     },
     stateView: {

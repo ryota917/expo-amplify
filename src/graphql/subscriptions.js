@@ -17,6 +17,11 @@ export const onCreateItem = /* GraphQL */ `
       dressLength
       dressWidth
       sleeveLength
+      waist
+      hip
+      rise
+      inseam
+      hemWidth
       size
       brand
       supplierName
@@ -73,6 +78,11 @@ export const onUpdateItem = /* GraphQL */ `
       dressLength
       dressWidth
       sleeveLength
+      waist
+      hip
+      rise
+      inseam
+      hemWidth
       size
       brand
       supplierName
@@ -129,6 +139,11 @@ export const onDeleteItem = /* GraphQL */ `
       dressLength
       dressWidth
       sleeveLength
+      waist
+      hip
+      rise
+      inseam
+      hemWidth
       size
       brand
       supplierName
@@ -657,6 +672,11 @@ export const onCreateItemCart = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -723,6 +743,11 @@ export const onUpdateItemCart = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -789,6 +814,11 @@ export const onDeleteItemCart = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -855,6 +885,11 @@ export const onCreateItemCartLog = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -921,6 +956,11 @@ export const onUpdateItemCartLog = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -987,6 +1027,11 @@ export const onDeleteItemCartLog = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -1053,6 +1098,11 @@ export const onCreateItemFavorite = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -1122,6 +1172,11 @@ export const onUpdateItemFavorite = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName
@@ -1191,6 +1246,11 @@ export const onDeleteItemFavorite = /* GraphQL */ `
         dressLength
         dressWidth
         sleeveLength
+        waist
+        hip
+        rise
+        inseam
+        hemWidth
         size
         brand
         supplierName

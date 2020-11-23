@@ -227,9 +227,9 @@ class SearchConditionModal extends React.Component {
                                             <Icon name='circle' size={20} style={{ color: 'grey', marginRight: wp('5%') }} />
                                         }
                                         title='グレー系'
-                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'GREY') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'GREY') ? 'white' : 'black' }]}
-                                        onPress={this.selectColor.bind(this, 'GREY')}
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'GRAY') ? '#333333' : 'white' }]}
+                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'GRAY') ? 'white' : 'black' }]}
+                                        onPress={this.selectColor.bind(this, 'GRAY')}
                                     />
                                 </View>
                             }

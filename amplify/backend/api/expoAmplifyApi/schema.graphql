@@ -6,10 +6,10 @@ type Item @model @searchable {
   stateDescription: String
   imageURLs: [String!]!
   status: String!
-  season: String!
-  bigCategory: String!
-  smallCategory: String
-  color: String!
+  season: [String]!
+  bigCategory: [String]!
+  smallCategory: [String]
+  color: [String]!
   dressLength: Int
   dressWidth: Int
   sleeveLength: Int
@@ -21,7 +21,7 @@ type Item @model @searchable {
   size: String!
   brand: String
   supplierName: String
-  material: String
+  material: [String]
   rank: String!
   itemCarts: [ItemCart] @connection(keyName: "byItem", fields: ["id"])
   itemCartLogs: [ItemCartLog] @connection(keyName: "byItem", fields: ["id"])
