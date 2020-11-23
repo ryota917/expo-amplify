@@ -7,6 +7,7 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'
 import FastImage from 'react-native-fast-image'
+import ItemDetailScreen from '../item/ItemDetailScreen'
 
 export default class FavoriteItemDetail extends React.Component {
     constructor(props) {
@@ -105,76 +106,19 @@ export default class FavoriteItemDetail extends React.Component {
     }
 
     render() {
-        const { item, isFavorited, isCarted } = this.state
+        const { item, isFavorited, isRental } = this.state
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
         <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
         )
         return(
             <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView style={styles.scrollView}>
-                    <View style={styles.innerContainer}>
-                        <View style={styles.imagesView}>
-                            <Swiper
-                                style={styles.swiper}
-                                showButtons={true}
-                                activeDotColor='#7389D9'
-                                dotStyle={{ top: hp('7%')}}
-                                activeDotStyle={{ top: hp('7%')}}
-                            >
-                                {imagesDom}
-                            </Swiper>
-                        </View>
-                        <View style={styles.textView}>
-                            <View style={styles.flexRowView}>
-                                <View style={styles.titleView}>
-                                    {/* ブランド */}
-                                    <View style={styles.brandView}>
-                                        <Text style={styles.brandText}>{item.brand}</Text>
-                                    </View>
-                                    {/* アイテム名 */}
-                                    <View style={styles.nameView}>
-                                        <Text style={styles.nameText}>{item.name}</Text>
-                                    </View>
-                                    {/* カテゴリ名 */}
-                                    <View style={styles.categoryView}>
-                                        <Text style={styles.categoryText}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.iconView}>
-                                    {/* bookmark-minus-outline */}
-                                    <Icon
-                                        name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline'}
-                                        size={40}
-                                        onPress={isFavorited ? () => this.deleteItemFromFavorite() : () => this.saveItemToFavorite()}
-                                    />
-                                </View>
-                            </View>
-                            {/* サイズ */}
-                            <View style={styles.sizeView}>
-                                <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
-                                <View style={styles.sizeTextView}>
-                                    <Text style={styles.sizeText}>①着丈 {item.dressLength}cm</Text>
-                                    <Text style={styles.sizeText}>②身幅 {item.dressWidth}cm</Text>
-                                    <Text style={styles.sizeText}>③袖幅 {item.sleeveLength}cm</Text>
-                                </View>
-                            </View>
-                            {/* 状態 */}
-                            <View style={styles.stateView}>
-                                <Text style={styles.stateTitleText}>状態</Text>
-                                <View style={styles.stateInnerView}>
-                                    <Text style={styles.stateRankText}>{item.rank}ランク</Text>
-                                    <Text style={styles.stateDescriptionText}>{item.stateDescription}</Text>
-                                </View>
-                            </View>
-                            {/* 説明 */}
-                            {/* <View style={styles.descriptionView}>
-                                <Text style={styles.descriptionTitleText}>説明</Text>
-                                <Text style={styles.descriptionText}>{item.description}</Text>
-                            </View> */}
-                            <View style={{ height: hp('15%') }}></View>
-                        </View>
-                    </View>
-                </ScrollView>
+                <ItemDetailScreen
+                    item={item}
+                    isFavorited={isFavorited}
+                    isRental={isRental}
+                    saveItemToFavorite={this.saveItemToFavorite}
+                    deleteItemFromFavorite={this.deleteItemFromFavorite}
+                />
             </SafeAreaView>
         )
     }

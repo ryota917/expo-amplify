@@ -795,6 +795,13 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -888,6 +895,16 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
+          favoriteUser {
+            items {
+              id
+              itemId
+              userId
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }

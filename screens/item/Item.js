@@ -6,10 +6,22 @@ import FastImage from 'react-native-fast-image'
 
 export default class Item extends PureComponent {
     render() {
-        const { item, navigation } = this.props
+        const { item, navigation, constructor } = this.props
+
+        let detailPage
+        switch(constructor) {
+            case 'ItemTab':
+                detailPage = 'ItemDetail'
+                break;
+            case 'FavoriteTab':
+                detailPage = 'FavoriteItemDetail'
+                break;
+            case 'CartTab':
+                detailPage = 'CartItemDetail'
+        }
         return(
             <View style={styles.container}>
-                <TouchableHighlight onPress={() => navigation.navigate('ItemDetail', { item: item })} underlayColor='white' >
+                <TouchableHighlight onPress={() => navigation.navigate(detailPage, { item: item })} underlayColor='white' >
                     <View>
                         <FastImage
                             source={{ uri: item.imageURLs[0] }}

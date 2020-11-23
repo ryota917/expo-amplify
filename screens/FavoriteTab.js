@@ -108,7 +108,11 @@ export default class FavoriteTab extends React.Component {
                     numColumns={3}
                     columnWrapperStyle={styles.columnWrapperStyle}
                     renderItem={({ item }) => (
-                        <Item item={item} navigation={this.props.navigation}/>
+                        <Item
+                            constructor={this.constructor.name}
+                            item={item}
+                            navigation={this.props.navigation}
+                        />
                     )}
                     onEndReached={(canLoad && !isLoading) ? () => this.fetchFavoriteItemsLoad() : () => null}
                     onEndReachedThreshold={1}
