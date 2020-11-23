@@ -10,9 +10,14 @@ type Item @model @searchable {
   bigCategory: String!
   smallCategory: String
   color: String!
-  dressLength: Int!
-  dressWidth: Int!
-  sleeveLength: Int!
+  dressLength: Int
+  dressWidth: Int
+  sleeveLength: Int
+  waist: Int
+  hip: Int
+  rise: Int
+  inseam: Int
+  hemWidth: Int
   size: String!
   brand: String
   supplierName: String
