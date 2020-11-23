@@ -119,6 +119,12 @@ const Tab = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
       }
     }
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#7389D9',
+      inactiveTintColor: 'silver'
+    }
   }
 );
 
