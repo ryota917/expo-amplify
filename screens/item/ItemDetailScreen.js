@@ -66,13 +66,9 @@ const ItemDetailScreen = (props) => {
                             onPress={isFavorited ? () => deleteItemFromFavorite() : () => saveItemToFavorite()}
                             underlayColor='white'
                         >
-                            {/* <Image
+                            <Image
                                 source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.png')}
                                 style={{ resizeMode: 'contain', width: wp('10%'), height: wp('10%') }}
-                            /> */}
-                            <Icon
-                                name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline' }
-                                size={40}
                             />
                         </TouchableHighlight>
                     </View>
