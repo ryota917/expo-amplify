@@ -11,7 +11,7 @@ export default class ItemDetail extends React.Component {
   static navigationOptions = ({ navigation: { navigate } }) => ({
     title: 'レンタルお手続き',
     headerStyle: {
-      height: hp('6%')
+      height: hp('7%')
   }
 })
 

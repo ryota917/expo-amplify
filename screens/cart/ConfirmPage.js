@@ -25,7 +25,7 @@ export default class ConfirmPage extends React.Component {
         title: 'レンタルお手続き',
         headerLeft:() => <Icon name="chevron-left" size={42} onPress={() => { navigate('CartTab') }} style={{ paddingLeft: wp('3%')}} />,
         headerStyle: {
-            height: hp('6%')
+            height: hp('7%')
         }
     })
 

@@ -34,7 +34,7 @@ export default class ProfileEditPage extends React.Component {
         title: '登録情報の修正',
         headerLeft: () => <Icon name="chevron-left" size={42} onPress={()=>{navigation.goBack()}} style={{ paddingLeft: wp('4%') }}/>,
         headerStyle: {
-            height: hp('6%')
+            height: hp('7%')
         }
     });
 

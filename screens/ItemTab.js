@@ -28,7 +28,7 @@ export default class ItemTab extends React.Component {
             headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
             headerRight:() => <Icon name='search' size={28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>,
             headerStyle: {
-                height: hp('6%')
+                height: hp('7%')
             }
         }
     };

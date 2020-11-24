@@ -18,7 +18,7 @@ export default class CartTab extends React.Component {
         ),
         headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
         headerStyle: {
-            height: hp('6%')
+            height: hp('7%')
         }
     });
 

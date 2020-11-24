@@ -25,7 +25,7 @@ class SearchConditionModal extends React.Component {
         title: 'さがす',
         headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}}/>,
         headerStyle: {
-            height: hp('6%')
+            height: hp('7%')
         }
     });
 
