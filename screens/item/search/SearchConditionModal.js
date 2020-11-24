@@ -3,7 +3,6 @@ import { StyleSheet, View, ScrollView, Text, Image, SafeAreaView } from 'react-n
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import FastImage from 'react-native-fast-image'
 
 class SearchConditionModal extends React.Component {
     constructor(props) {
@@ -103,10 +102,12 @@ class SearchConditionModal extends React.Component {
             <View style={styles.choiceView}>
                 <Text style={{ marginTop: hp('1%'), fontWeight: '400', fontSize: 14, color: isSelected ? 'white' : 'black' }}>{name}</Text>
                 <Text style={styles.choiceText}>選択中</Text>
-                <FastImage
-                    source={require('../../../assets/circle-check.png')}
-                    style={styles.choiceImage}
-                />
+                {isSelected &&
+                    <Image
+                        source={require('../../../assets/circle-check.png')}
+                        style={styles.choiceImage}
+                    />
+                }
             </View>
         )
     }
@@ -420,6 +421,7 @@ const styles = StyleSheet.create({
         right: wp('4%')
     },
     choiceImage: {
+        color: 'white',
         marginTop: hp('1.1%'),
         resizeMode: 'contain',
         width: wp("3%"),

@@ -1,25 +1,25 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
+import { Image, View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import FastImage from 'react-native-fast-image'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const ItemDetailScreen = (props) => {
     const { item, isFavorited, isRental, saveItemToFavorite, deleteItemFromFavorite } = props
 
     let bigCategoryText = ''
-        switch(item.bigCategory[0]) {
-            case 'OUTER':
-                bigCategoryText = 'アウター'
-                break;
-            case 'TOPS':
-                bigCategoryText = 'トップス'
-                break;
-            case 'BOTTOMS':
-                bigCategoryText = 'ボトムス'
-                break;
-        }
+    switch(item.bigCategory[0]) {
+        case 'OUTER':
+            bigCategoryText = 'アウター'
+            break;
+        case 'TOPS':
+            bigCategoryText = 'トップス'
+            break;
+        case 'BOTTOMS':
+            bigCategoryText = 'ボトムス'
+            break;
+    }
 
     const imagesDom = item.imageURLs.map((imgUrl, idx) =>
         <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
@@ -66,16 +66,20 @@ const ItemDetailScreen = (props) => {
                             onPress={isFavorited ? () => deleteItemFromFavorite() : () => saveItemToFavorite()}
                             underlayColor='white'
                         >
-                            <FastImage
+                            {/* <Image
                                 source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.png')}
                                 style={{ resizeMode: 'contain', width: wp('10%'), height: wp('10%') }}
+                            /> */}
+                            <Icon
+                                name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline' }
+                                size={40}
                             />
                         </TouchableHighlight>
                     </View>
                     {/* 長さ */}
                     {item.bigCategory[0] === 'BOTTOMS' ?
                         <View style={styles.lengthView}>
-                            <FastImage source={require('../../assets/bottoms.png')} style={styles.lengthImage} />
+                            <Image source={require('../../assets/bottoms.png')} style={styles.lengthImage} />
                             <View style={styles.sizeTextView}>
                                 <Text style={styles.lengthText}>①ウエスト {item.waist}cm</Text>
                                 <Text style={styles.lengthText}>②ヒップ {item.hip}cm</Text>
@@ -86,7 +90,7 @@ const ItemDetailScreen = (props) => {
                         </View>
                     :
                         <View style={styles.lengthView}>
-                            <FastImage source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
+                            <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
                             <View style={styles.sizeTextView}>
                                 <Text style={styles.lengthText}>①着丈 {item.dressLength}cm</Text>
                                 <Text style={styles.lengthText}>②身幅 {item.dressWidth}cm</Text>
