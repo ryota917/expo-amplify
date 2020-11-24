@@ -37,6 +37,18 @@ export default class Item extends PureComponent {
                             >
                             {item.name}
                         </Card.Title>
+                        {/* {item.brand ?
+                            <View>
+                                <Card.Title style={styles.brandText}>
+                                    {item.brand}
+                                </Card.Title>
+                                <Card.Title style={styles.nameText}>
+                                    {item.name}
+                                </Card.Title>
+                            </View>
+                        :
+                            null
+                        } */}
                     </View>
                 </TouchableHighlight>
             </View>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, Text } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import FastImage from 'react-native-fast-image'
@@ -33,8 +33,9 @@ const ItemDetailScreen = (props) => {
                         style={styles.swiper}
                         showButtons={true}
                         activeDotColor='#7389D9'
-                        dotStyle={{ top: hp('7%')}}
-                        activeDotStyle={{ top: hp('7%')}}
+                        dotStyle={{ top: hp('1%')}}
+                        activeDotStyle={{ top: hp('1%')}}
+                        loop={false}
                     >
                         {imagesDom}
                     </Swiper>
@@ -59,19 +60,22 @@ const ItemDetailScreen = (props) => {
                                 <Text style={styles.categoryText}>{bigCategoryText}</Text>
                             </View>
                         </View>
-                        <View style={styles.iconView}>
-                            {/* bookmark-minus-outline */}
-                            <Icon
-                                name={isFavorited ? 'bookmark-minus' : 'bookmark-minus-outline'}
-                                size={40}
-                                onPress={isFavorited ? () => deleteItemFromFavorite() : () => saveItemToFavorite()}
+                        {/* お気にいりボタン */}
+                        <TouchableHighlight
+                            style={styles.iconView}
+                            onPress={isFavorited ? () => deleteItemFromFavorite() : () => saveItemToFavorite()}
+                            underlayColor='white'
+                        >
+                            <FastImage
+                                source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.jpg')}
+                                style={{ resizeMode: 'contain', width: wp('10%'), height: wp('10%') }}
                             />
-                        </View>
+                        </TouchableHighlight>
                     </View>
                     {/* 長さ */}
                     {item.bigCategory[0] === 'TOPS' ?
                         <View style={styles.lengthView}>
-                            <FastImage source={require('../../assets/bottoms.png')} style={{ width: wp('30%'), height: wp('43%'), resizeMode: 'contain' }} />
+                            <FastImage source={require('../../assets/bottoms.png')} style={styles.lengthImage} />
                             <View style={styles.sizeTextView}>
                                 <Text style={styles.lengthText}>①ウエスト {item.waist}cm</Text>
                                 <Text style={styles.lengthText}>②ヒップ {item.hip}cm</Text>
@@ -111,6 +115,9 @@ const ItemDetailScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        backgroundColor: 'white'
+    },
     imagesView: {
         width: wp('100%'),
         height: wp('133%')
@@ -121,11 +128,16 @@ const styles = StyleSheet.create({
         left: wp('10%')
     },
     flexRowView: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+    },
+    titleView: {
+        width: wp('80%'),
     },
     iconView: {
-        position: 'absolute',
-        right: wp('0%')
+        right: wp('10%'),
+        top: hp('4%')
+    },
+    brandView: {
     },
     brandText: {
         width: wp('60%'),
@@ -157,17 +169,23 @@ const styles = StyleSheet.create({
         marginLeft: wp('1%')
     },
     lengthView: {
-        marginTop: hp('2%'),
+        marginTop: hp('3%'),
         flexDirection: 'row'
     },
     sizeTextView: {
-        marginLeft: wp('10%')
+        marginLeft: wp('10%'),
+        justifyContent: 'center'
     },
     lengthText: {
-        marginBottom: hp('0.5%')
+        marginBottom: hp('1%')
+    },
+    lengthImage: {
+        width: wp('30%'),
+        height: wp('47%'),
+        resizeMode: 'contain'
     },
     stateView: {
-        marginTop: hp('2%'),
+        marginTop: hp('3%'),
         flexDirection: 'row'
     },
     stateInnerView: {

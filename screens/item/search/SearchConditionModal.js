@@ -23,7 +23,10 @@ class SearchConditionModal extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'さがす',
-        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}}/>
+        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}}/>,
+        headerStyle: {
+            height: hp('6%')
+        }
     });
 
     searchWithCondition = () => {
@@ -375,7 +378,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     dropDownTitleStyle: {
-        fontSize: 13,
+        fontSize: 14,
         color: 'black',
         marginRight: wp('3%'),
         fontWeight: '400'
