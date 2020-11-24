@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-
+import FastImage from 'react-native-fast-image'
 
 class SearchConditionModal extends React.Component {
     constructor(props) {
@@ -98,6 +98,19 @@ class SearchConditionModal extends React.Component {
         }
     }
 
+    returnChoiceName = (name, isSelected) => {
+        return(
+            <View style={styles.choiceView}>
+                <Text style={{ marginTop: hp('1%'), fontWeight: '400', fontSize: 14, color: isSelected ? 'white' : 'black' }}>{name}</Text>
+                <Text style={styles.choiceText}>選択中</Text>
+                <FastImage
+                    source={require('../../../assets/circle-check.png')}
+                    style={styles.choiceImage}
+                />
+            </View>
+        )
+    }
+
     render() {
         const { searchCondition } = this.state
         return (
@@ -120,20 +133,18 @@ class SearchConditionModal extends React.Component {
                                 <View>
                                     <Button
                                         icon={
-                                            <Image source={require('../../../assets/tops.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginRight: wp('5%') }} />
+                                            <Image source={require('../../../assets/tops.png')} style={styles.clothImage} />
                                         }
-                                        title='トップス'
+                                        title={this.returnChoiceName('トップス', searchCondition[1]['bigCategory'] === 'TOPS')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'TOPS') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[1]['bigCategory'] === 'TOPS') ? 'white' : 'black' }]}
                                         onPress={this.selectBigCategory.bind(this, 'TOPS')}
                                     />
                                     <Button
                                         icon={
-                                            <Image source={require('../../../assets/outer.png')} style={{ width: wp('5%'), height: wp('5%'), resizeMode: 'contain', marginRight: wp('5%') }} />
+                                            <Image source={require('../../../assets/outer.png')} style={styles.clothImage} />
                                         }
-                                        title='アウター'
+                                        title={this.returnChoiceName('アウター', searchCondition[1]['bigCategory'] === 'OUTER' )}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'OUTER') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[1]['bigCategory'] === 'OUTER') ? 'white' : 'black' }]}
                                         onPress={this.selectBigCategory.bind(this, 'OUTER')}
                                     />
                                 </View>
@@ -157,52 +168,47 @@ class SearchConditionModal extends React.Component {
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'black', marginRight: wp('5%') }}/>
                                         }
-                                        title='ブラック系'
+                                        title={this.returnChoiceName('ブラック系', searchCondition[0]['color'] === 'BLACK')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'BLACK') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'BLACK') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'BLACK')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'brown', marginRight: wp('5%') }} />
                                         }
-                                        title='ブラウン系'
+                                        title={this.returnChoiceName('ブラウン系', searchCondition[0]['color'] === 'BROWN')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'BROWN') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'BROWN') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'BROWN')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'floralwhite', marginRight: wp('5%') }} />
                                         }
-                                        title='ホワイト系'
-                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'white') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'white') ? 'white' : 'black' }]}
-                                        onPress={this.selectColor.bind(this, 'white')}
+                                        title={this.returnChoiceName('ホワイト系', searchCondition[0]['color'] === 'WHITE')}
+                                        buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'WHITE') ? '#333333' : 'white' }]}
+                                        onPress={this.selectColor.bind(this, 'WHITE')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'blue', marginRight: wp('5%') }} />
                                         }
-                                        title='ブルー系'
+                                        title={this.returnChoiceName('ブルー系', searchCondition[0]['color'] === 'BLUE')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'BLUE') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'BLUE') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'BLUE')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'red', marginRight: wp('5%') }} />
                                         }
-                                        title='レッド系'
+                                        title={this.returnChoiceName('レッド系', searchCondition[0]['color'] === 'RED')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'RED') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'RED') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'RED')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'green', marginRight: wp('5%') }} />
                                         }
-                                        title='グリーン系'
+                                        title={this.returnChoiceName('グリーン系', searchCondition[0]['color'] === 'GREEN')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'GREEN') ? '#333333' : 'white' }]}
                                         titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'GREEN') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'GREEN')}
@@ -211,7 +217,7 @@ class SearchConditionModal extends React.Component {
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'yellow', marginRight: wp('5%') }} />
                                         }
-                                        title='イエロー系'
+                                        title={this.returnChoiceName('イエロー系', searchCondition[0]['color'] === 'YELLOW')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'YELLOW') ? '#333333' : 'white' }]}
                                         titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'YELLOW') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'YELLOW')}
@@ -220,7 +226,7 @@ class SearchConditionModal extends React.Component {
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'purple', marginRight: wp('5%') }} />
                                         }
-                                        title='パープル系'
+                                        title={this.returnChoiceName('パープル系', searchCondition[0]['color'] === 'PURPLE')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'PURPLE') ? '#333333' : 'white' }]}
                                         titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'PURPLE') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'PURPLE')}
@@ -229,7 +235,7 @@ class SearchConditionModal extends React.Component {
                                         icon={
                                             <Icon name='circle' size={20} style={{ color: 'grey', marginRight: wp('5%') }} />
                                         }
-                                        title='グレー系'
+                                        title={this.returnChoiceName('グレー系', searchCondition[0]['color'] === 'GRAY')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[0]['color'] === 'GRAY') ? '#333333' : 'white' }]}
                                         titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[0]['color'] === 'GRAY') ? 'white' : 'black' }]}
                                         onPress={this.selectColor.bind(this, 'GRAY')}
@@ -255,45 +261,40 @@ class SearchConditionModal extends React.Component {
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='S'
+                                        title={this.returnChoiceName('S', searchCondition[2]['size'] === 'S')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'S') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'S') ? 'white' : 'black' }]}
                                         onPress={this.selectSize.bind(this, 'S')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='M'
+                                        title={this.returnChoiceName('M', searchCondition[2]['size'] === 'M')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'M') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'M') ? 'white' : 'black' }]}
                                         onPress={this.selectSize.bind(this, 'M')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='L'
+                                        title={this.returnChoiceName('L', searchCondition[2]['size'] === 'L')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'L') ? '#333333' : 'white' }]}
-                                        titleStyle={styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'L') ? 'white' : 'black' }}
                                         onPress={this.selectSize.bind(this, 'L')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='XL'
+                                        title={this.returnChoiceName('XL', searchCondition[2]['size'] === 'XL')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'XL') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'XL') ? 'white' : 'black' }]}
                                         onPress={this.selectSize.bind(this, 'XL')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='XXL'
+                                        title={this.returnChoiceName('XXL', searchCondition[2]['size'] === 'XXL')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[2]['size'] === 'XXL') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[2]['size'] === 'XXL') ? 'white' : 'black' }]}
                                         onPress={this.selectSize.bind(this, 'XXL')}
                                     />
                                 </View>
@@ -317,27 +318,24 @@ class SearchConditionModal extends React.Component {
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='Sランク'
+                                        title={this.returnChoiceName('Sランク', searchCondition[3]['rank'] === 'S')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[3]['rank'] === 'S') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[3]['rank'] === 'S') ? 'white' : 'black' }]}
                                         onPress={this.selectRank.bind(this, 'S')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='Aランク'
+                                        title={this.returnChoiceName('Aランク', searchCondition[3]['rank'] === 'A')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[3]['rank'] === 'A') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[3]['rank'] === 'A') ? 'white' : 'black' }]}
                                         onPress={this.selectRank.bind(this, 'A')}
                                     />
                                     <Button
                                         icon={
                                             <Icon name='circle' size={12} style={{ color: 'grey', marginRight: wp('5%') }}/>
                                         }
-                                        title='Bランク'
+                                        title={this.returnChoiceName('Bランク', searchCondition[3]['rank'] === 'B')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[3]['rank'] === 'B') ? '#333333' : 'white' }]}
-                                        titleStyle={[styles.choiceTitleStyle, { color: !!(searchCondition[3]['rank'] === 'B') ? 'white' : 'black' }]}
                                         onPress={this.selectRank.bind(this, 'B')}
                                         />
                                 </View>
@@ -389,10 +387,6 @@ const styles = StyleSheet.create({
         marginLeft: wp('10%'),
         justifyContent: 'flex-start',
     },
-    choiceTitleStyle: {
-        fontSize: 13,
-        fontWeight: '400'
-    },
     searchButtonView: {
         position: 'absolute',
         right: wp('6%'),
@@ -412,6 +406,32 @@ const styles = StyleSheet.create({
         color: '#7389D9',
         fontSize: 16,
         fontWeight: 'bold'
+    },
+    choiceView: {
+        flexDirection: 'row',
+        width: wp('65%')
+    },
+    choiceText: {
+        marginTop: hp('1.1%'),
+        fontSize: 12,
+        fontWeight: '500',
+        color: 'white',
+        position: 'absolute',
+        right: wp('4%')
+    },
+    choiceImage: {
+        marginTop: hp('1.1%'),
+        resizeMode: 'contain',
+        width: wp("3%"),
+        height: wp('3%'),
+        position: 'absolute',
+        right: wp('0%')
+    },
+    clothImage: {
+        width: wp('5%'),
+        height: wp('5%'),
+        resizeMode: 'contain',
+        marginRight: wp('5%')
     }
 })
 
