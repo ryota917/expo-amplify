@@ -1,6 +1,8 @@
+import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 import { Button } from 'react-native-elements'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 const SingleButtonModal = (props) => {
     const { isModalVisible, onPressButton, text, buttonText } = props
@@ -45,6 +47,16 @@ const styles = StyleSheet.create({
     modalButtonView: {
         flexDirection: 'row',
         marginTop: hp('2%')
+    },
+    modalButtonStyle: {
+        borderRadius: 25,
+        width: wp('25%'),
+        height: hp('6%'),
+        backgroundColor: '#7389D9'
+    },
+    modalTitleStyle: {
+        fontSize: 14,
+        color: 'white'
     }
 })
 

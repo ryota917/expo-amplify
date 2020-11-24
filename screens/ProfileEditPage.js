@@ -8,6 +8,7 @@ import * as gqlMutations from '../src/graphql/mutations'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import SingleButtonModal from './common/SingleButtonModal'
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -25,6 +26,7 @@ export default class ProfileEditPage extends React.Component {
             inputedHeight: '',
             nameAlert: false,
             addressAlert: false,
+            isUpdatedModal: false
         }
     }
 
@@ -87,8 +89,13 @@ export default class ProfileEditPage extends React.Component {
                     birthday: this.state.inputedBirthday
                 }
             }))
-            await this.props.navigation.navigate('ProfileConfirmPage')
+            this.setState({ isUpdatedModal: true })
         }
+    }
+
+    onPressSingleButton = () => {
+        this.setState({ isUpdatedModal: false })
+        this.props.navigation.navigate('ProfileConfirmPage')
     }
 
     render() {
@@ -104,11 +111,18 @@ export default class ProfileEditPage extends React.Component {
             inputedHeight,
             nameAlert,
             addressAlert,
-            isDatePickerVisible
+            isDatePickerVisible,
+            isUpdatedModal
         } = this.state
         const birthdayText = inputedBirthday.getFullYear() + '年' + (inputedBirthday.getMonth() + 1) + '月' + inputedBirthday.getDate() + '日'
         return(
             <SafeAreaView style={{ flex: 1 }}>
+                <SingleButtonModal
+                    isModalVisible={isUpdatedModal}
+                    onPressButton={() => this.onPressSingleButton()}
+                    text='登録情報が更新されました'
+                    buttonText='完了'
+                />
                 <KeyboardAwareScrollView style={styles.scrollView} ref="_scrollView">
                     <View style={styles.innerContainer}>
                         <View style={styles.formView}>
@@ -232,7 +246,7 @@ export default class ProfileEditPage extends React.Component {
                                 style={styles.textInput}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: hp('3%') }}>
+                        <View style={styles.footerButtonView}>
                             <View style={styles.changeButtonView}>
                                 <Button
                                     title='戻る'
@@ -347,5 +361,9 @@ const styles = StyleSheet.create({
         color: '#A60000',
         fontWeight: '500'
     },
+    footerButtonView: {
+        flexDirection: 'row',
+        marginTop: hp('7%')
+    }
 })
 
