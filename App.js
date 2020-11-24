@@ -10,7 +10,6 @@ import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import awsmobile from './aws-exports'
-import DoubleButtonModal from './screens/common/DoubleButtonModal'
 
 //import ItemTab
 import ItemTab from './screens/ItemTab';

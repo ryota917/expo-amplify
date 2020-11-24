@@ -109,7 +109,7 @@ export default class FavoriteTab extends React.Component {
                     columnWrapperStyle={styles.columnWrapperStyle}
                     renderItem={({ item }) => (
                         <Item
-                            constructor={this.constructor.name}
+                            detailPage='FavoriteItemDetail'
                             item={item}
                             navigation={this.props.navigation}
                         />

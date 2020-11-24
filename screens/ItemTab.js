@@ -338,7 +338,7 @@ export default class ItemTab extends React.Component {
                     columnWrapperStyle={styles.columnWrapperStyle}
                     renderItem={({ item }) => (
                         <Item
-                            constructor={this.constructor.name}
+                            detailPage='ItemDetail'
                             item={item}
                             navigation={this.props.navigation}
                         />

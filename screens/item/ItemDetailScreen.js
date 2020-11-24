@@ -3,7 +3,6 @@ import { Image, View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'r
 import Swiper from 'react-native-swiper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import FastImage from 'react-native-fast-image'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const ItemDetailScreen = (props) => {
     const { item, isFavorited, isRental, saveItemToFavorite, deleteItemFromFavorite } = props
@@ -22,7 +21,11 @@ const ItemDetailScreen = (props) => {
     }
 
     const imagesDom = item.imageURLs.map((imgUrl, idx) =>
-        <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
+        <FastImage
+            key={idx}
+            source={{ uri: imgUrl }}
+            style={styles.imagesDom}
+        />
     )
 
     return(
@@ -213,6 +216,11 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         marginTop: hp('2%')
+    },
+    imagesDom: {
+        width: wp('100%'),
+        height: wp('133%'),
+        resizeMode: 'contain'
     }
 })
 
