@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalText: {
-        width: wp('65%'),
+        width: wp('60%'),
         marginBottom: hp('2%'),
         fontWeight: '400',
         textAlign: 'center'

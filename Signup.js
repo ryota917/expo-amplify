@@ -159,7 +159,7 @@ export default class Signup extends React.Component {
                         isModalVisible={isBackConfirmModalVisible}
                         onPressLeftButton={() => this.setState({ isBackConfirmModalVisible: false })}
                         onPressRightButton={() => this.navigateSignin()}
-                        text={'現在入力されている情報が失われます。\n戻ってもよろしいですか？'}
+                        text={'現在入力されている情報が失われます。戻ってもよろしいですか？'}
                         leftButtonText='入力を続ける'
                         rightButtonText='戻る'
                     />

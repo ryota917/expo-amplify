@@ -24,11 +24,12 @@ export default class Signin extends React.Component {
     onPressForgotPasswordButton = async () => {
         try {
             const { email } = this.state
-            const ForgotPassword = await Auth.forgotPassword(email)
+            await Auth.forgotPassword(email)
+            this.setState({ isNavigateConfirmModalVisible: true })
             //認証されていないユーザーはinvalidparameterexception
-            // this.props.onStateChange('requireNewPassword', email)
         } catch(err) {
             console.error(err)
+            this.setState({ isInvalidAddressModalVisible: true })
         }
     }
 
@@ -48,7 +49,7 @@ export default class Signin extends React.Component {
                     <SingleButtonModal
                         isModalVisible={isInvalidAddressModalVisible}
                         onPressButton={() => this.setState({ isInvalidAddressModalVisible: false })}
-                        text={'無効なメールアドレスです。'}
+                        text={'メールアドレスが適切に入力されていないか、登録されていないメールアドレスです。'}
                         buttonText='戻る'
                     />
                     <View style={styles.container}>
