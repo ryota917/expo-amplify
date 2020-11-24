@@ -73,7 +73,7 @@ const ItemDetailScreen = (props) => {
                         </TouchableHighlight>
                     </View>
                     {/* 長さ */}
-                    {item.bigCategory[0] === 'TOPS' ?
+                    {item.bigCategory[0] === 'BOTTOMS' ?
                         <View style={styles.lengthView}>
                             <FastImage source={require('../../assets/bottoms.png')} style={styles.lengthImage} />
                             <View style={styles.sizeTextView}>

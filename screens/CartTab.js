@@ -8,6 +8,7 @@ import * as gqlMutations from '../src/graphql/mutations' // create, update, dele
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
 import FastImage from 'react-native-fast-image'
+import DoubleButtonModal from './common/DoubleButtonModal'
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -26,6 +27,8 @@ export default class CartTab extends React.Component {
             //レンタル可能か(レンタル中でないかつ、一ヶ月以内にレンタルしていない)
             canRental: true,
             isRentalAlertVisible: false,
+            selectedDeleteItem: [],
+            isDeleteConfirmModalVisible: false,
             cartNum: 0
         }
     }
@@ -129,17 +132,17 @@ export default class CartTab extends React.Component {
     }
 
     //Cartに入っているアイテムを削除
-    deleteItemFromCart = async (deleteItem) => {
-        const { currentUserEmail } = this.state
+    deleteItemFromCart = async () => {
+        const { currentUserEmail, selectedDeleteItem } = this.state
         await API.graphql(graphqlOperation(gqlMutations.updateItem, {
             input: {
-                id: deleteItem.id,
+                id: selectedDeleteItem.id,
                 status: 'WAITING'
             }
         }))
         const res = await API.graphql(graphqlOperation(gqlMutations.deleteItemCart, {
             input: {
-                id: currentUserEmail + deleteItem.id
+                id: currentUserEmail + selectedDeleteItem.id
             }
         }))
         //削除したアイテムをstateから削除(再レンダリングしなくてもアイテムが消えるように)
@@ -148,7 +151,8 @@ export default class CartTab extends React.Component {
         this.setState({
             itemCart: newArray,
             isCartFilled: isCartFilled,
-            cartNum: this.state.cartNum - 1
+            cartNum: this.state.cartNum - 1,
+            isDeleteConfirmModalVisible: false
         })
     }
 
@@ -161,7 +165,7 @@ export default class CartTab extends React.Component {
     }
 
     render() {
-        const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate, cartNum } = this.state
+        const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate, cartNum, isDeleteConfirmModalVisible } = this.state
         const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
         const rentalAlertText = canRental ? 'カートに5つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
         return(
@@ -181,6 +185,14 @@ export default class CartTab extends React.Component {
                         </View>
                     </View>
                 </Modal>
+                <DoubleButtonModal
+                    isModalVisible={isDeleteConfirmModalVisible}
+                    onPressLeftButton={() => this.setState({ isDeleteConfirmModalVisible: false })}
+                    onPressRightButton={() => this.deleteItemFromCart()}
+                    text={'このアイテムをカートから' + '\n' + '消去してよろしいですか？'}
+                    leftButtonText='キャンセル'
+                    rightButtonText='消去'
+                />
                 {isRental ?
                     <View style={styles.isRentalView}>
                         <Image source={require('../assets/error.png')} style={styles.errorImage}/>
@@ -221,7 +233,7 @@ export default class CartTab extends React.Component {
                                     <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
                                     <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
                                     <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
-                                    <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.deleteItemFromCart(item)} />
+                                    <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
                                 </Card>
                             </View>
                         )
@@ -360,7 +372,7 @@ const styles = StyleSheet.create({
     },
     modalText: {
         marginBottom: hp('2%'),
-        fontWeight: '500'
+        fontWeight: '400'
     },
     modalButtonView: {
         marginTop: hp('2%')

@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import DoubleButtonModal from './screens/common/DoubleButtonModal'
 
 export default class Signin extends React.Component {
     constructor(props) {
@@ -64,32 +65,20 @@ export default class Signin extends React.Component {
 
 
     render() {
+        const { isForgotPasswordModalVisible } = this.state
         if(this.props.authState !== 'signIn' && this.props.authState !== 'confirmSignIn') {
             return null;
         } else {
             return(
                 <SafeAreaView style={{ flex: 1 }}>
-                    <Modal isVisible={this.state.isForgotPasswordModalVisible}>
-                        <View style={styles.modalContainerView}>
-                            <View style={styles.modalInnerView}>
-                                <Text style={styles.modalText}>パスワードの再発行を{'\n'}行いますか？</Text>
-                                <View style={styles.modalButtonView}>
-                                    <Button
-                                        title='戻る'
-                                        onPress={this.toggleModal}
-                                        buttonStyle={styles.modalLeftButtonStyle}
-                                        titleStyle={styles.modalLeftTitleStyle}
-                                    />
-                                    <Button
-                                        title='再発行へ'
-                                        onPress={this.navigateForgotPassword}
-                                        buttonStyle={styles.modalRightButtonStyle}
-                                        titleStyle={styles.modalRightTitleStyle}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
+                    <DoubleButtonModal
+                        isModalVisible={isForgotPasswordModalVisible}
+                        onPressLeftButton={() => this.setState({ isForgotPasswordModalVisible: false })}
+                        onPressRightButton={() => this.navigateForgotPassword()}
+                        text={'パスワードの再発行を\n行いますか？'}
+                        leftButtonText='戻る'
+                        rightButtonText='再発行へ'
+                    />
                     <ScrollView style={styles.scrollView}>
                         <View style={styles.formContainer}>
                             <View>
