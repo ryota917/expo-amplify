@@ -67,7 +67,7 @@ const ItemDetailScreen = (props) => {
                             underlayColor='white'
                         >
                             <FastImage
-                                source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.jpg')}
+                                source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.png')}
                                 style={{ resizeMode: 'contain', width: wp('10%'), height: wp('10%') }}
                             />
                         </TouchableHighlight>
