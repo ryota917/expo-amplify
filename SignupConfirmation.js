@@ -22,12 +22,14 @@ export default class Signin extends React.Component {
         this.props.onStateChange('signIn')
     }
 
+    //コード確認ボタン押下
     onPressConfirmationSignup = async () => {
         const { verificationCode } = this.state
-        const { email } = this.props.authData
+        const { email, password } = this.props.authData
         try{
             await Auth.confirmSignUp(email, verificationCode)
-            this.props.onStateChange('confirmSignIn', { verificationCode })
+            Auth.signIn(email, password)
+            // this.props.onStateChange('confirmSignIn', { verificationCode })
         } catch(error) {
             console.error(error)
             this.setState({ confirmationAlert: true })
@@ -36,7 +38,6 @@ export default class Signin extends React.Component {
     }
 
     onPressResendConfirmationMail = async () => {
-        const email = this.props.authData
         try {
             this.toggleResendConfirmationModal()
         } catch(err) {
@@ -122,7 +123,7 @@ export default class Signin extends React.Component {
                         </Modal>
                         <View style={styles.header}>
                             <View style={styles.headerInner}>
-                                <Icon name='chevron-left' size={45} onPress={this.navigateSignIn}/>
+                                <Icon name='chevron-left' size={55} onPress={this.navigateSignIn}/>
                                 <Text style={styles.headerText}>確認コード入力</Text>
                             </View>
                         </View>
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
     },
     headerInner: {
         flexDirection: 'row',
+        marginLeft: -wp('5%'),
         width: wp('86%'),
         height: hp('6%'),
         marginTop: hp('2%'),

@@ -10,6 +10,7 @@ import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import awsmobile from './aws-exports'
+import DoubleButtonModal from './screens/common/DoubleButtonModal'
 
 //import ItemTab
 import ItemTab from './screens/ItemTab';
@@ -154,7 +155,8 @@ const Drawer = createDrawerNavigator(
             <Text
               style={styles.logoutText}
               onPress={() => Auth.signOut()}
-            >ログアウト
+            >
+              ログアウト
             </Text>
           </View>
       </View>
@@ -165,13 +167,28 @@ const Drawer = createDrawerNavigator(
   }
 )
 
-//TODO: UI画面デザイン修正, SignUp時にUserデータをDynamoに同期させるようにAuthenticatorをカスタム(時間がかかるので放置します)
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isLogoutModalVisile: false
+    }
+  }
 
   render() {
+    const { isLogoutModalVisile } = this.state
     const Layout = createAppContainer(Drawer);
       return (
         <SafeAreaView style={{ flex: 1 }}>
+          {/* TODO: DrawerにsetStateを渡す */}
+          {/* <DoubleButtonModal
+            isModalVisible={isLogoutModalVisile}
+            onPressLeftButton={() => this.setState({ isLogoutModalVisile: false })}
+            onPressRightButton={() => Auth.signOut()}
+            text={'このアカウントから\nログアウトしてもよろしいですか？'}
+            leftButtonText='戻る'
+            rightButtonText='ログアウト'
+          /> */}
           <Layout />
         </SafeAreaView>
       )

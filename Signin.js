@@ -30,7 +30,7 @@ export default class Signin extends React.Component {
             console.error(error)
             if(error.code === 'UserNotConfirmedException') {
                 Auth.resendSignUp(inputedEmail)
-                this.props.onStateChange('confirmSignUp', { email: inputedEmail })
+                this.props.onStateChange('confirmSignUp', { email: inputedEmail, password: inputedPassword })
             } else {
                 this.setState({ alert: true })
                 setTimeout(() => this.setState({ alert: false }), 3000)

@@ -4,13 +4,16 @@ import { Auth } from 'aws-amplify';
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import SingleButtonModal from './screens/common/SingleButtonModal'
 
 
 export default class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: ''
+            email: '',
+            isNavigateConfirmModalVisible: false,
+            isInvalidAddressModalVisible: false
         }
     }
 
@@ -23,18 +26,31 @@ export default class Signin extends React.Component {
             const { email } = this.state
             const ForgotPassword = await Auth.forgotPassword(email)
             //認証されていないユーザーはinvalidparameterexception
-            this.props.onStateChange('requireNewPassword', email)
+            // this.props.onStateChange('requireNewPassword', email)
         } catch(err) {
             console.error(err)
         }
     }
 
     render() {
+        const { isNavigateConfirmModalVisible, isInvalidAddressModalVisible, email } = this.state
         if(this.props.authState !== 'forgotPassword') {
             return null;
         } else {
             return(
                 <SafeAreaView style={{ flex: 1 }}>
+                    <SingleButtonModal
+                        isModalVisible={isNavigateConfirmModalVisible}
+                        onPressButton={() => this.props.onStateChange('requireNewPassword', email)}
+                        text={'入力されたアドレスに確認コードを送信しました。メールを確認してコードを入力してください。'}
+                        buttonText='入力へ'
+                    />
+                    <SingleButtonModal
+                        isModalVisible={isInvalidAddressModalVisible}
+                        onPressButton={() => this.setState({ isInvalidAddressModalVisible: false })}
+                        text={'無効なメールアドレスです。'}
+                        buttonText='戻る'
+                    />
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <View style={styles.headerInner}>

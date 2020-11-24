@@ -7,6 +7,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import DoubleButtonModal from './screens/common/DoubleButtonModal'
+import SingleButtonModal from './screens/common/SingleButtonModal'
 
 export default class Signup extends React.Component {
     constructor(props) {
@@ -31,6 +33,7 @@ export default class Signup extends React.Component {
             passWordAlert: false,
             signUpAlert: false,
             signUpAlertText: '',
+            isBackConfirmModalVisible: false
         }
     }
 
@@ -42,10 +45,13 @@ export default class Signup extends React.Component {
         }
     }
 
+    //ログイン画面へ
     navigateSignin = () => {
+        this.setState({ isBackConfirmModalVisible: false })
         this.props.onStateChange('signIn')
     }
 
+    //性別を選択
     onGenderCheck = (gender) => {
         if(this.state.gender === gender) {
             this.setState({ gender: ''})
@@ -54,6 +60,7 @@ export default class Signup extends React.Component {
         }
     }
 
+    //登録ボタン押下
     onPressSignup = async () => {
         const { name, nameKana, email, password, phoneNumber, address, postalCode, height, isHeightSelected, birthday, isBirthdaySelected, gender } = this.state
         //空の値に対してバリデーション
@@ -98,7 +105,7 @@ export default class Signup extends React.Component {
                         userId: email
                     }
                 }))
-                this.props.onStateChange('confirmSignUp', { email: email })
+                this.setState({ isSignedUpModalVisible: true })
             }
         } catch(error) {
             console.error(error)
@@ -125,16 +132,46 @@ export default class Signup extends React.Component {
     }
 
     render() {
-        const { gender, birthday, isBirthdaySelected, nameAlert, addressAlert, emailAlert, passwordAlert, signUpAlert, signUpAlertText, isDatePickerVisible } = this.state
+        const {
+            addressAlert,
+            birthday,
+            email,
+            emailAlert,
+            gender,
+            isBackConfirmModalVisible,
+            isBirthdaySelected,
+            isDatePickerVisible,
+            isSignedUpModalVisible,
+            nameAlert,
+            password,
+            passwordAlert,
+            signUpAlert,
+            signUpAlertText,
+        } = this.state
         const birthdayText = isBirthdaySelected ? birthday.getFullYear() + '年' + (birthday.getMonth() + 1) + '月' + birthday.getDate() + '日' : '選択してください'
         if(this.props.authState !== 'signUp') {
             return null;
         } else {
             return(
                 <SafeAreaView style={{ flex: 1 }}>
+                    {/* ログイン画面に戻る時のアラートモーダル */}
+                    <DoubleButtonModal
+                        isModalVisible={isBackConfirmModalVisible}
+                        onPressLeftButton={() => this.setState({ isBackConfirmModalVisible: false })}
+                        onPressRightButton={() => this.navigateSignin()}
+                        text={'現在入力されている情報が失われます。\n戻ってもよろしいですか？'}
+                        leftButtonText='入力を続ける'
+                        rightButtonText='戻る'
+                    />
+                    <SingleButtonModal
+                        isModalVisible={isSignedUpModalVisible}
+                        onPressButton={() => this.props.onStateChange('confirmSignUp', { email: email, password: password })}
+                        text={'入力されたアドレスに確認コードを送信しました。メールを確認してコードを入力してください。'}
+                        buttonText='入力へ'
+                    />
                     <View style={styles.header}>
                         <View style={styles.headerInner}>
-                            <Icon name='chevron-left' size={55} onPress={this.navigateSignin} />
+                            <Icon name='chevron-left' size={55} onPress={() => this.setState({ isBackConfirmModalVisible: true })} />
                         </View>
                     </View>
                     <KeyboardAwareScrollView style={styles.scrollView} ref="_scrollView">
