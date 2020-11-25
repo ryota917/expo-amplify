@@ -228,30 +228,24 @@ export default class CartTab extends React.Component {
                         )
                     :
                         this.state.itemCart.map((item, i) =>
-                            // <TouchableHighlight
-                            //     key={i}
-                            //     underlayColor='white'
-                            //     onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                            // >
-                                <View style={styles.cardView} key={i}>
-                                    <TouchableHighlight
-                                        underlayColor='white'
-                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                    >
-                                        <FastImage
-                                            source={{ uri: item.imageURLs[0] }}
-                                            style={styles.image}
-                                        />
-                                    </TouchableHighlight>
-                                    <View style={styles.textView}>
-                                        <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
-                                        <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
-                                        <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
-                                        <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
-                                        <Icon name='trash-o' size={30} style={styles.trashButton} onPress={() => this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
-                                    </View>
+                            <View style={styles.cardView} key={i}>
+                                <TouchableHighlight
+                                    underlayColor='white'
+                                    onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                >
+                                    <FastImage
+                                        source={{ uri: item.imageURLs[0] }}
+                                        style={styles.image}
+                                    />
+                                </TouchableHighlight>
+                                <View style={styles.textView}>
+                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
+                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
+                                    <Icon name='trash-o' size={30} style={styles.trashButton} onPress={() => this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
                                 </View>
-                            // </TouchableHighlight>
+                            </View>
                         )
                     }
                     <View style={{ height: hp('15%') }}></View>
@@ -313,6 +307,7 @@ const styles = StyleSheet.create({
     scrollView: {
     },
     cardView: {
+        flexDirection: 'row',
         backgroundColor: 'white',
         height: wp('42%'),
         margin: wp('2%')
@@ -323,13 +318,11 @@ const styles = StyleSheet.create({
         margin: wp('3%')
     },
     textView: {
-        bottom: hp('18%'),
         width: wp('56%'),
-        left: wp('34%'),
         height: wp('36%'),
     },
     brand: {
-        marginTop: wp('5%'),
+        marginTop: wp('6%'),
         color: '#7389D9',
         fontSize: 12,
         width: wp('40%'),
