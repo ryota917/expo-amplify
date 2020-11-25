@@ -16,6 +16,7 @@ export default class ConfirmPage extends React.Component {
         this.state = {
             itemCart: this.props.navigation.state.params.itemCart,
             currentUserEmail: '',
+            userAddress: '',
             isConfirmModalVisible: false,
             cartLogId: ''
         }
@@ -154,23 +155,25 @@ export default class ConfirmPage extends React.Component {
                     </View>
                     <ScrollView style={styles.scrollView}>
                         {this.state.itemCart.map((item, i) =>
-                            <View style={styles.cardContainer} key={i}>
-                                <Card wrapperStyle={{ height: wp('27%')}}>
-                                    <FastImage
-                                        source={{ uri: item.imageURLs[0] }}
-                                        style={styles.image}
-                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                    />
-                                    <Card.Title style={styles.brand} >ブランド</Card.Title>
-                                    <Card.Title style={styles.name} >{item.name}</Card.Title>
-                                    <Card.Title style={styles.category} >アウター</Card.Title>
-                                    <Card.Title style={styles.rank} >Sランク</Card.Title>
-                                </Card>
+                            <View
+                                key={i}
+                                style={styles.cardView}
+                            >
+                                <FastImage
+                                    source={{ uri: item.imageURLs[0] }}
+                                    style={styles.image}
+                                />
+                                <View style={styles.textView}>
+                                    <Card.Title style={styles.brand}>{item.brand}</Card.Title>
+                                    <Card.Title style={styles.name}>{item.name}</Card.Title>
+                                    <Card.Title style={styles.category}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                    <Card.Title style={styles.rank}>{item.rank}ランク</Card.Title>
+                                </View>
                             </View>
                         )}
                         <View style={styles.addressView}>
                             <Text style={styles.addressTitleText}> お届け先</Text>
-                            <Text style={styles.addressText}>京都市左京区大久保西区プレタポルテ245</Text>
+                            <Text style={styles.addressText}>ddd</Text>
                             <View style={styles.addressAlertView} >
                                 <Icon name='alert-circle' size={19} style={{ color: '#BCBCBC'}}/>
                                 <Text style={styles.addressAlertText}>
@@ -207,47 +210,45 @@ const styles = StyleSheet.create({
     },
     scrollView: {
     },
-    cardContainer: {
+    cardView: {
+        backgroundColor: 'white',
+        height: wp('42%'),
+        margin: wp('2%')
     },
     image: {
         width: wp('27%'),
-        height: wp('27%')
+        height: wp('36%'),
+        margin: wp('3%')
+    },
+    textView: {
+        bottom: hp('18%'),
+        width: wp('56%'),
+        left: wp('34%'),
+        height: wp('36%'),
     },
     brand: {
-        marginTop: -wp('26%'),
+        marginTop: wp('5%'),
         color: '#7389D9',
         fontSize: 12,
         width: wp('40%'),
-        marginLeft: wp('30%'),
         textAlign: 'left'
     },
     name: {
-        marginTop: -wp('2%'),
         fontSize: 16,
         width: wp('50%'),
-        marginLeft: wp('30%'),
         textAlign: 'left'
     },
     category: {
-        marginTop: -wp('3%'),
         fontSize: 11,
         color: '#828282',
         width: wp('40%'),
         textAlign: 'left',
-        marginLeft: wp('30%')
     },
     rank: {
-        marginTop: -wp('1%'),
         fontSize: 12,
         backgroundColor: '#C4C4C4',
         color: 'white',
         width: wp('22%'),
-        marginLeft: wp('30%')
-    },
-    trashButton: {
-        color: '#7389D9',
-        marginLeft: wp('78%'),
-        marginTop: -wp('9%')
     },
     rentalButtonView: {
         position: 'absolute',

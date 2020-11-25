@@ -10,7 +10,10 @@ export default class Item extends PureComponent {
 
         return(
             <View style={styles.container}>
-                <TouchableHighlight onPress={() => navigation.navigate(detailPage, { item: item })} underlayColor='white' >
+                <TouchableHighlight
+                    onPress={() => navigation.navigate(detailPage, { item: item })}
+                    underlayColor='white'
+                >
                     <View>
                         <FastImage
                             source={{ uri: item.imageURLs[0] }}

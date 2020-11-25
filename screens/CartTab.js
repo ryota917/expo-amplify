@@ -9,6 +9,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Modal from 'react-native-modal'
 import FastImage from 'react-native-fast-image'
 import DoubleButtonModal from './common/DoubleButtonModal'
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -206,36 +207,46 @@ export default class CartTab extends React.Component {
                 <ScrollView style={styles.scrollView}>
                     {isRental ?
                         this.state.itemCartLog.map((item, i) =>
-                            <View style={styles.cardContainer} key={i}>
-                                <Card wrapperStyle={{ height: wp('27%')}}>
-                                    <Card.Image
-                                        source={{ uri: item.imageURLs[0] }}
-                                        style={styles.image}
-                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                                    />
-                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
-                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
-                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
-                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
-                                </Card>
-                            </View>
-                        )
-                    :
-                        this.state.itemCart.map((item, i) =>
-                            <View style={styles.cardContainer} key={i}>
-                                <Card wrapperStyle={{ height: wp('27%')}}>
+                            <TouchableHighlight
+                                key={i}
+                                underlayColor='white'
+                                onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                            >
+                                <View style={styles.cardView}>
                                     <FastImage
                                         source={{ uri: item.imageURLs[0] }}
                                         style={styles.image}
-                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
                                     />
-                                    <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
-                                    <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
-                                    <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
-                                    <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
-                                    <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
-                                </Card>
-                            </View>
+                                    <View style={styles.textView}>
+                                        <Card.Title style={styles.brand}>{item.brand}</Card.Title>
+                                        <Card.Title style={styles.name}>{item.name}</Card.Title>
+                                        <Card.Title style={styles.category}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                        <Card.Title style={styles.rank}>{item.rank}ランク</Card.Title>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                        )
+                    :
+                        this.state.itemCart.map((item, i) =>
+                            <TouchableHighlight
+                                key={i}
+                                underlayColor='white'
+                                onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                            >
+                                <View style={styles.cardView}>
+                                    <FastImage
+                                        source={{ uri: item.imageURLs[0] }}
+                                        style={styles.image}
+                                    />
+                                    <View style={styles.textView}>
+                                        <Card.Title style={styles.brand}>{item.brand}</Card.Title>
+                                        <Card.Title style={styles.name}>{item.name}</Card.Title>
+                                        <Card.Title style={styles.category}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                        <Card.Title style={styles.rank}>{item.rank}ランク</Card.Title>
+                                        <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
                         )
                     }
                     <View style={{ height: hp('15%') }}></View>
@@ -296,46 +307,49 @@ const styles = StyleSheet.create({
     },
     scrollView: {
     },
-    cardContainer: {
+    cardView: {
+        backgroundColor: 'white',
+        height: wp('42%'),
+        margin: wp('2%')
     },
     image: {
         width: wp('27%'),
-        height: wp('27%')
+        height: wp('36%'),
+        margin: wp('3%')
+    },
+    textView: {
+        bottom: hp('18%'),
+        width: wp('56%'),
+        left: wp('34%'),
+        height: wp('36%'),
     },
     brand: {
-        marginTop: -wp('26%'),
+        marginTop: wp('5%'),
         color: '#7389D9',
         fontSize: 12,
         width: wp('40%'),
-        marginLeft: wp('30%'),
         textAlign: 'left'
     },
     name: {
-        marginTop: -wp('2%'),
         fontSize: 16,
         width: wp('50%'),
-        marginLeft: wp('30%'),
         textAlign: 'left'
     },
     category: {
-        marginTop: -wp('3%'),
         fontSize: 11,
         color: '#828282',
         width: wp('40%'),
         textAlign: 'left',
-        marginLeft: wp('30%')
     },
     rank: {
-        marginTop: -wp('1%'),
         fontSize: 12,
         backgroundColor: '#C4C4C4',
         color: 'white',
         width: wp('22%'),
-        marginLeft: wp('30%')
     },
     trashButton: {
         color: '#7389D9',
-        marginLeft: wp('78%'),
+        marginLeft: wp('47%'),
         marginTop: -wp('9%')
     },
     rentalButtonView: {
