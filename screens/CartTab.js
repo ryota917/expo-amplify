@@ -228,25 +228,30 @@ export default class CartTab extends React.Component {
                         )
                     :
                         this.state.itemCart.map((item, i) =>
-                            <TouchableHighlight
-                                key={i}
-                                underlayColor='white'
-                                onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
-                            >
-                                <View style={styles.cardView}>
-                                    <FastImage
-                                        source={{ uri: item.imageURLs[0] }}
-                                        style={styles.image}
-                                    />
+                            // <TouchableHighlight
+                            //     key={i}
+                            //     underlayColor='white'
+                            //     onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                            // >
+                                <View style={styles.cardView} key={i}>
+                                    <TouchableHighlight
+                                        underlayColor='white'
+                                        onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}
+                                    >
+                                        <FastImage
+                                            source={{ uri: item.imageURLs[0] }}
+                                            style={styles.image}
+                                        />
+                                    </TouchableHighlight>
                                     <View style={styles.textView}>
-                                        <Card.Title style={styles.brand}>{item.brand}</Card.Title>
-                                        <Card.Title style={styles.name}>{item.name}</Card.Title>
-                                        <Card.Title style={styles.category}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
-                                        <Card.Title style={styles.rank}>{item.rank}ランク</Card.Title>
-                                        <Icon name='trash-o' size={28} style={styles.trashButton} onPress={() =>  this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
+                                        <Card.Title style={styles.brand} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.brand}</Card.Title>
+                                        <Card.Title style={styles.name} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.name}</Card.Title>
+                                        <Card.Title style={styles.category} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.bigCategory === 'OUTER' ? 'アウター' : 'トップス'}</Card.Title>
+                                        <Card.Title style={styles.rank} onPress={() => this.props.navigation.navigate('CartItemDetail', { item: item })}>{item.rank}ランク</Card.Title>
+                                        <Icon name='trash-o' size={30} style={styles.trashButton} onPress={() => this.setState({ isDeleteConfirmModalVisible: true, selectedDeleteItem: item })} />
                                     </View>
                                 </View>
-                            </TouchableHighlight>
+                            // </TouchableHighlight>
                         )
                     }
                     <View style={{ height: hp('15%') }}></View>
