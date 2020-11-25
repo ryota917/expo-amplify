@@ -37,7 +37,12 @@ export default class ConfirmPage extends React.Component {
     fetchCurrentUser = async () => {
         const currentUser = await Auth.currentAuthenticatedUser()
         const currentUserEmail = currentUser.attributes.email
-        this.setState({ currentUserEmail: currentUserEmail })
+        const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: currentUserEmail }))
+        const userAddress = userRes.data.getUser.address
+        this.setState({
+            currentUserEmail: currentUserEmail,
+            userAddress: userAddress
+        })
     }
 
     toggleModal = () => {
@@ -125,10 +130,11 @@ export default class ConfirmPage extends React.Component {
     }
 
     render() {
+        const { itemCart, currentUserEmail, userAddress, isConfirmModalVisible, cartLogId } = this.state
         return(
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <Modal isVisible={this.state.isConfirmModalVisible}>
+                    <Modal isVisible={isConfirmModalVisible}>
                         <View style={styles.modalContainerView}>
                             <View style={styles.modalInnerView}>
                                 <Text style={styles.modalText}>レンタルの申し込みを{"\n"}確定してよろしいですか？</Text>
@@ -154,7 +160,7 @@ export default class ConfirmPage extends React.Component {
                         <Text style={styles.confirmText}>これらのアイテムをお届けします。</Text>
                     </View>
                     <ScrollView style={styles.scrollView}>
-                        {this.state.itemCart.map((item, i) =>
+                        {itemCart.map((item, i) =>
                             <View
                                 key={i}
                                 style={styles.cardView}
@@ -173,7 +179,7 @@ export default class ConfirmPage extends React.Component {
                         )}
                         <View style={styles.addressView}>
                             <Text style={styles.addressTitleText}> お届け先</Text>
-                            <Text style={styles.addressText}>ddd</Text>
+                            <Text style={styles.addressText}>{userAddress}</Text>
                             <View style={styles.addressAlertView} >
                                 <Icon name='alert-circle' size={19} style={{ color: '#BCBCBC'}}/>
                                 <Text style={styles.addressAlertText}>
