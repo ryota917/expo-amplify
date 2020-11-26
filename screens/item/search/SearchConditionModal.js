@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, Image, SafeAreaView } from 'react-native';
+import { Platform, StyleSheet, View, ScrollView, Text, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
@@ -22,7 +22,7 @@ class SearchConditionModal extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'さがす',
-        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}}/>,
+        headerLeft:() => <Icon name="chevron-left" size={Platform.isPad ? 60 : 42} onPress={()=>{navigate('ItemTab')}} />,
         headerStyle: {
             height: hp('7%')
         }
@@ -100,7 +100,7 @@ class SearchConditionModal extends React.Component {
     returnChoiceName = (name, isSelected) => {
         return(
             <View style={styles.choiceView}>
-                <Text style={{ marginTop: hp('1%'), fontWeight: '400', fontSize: 14, color: isSelected ? 'white' : 'black' }}>{name}</Text>
+                <Text style={[styles.choiceContentText, { color: isSelected ? 'white' : 'black' }]}>{name}</Text>
                 <Text style={styles.choiceText}>選択中</Text>
                 {isSelected &&
                     <Image
@@ -122,7 +122,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.categoryPulledDown ? "chevron-up" : "chevron-down" } size={Platform.isPad ? 40 : 20} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='カテゴリで検索'
@@ -155,7 +155,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.colorPulledDown ? "chevron-up" : "chevron-down" } size={Platform.isPad ? 40 : 20} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='色で検索'
@@ -248,7 +248,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.sizePulledDown ? "chevron-up" : "chevron-down" } size={Platform.isPad ? 40 : 20} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='サイズで検索'
@@ -305,7 +305,7 @@ class SearchConditionModal extends React.Component {
                         <View style={styles.conditionView}>
                             <Button
                                 icon={
-                                    <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={20} style={{ color: 'grey' }}  />
+                                    <Icon name={this.state.rankPulledDown ? "chevron-up" : "chevron-down" } size={Platform.isPad ? 40 : 20} style={{ color: 'grey' }}  />
                                 }
                                 iconRight={true}
                                 title='ランクで検索'
@@ -358,83 +358,177 @@ class SearchConditionModal extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: 'white'
-    },
-    innerContainer: {
-        marginTop: hp('3%')
-    },
-    conditionView: {
-        paddingBottom: hp('2%'),
-    },
-    dropDownButtonStyle: {
-        borderRadius: 40,
-        width: wp('40%'),
-        marginLeft: wp('10%'),
-        backgroundColor: 'white',
-        justifyContent: 'flex-start',
-        backgroundColor: 'white'
-    },
-    dropDownTitleStyle: {
-        fontSize: 14,
-        color: 'black',
-        marginRight: wp('3%'),
-        fontWeight: '400'
-    },
-    choiceButtonStyle: {
-        borderRadius: 30,
-        width: wp('80%'),
-        marginLeft: wp('10%'),
-        justifyContent: 'flex-start',
-    },
-    searchButtonView: {
-        position: 'absolute',
-        right: wp('6%'),
-        bottom: hp('4%'),
-        shadowColor: 'black',
-        shadowOffset: { width: 10, height: 10 },
-        shadowOpacity: 0.2,
-        shadowRadius: 60,
-    },
-    searchButtonStyle: {
-        borderRadius: 50,
-        width: wp('40%'),
-        height: hp('8%'),
-        backgroundColor: 'white',
-    },
-    searchTitleStyle: {
-        color: '#7389D9',
-        fontSize: 16,
-        fontWeight: 'bold'
-    },
-    choiceView: {
-        flexDirection: 'row',
-        width: wp('65%')
-    },
-    choiceText: {
-        marginTop: hp('1.1%'),
-        fontSize: 12,
-        fontWeight: '500',
-        color: 'white',
-        position: 'absolute',
-        right: wp('4%')
-    },
-    choiceImage: {
-        color: 'white',
-        marginTop: hp('1.1%'),
-        resizeMode: 'contain',
-        width: wp("3%"),
-        height: wp('3%'),
-        position: 'absolute',
-        right: wp('0%')
-    },
-    clothImage: {
-        width: wp('5%'),
-        height: wp('5%'),
-        resizeMode: 'contain',
-        marginRight: wp('5%')
-    }
-})
+
+let styles
+
+if(Platform.isPad) {
+    styles = StyleSheet.create({
+        scrollView: {
+            backgroundColor: 'white'
+        },
+        innerContainer: {
+            marginTop: hp('3%')
+        },
+        conditionView: {
+            paddingBottom: hp('2%'),
+        },
+        dropDownButtonStyle: {
+            borderRadius: 40,
+            width: wp('40%'),
+            marginBottom: hp('1%'),
+            marginLeft: wp('10%'),
+            backgroundColor: 'white',
+            justifyContent: 'flex-start',
+            backgroundColor: 'white'
+        },
+        dropDownTitleStyle: {
+            fontSize: 24,
+            color: 'black',
+            marginRight: wp('3%'),
+            fontWeight: '400'
+        },
+        choiceButtonStyle: {
+            borderRadius: 30,
+            width: wp('80%'),
+            marginLeft: wp('10%'),
+            justifyContent: 'flex-start',
+        },
+        searchButtonView: {
+            position: 'absolute',
+            right: wp('6%'),
+            bottom: hp('4%'),
+            shadowColor: 'black',
+            shadowOffset: { width: 10, height: 10 },
+            shadowOpacity: 0.2,
+            shadowRadius: 60,
+        },
+        searchButtonStyle: {
+            borderRadius: 50,
+            width: wp('40%'),
+            height: hp('8%'),
+            backgroundColor: 'white',
+        },
+        searchTitleStyle: {
+            color: '#7389D9',
+            fontSize: 24,
+            fontWeight: 'bold'
+        },
+        choiceView: {
+            flexDirection: 'row',
+            width: wp('65%')
+        },
+        choiceText: {
+            marginTop: hp('1%'),
+            fontSize: 16,
+            color: 'white',
+            position: 'absolute',
+            right: wp('4%')
+        },
+        choiceContentText: {
+            marginTop: hp('1%'),
+            fontWeight: '400',
+            fontSize: 20,
+        },
+        choiceImage: {
+            color: 'white',
+            marginTop: hp('1%'),
+            resizeMode: 'contain',
+            width: wp("2%"),
+            height: wp('2%'),
+            position: 'absolute',
+            right: wp('1%')
+        },
+        clothImage: {
+            width: wp('3%'),
+            height: wp('3%'),
+            resizeMode: 'contain',
+            marginRight: wp('5%')
+        }
+    })
+} else {
+    styles = StyleSheet.create({
+        scrollView: {
+            backgroundColor: 'white'
+        },
+        innerContainer: {
+            marginTop: hp('3%')
+        },
+        conditionView: {
+            paddingBottom: hp('2%'),
+        },
+        dropDownButtonStyle: {
+            borderRadius: 40,
+            width: wp('40%'),
+            marginLeft: wp('10%'),
+            backgroundColor: 'white',
+            justifyContent: 'flex-start',
+            backgroundColor: 'white'
+        },
+        dropDownTitleStyle: {
+            fontSize: 14,
+            color: 'black',
+            marginRight: wp('3%'),
+            fontWeight: '400'
+        },
+        choiceButtonStyle: {
+            borderRadius: 30,
+            width: wp('80%'),
+            marginLeft: wp('10%'),
+            justifyContent: 'flex-start',
+        },
+        searchButtonView: {
+            position: 'absolute',
+            right: wp('6%'),
+            bottom: hp('4%'),
+            shadowColor: 'black',
+            shadowOffset: { width: 10, height: 10 },
+            shadowOpacity: 0.2,
+            shadowRadius: 60,
+        },
+        searchButtonStyle: {
+            borderRadius: 50,
+            width: wp('40%'),
+            height: hp('8%'),
+            backgroundColor: 'white',
+        },
+        searchTitleStyle: {
+            color: '#7389D9',
+            fontSize: 16,
+            fontWeight: 'bold'
+        },
+        choiceView: {
+            flexDirection: 'row',
+            width: wp('65%')
+        },
+        choiceText: {
+            marginTop: hp('1.1%'),
+            fontSize: 12,
+            fontWeight: '400',
+            color: 'white',
+            position: 'absolute',
+            right: wp('4%')
+        },
+        choiceContentText: {
+            marginTop: hp('1%'),
+            fontWeight: '400',
+            fontSize: 14,
+        },
+        choiceImage: {
+            color: 'white',
+            marginTop: hp('1.1%'),
+            resizeMode: 'contain',
+            width: wp("3%"),
+            height: wp('3%'),
+            position: 'absolute',
+            right: wp('0%')
+        },
+        clothImage: {
+            width: wp('5%'),
+            height: wp('5%'),
+            resizeMode: 'contain',
+            marginRight: wp('5%')
+        }
+    })
+}
 
 export default SearchConditionModal;

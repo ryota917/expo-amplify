@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { Platform, Image, View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements';
 import * as gqlQueries from '../../src/graphql/queries'
@@ -30,7 +30,7 @@ export default class ItemDetail extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'アイテム詳細',
-        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('ItemTab')}} style={{ paddingLeft: wp('3%')}} />,
+        headerLeft:() => <Icon name="chevron-left" size={Platform.isPad ? 60 : 42} onPress={()=>{navigate('ItemTab')}} />,
         headerStyle: {
             height: hp('7%')
         }

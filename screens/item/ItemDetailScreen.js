@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
+import { Platform, Image, View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import FastImage from 'react-native-fast-image'
@@ -71,7 +71,7 @@ const ItemDetailScreen = (props) => {
                         >
                             <Image
                                 source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.png')}
-                                style={{ resizeMode: 'contain', width: wp('10%'), height: wp('10%') }}
+                                style={styles.favoriteImage}
                             />
                         </TouchableHighlight>
                     </View>
@@ -89,7 +89,7 @@ const ItemDetailScreen = (props) => {
                         </View>
                     :
                         <View style={styles.lengthView}>
-                            <Image source={require('../../assets/vector.png')} style={{ width: wp('30%'), height: wp('30%'), resizeMode: 'contain' }} />
+                            <Image source={require('../../assets/vector.png')} style={styles.topsImage} />
                             <View style={styles.sizeTextView}>
                                 <Text style={styles.lengthText}>①着丈 {item.dressLength}cm</Text>
                                 <Text style={styles.lengthText}>②身幅 {item.dressWidth}cm</Text>
@@ -117,111 +117,245 @@ const ItemDetailScreen = (props) => {
     )
 }
 
-const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: 'white'
-    },
-    imagesView: {
-        width: wp('100%'),
-        height: wp('133%')
-    },
-    textView: {
-        marginTop: hp('3%'),
-        width: wp('80%'),
-        left: wp('10%')
-    },
-    flexRowView: {
-        flexDirection: 'row',
-    },
-    titleView: {
-        width: wp('80%'),
-    },
-    iconView: {
-        right: wp('10%'),
-        top: hp('4%')
-    },
-    brandView: {
-    },
-    brandText: {
-        width: wp('60%'),
-        marginTop: hp('2%'),
-        color: '#7389D9',
-        fontSize: 16
-    },
-    nameView: {
-        width: wp('65%'),
-        marginTop: hp('1%'),
-        marginBottom: hp('0.5%'),
-    },
-    nameText: {
-        fontSize: 20
-    },
-    sizeView: {
-        marginTop: wp('1.5%'),
-        marginLeft: wp('1.3%'),
-    },
-    sizeText: {
-        fontSize: 13,
-    },
-    categoryView: {
-        marginTop: hp('1.5%')
-    },
-    categoryText: {
-        fontSize: 13,
-        color: 'grey',
-        marginLeft: wp('1%')
-    },
-    lengthView: {
-        marginTop: hp('3%'),
-        flexDirection: 'row'
-    },
-    sizeTextView: {
-        marginLeft: wp('10%'),
-        justifyContent: 'center'
-    },
-    lengthText: {
-        marginBottom: hp('1%')
-    },
-    lengthImage: {
-        width: wp('30%'),
-        height: wp('47%'),
-        resizeMode: 'contain'
-    },
-    stateView: {
-        marginTop: hp('3%'),
-        flexDirection: 'row'
-    },
-    stateInnerView: {
-        width: wp('60%'),
-        marginLeft: wp('10%')
-    },
-    stateTitleText: {
-        fontSize: 18
-    },
-    stateRankText: {
-        backgroundColor: '#C4C4C4',
-        color: 'white',
-        fontSize: 16,
-        textAlign: 'center',
-        width: wp('20%')
-    },
-    stateDescriptionText: {
-        marginTop: hp('2%')
-    },
-    descriptionView: {
-        marginTop: hp('3%')
-    },
-    descriptionTitleText: {
-        fontSize: 18
-    },
-    descriptionText: {
-        marginTop: hp('2%')
-    },
-    imagesDom: {
-        width: wp('100%'),
-        height: wp('133%'),
-        resizeMode: 'contain'
-    }
-})
+let styles
+
+if(Platform.isPad) {
+    styles = StyleSheet.create({
+        scrollView: {
+            backgroundColor: 'white'
+        },
+        imagesView: {
+            width: wp('100%'),
+            height: wp('133%')
+        },
+        textView: {
+            marginTop: hp('3%'),
+            width: wp('80%'),
+            left: wp('10%')
+        },
+        flexRowView: {
+            flexDirection: 'row',
+        },
+        titleView: {
+            width: wp('80%'),
+        },
+        iconView: {
+            right: wp('10%'),
+            top: hp('4%')
+        },
+        brandView: {
+        },
+        brandText: {
+            width: wp('60%'),
+            marginTop: hp('2%'),
+            color: '#7389D9',
+            fontSize: 25
+        },
+        nameView: {
+            width: wp('65%'),
+            marginTop: hp('1%'),
+            marginBottom: hp('0.5%'),
+        },
+        nameText: {
+            fontSize: 30
+        },
+        sizeView: {
+            marginTop: wp('1.5%'),
+            marginLeft: wp('1.3%'),
+        },
+        sizeText: {
+            fontSize: 20
+        },
+        categoryView: {
+            marginTop: hp('1.5%')
+        },
+        categoryText: {
+            color: 'grey',
+            marginLeft: wp('1%'),
+            fontSize: 20
+        },
+        lengthView: {
+            marginTop: hp('3%'),
+            flexDirection: 'row'
+        },
+        sizeTextView: {
+            marginLeft: wp('10%'),
+            justifyContent: 'center'
+        },
+        lengthText: {
+            marginBottom: hp('1%'),
+            fontSize: 20
+        },
+        topsImage: {
+            width: wp('20%'),
+            height: wp('20%'),
+            resizeMode: 'contain'
+        },
+        lengthImage: {
+            width: wp('30%'),
+            height: wp('47%'),
+            resizeMode: 'contain'
+        },
+        stateView: {
+            marginTop: hp('3%'),
+            flexDirection: 'row'
+        },
+        stateInnerView: {
+            width: wp('60%'),
+            marginLeft: wp('10%')
+        },
+        stateTitleText: {
+            fontSize: 24
+        },
+        stateRankText: {
+            backgroundColor: '#C4C4C4',
+            color: 'white',
+            textAlign: 'center',
+            width: wp('20%'),
+            fontSize: 20
+        },
+        stateDescriptionText: {
+            marginTop: hp('2%'),
+            fontSize: 18
+        },
+        descriptionView: {
+            marginTop: hp('3%')
+        },
+        descriptionTitleText: {
+            fontSize: 18
+        },
+        descriptionText: {
+            marginTop: hp('2%')
+        },
+        imagesDom: {
+            width: wp('100%'),
+            height: wp('133%'),
+            resizeMode: 'contain'
+        },
+        favoriteImage: {
+            resizeMode: 'contain',
+            width: wp('7%'),
+            height: wp('7%')
+        }
+    })
+} else {
+    styles = StyleSheet.create({
+        scrollView: {
+            backgroundColor: 'white'
+        },
+        imagesView: {
+            width: wp('100%'),
+            height: wp('133%')
+        },
+        textView: {
+            marginTop: hp('3%'),
+            width: wp('80%'),
+            left: wp('10%')
+        },
+        flexRowView: {
+            flexDirection: 'row',
+        },
+        titleView: {
+            width: wp('80%'),
+        },
+        iconView: {
+            right: wp('10%'),
+            top: hp('4%')
+        },
+        brandView: {
+        },
+        brandText: {
+            width: wp('60%'),
+            marginTop: hp('2%'),
+            color: '#7389D9',
+            fontSize: 16
+        },
+        nameView: {
+            width: wp('65%'),
+            marginTop: hp('1%'),
+            marginBottom: hp('0.5%'),
+        },
+        nameText: {
+            fontSize: 20
+        },
+        sizeView: {
+            marginTop: wp('1.5%'),
+            marginLeft: wp('1.3%'),
+        },
+        sizeText: {
+            fontSize: 13,
+        },
+        categoryView: {
+            marginTop: hp('1.5%')
+        },
+        categoryText: {
+            fontSize: 13,
+            color: 'grey',
+            marginLeft: wp('1%')
+        },
+        lengthView: {
+            marginTop: hp('3%'),
+            flexDirection: 'row'
+        },
+        sizeTextView: {
+            marginLeft: wp('10%'),
+            justifyContent: 'center'
+        },
+        lengthText: {
+            marginBottom: hp('1%'),
+        },
+        topsImage: {
+            width: wp('30%'),
+            height: wp('30%'),
+            resizeMode: 'contain'
+        },
+        lengthImage: {
+            width: wp('30%'),
+            height: wp('47%'),
+            resizeMode: 'contain'
+        },
+        stateView: {
+            marginTop: hp('3%'),
+            flexDirection: 'row'
+        },
+        stateInnerView: {
+            width: wp('60%'),
+            marginLeft: wp('10%')
+        },
+        stateTitleText: {
+            fontSize: 18
+        },
+        stateRankText: {
+            backgroundColor: '#C4C4C4',
+            color: 'white',
+            fontSize: 16,
+            textAlign: 'center',
+            width: wp('20%')
+        },
+        stateDescriptionText: {
+            marginTop: hp('2%')
+        },
+        descriptionView: {
+            marginTop: hp('3%')
+        },
+        descriptionTitleText: {
+            fontSize: 18
+        },
+        descriptionText: {
+            marginTop: hp('2%')
+        },
+        imagesDom: {
+            width: wp('100%'),
+            height: wp('133%'),
+            resizeMode: 'contain'
+        },
+        favoriteImage: {
+            resizeMode: 'contain',
+            width: wp('10%'),
+            height: wp('10%')
+        }
+    })
+}
+
 
 export default ItemDetailScreen

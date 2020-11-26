@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { Platform, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as gqlQueries from '../../src/graphql/queries'
 import * as gqlMutations from '../../src/graphql/mutations'
@@ -23,7 +23,7 @@ export default class FavoriteItemDetail extends React.Component {
 
     static navigationOptions = ({navigation: { navigate }}) => ({
         title: 'アイテム詳細',
-        headerLeft:() => <Icon name="chevron-left" size={42} onPress={()=>{navigate('CartTab')}} style={{ paddingLeft: wp('3%')}} />,
+        headerLeft:() => <Icon name="chevron-left" size={Platform.isPad ? 60 : 42} onPress={()=>{navigate('CartTab')}} />,
         headerStyle: {
             height: hp('7%')
         }
@@ -108,7 +108,7 @@ export default class FavoriteItemDetail extends React.Component {
     render() {
         const { item, isFavorited, isRental } = this.state
         const imagesDom = item.imageURLs.map((imgUrl, idx) =>
-        <FastImage key={idx} source={{ uri: imgUrl }} style={{ width: wp('100%'), height: wp('133%'), resizeMode: 'contain' }}/>
+        <FastImage key={idx} source={{ uri: imgUrl }} style={styles.images}/>
         )
         return(
             <SafeAreaView style={{ flex: 1 }}>
@@ -124,30 +124,22 @@ export default class FavoriteItemDetail extends React.Component {
     }
 }
 
+let styles
 
-const styles = StyleSheet.create({
-    container: {
-        width: wp('100%'),
-        height: hp('100%')
-    },
-    scrollView: {
-        width: wp('100%'),
-        height: hp('100%'),
-        flex: 1
-    },
-    innerContainer: {
-        width: wp('80%')
-    },
-    imagesView: {
-        width: wp('100%'),
-        height: wp('133%')
-    },
-    footerView: {
-        height: hp('20%'),
-        bottom: hp('7%'),
-    },
-    footerInnerView: {
-        flex: 1,
-        alignItems: 'center',
-    }
-})
+if(Platform.isPad) {
+    styles = StyleSheet.create({
+        images: {
+            width: wp('100%'),
+            height: wp('133%'),
+            resizeMode: 'contain'
+        }
+    })
+} else {
+    styles = StyleSheet.create({
+        images: {
+            width: wp('100%'),
+            height: wp('133%'),
+            resizeMode: 'contain'
+        }
+    })
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, View, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
+import { Platform, StyleSheet, Image, View, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -25,8 +25,8 @@ export default class ItemTab extends React.Component {
                 headerTitle: () => (
                 <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
             ),
-            headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
-            headerRight:() => <Icon name='search' size={28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>,
+            headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+            headerRight:() => <Icon name='search' size={Platform.isPad ? 40 : 28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>,
             headerStyle: {
                 height: hp('7%')
             }
@@ -289,7 +289,6 @@ export default class ItemTab extends React.Component {
     }
 
     initialLoad = async () => {
-        console.log('初期ローディング')
         this.setState({ isLoading: true })
         const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
@@ -303,7 +302,6 @@ export default class ItemTab extends React.Component {
     }
 
     continueLoading = async () => {
-        console.log('追加ローディング')
         this.setState({ isLoading: true })
         const query = await this.loadQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
@@ -354,13 +352,25 @@ export default class ItemTab extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    logoImage: {
-        resizeMode: 'contain',
-        width: wp('23%'),
-        height: hp('10%')
-    },
-    columnWrapperStyle: {
-        marginBottom: 10
-    }
-})
+let styles
+
+if(Platform.isPad) {
+    styles = StyleSheet.create({
+        logoImage :{
+            resizeMode: 'contain',
+            width: wp('20%'),
+            height: hp('8%')
+        }
+    })
+} else {
+    styles = StyleSheet.create({
+        logoImage: {
+            resizeMode: 'contain',
+            width: wp('23%'),
+            height: hp('10%')
+        },
+        columnWrapperStyle: {
+            marginBottom: 10
+        }
+    })
+}

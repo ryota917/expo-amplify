@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, FlatList, ActivityIndicator, TouchableHighlight, SafeAreaView } from 'react-native';
+import { Platform, StyleSheet, Image, FlatList, ActivityIndicator, TouchableHighlight, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
@@ -24,21 +24,25 @@ export default class FavoriteTab extends React.Component {
         headerTitle: () => (
             <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
         ),
-        headerLeft: () => <Icon name="bars" size={28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
+        headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
         headerStyle: {
             height: hp('7%')
         }
     });
 
     componentDidMount = async () => {
-        const currentUser = await Auth.currentAuthenticatedUser()
-        const currentUserEmail = currentUser.attributes.email
-        this.setState({ currentUserEmail: currentUserEmail })
-        this.fetchFavoriteItems()
-        //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
-        await this.props.navigation.addListener('didFocus', async () => {
+        try {
+            const currentUser = await Auth.currentAuthenticatedUser()
+            const currentUserEmail = currentUser.attributes.email
+            this.setState({ currentUserEmail: currentUserEmail })
             this.fetchFavoriteItems()
-        })
+            //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
+            await this.props.navigation.addListener('didFocus', async () => {
+                this.fetchFavoriteItems()
+            })
+        } catch(err) {
+            console.error('errorだよ')
+        }
     }
 
     fetchFavoriteItems = async () => {
@@ -124,13 +128,25 @@ export default class FavoriteTab extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    logoImage: {
-        resizeMode: 'contain',
-        width: wp('23%'),
-        height: hp('10%')
-    },
-    columnWrapperStyle: {
-        marginBottom: 10,
-    }
-})
+let styles
+
+if(Platform.isPad) {
+    styles = StyleSheet.create({
+        logoImage :{
+            resizeMode: 'contain',
+            width: wp('20%'),
+            height: hp('8%')
+        }
+    })
+} else {
+    styles = StyleSheet.create({
+        logoImage: {
+            resizeMode: 'contain',
+            width: wp('23%'),
+            height: hp('10%')
+        },
+        columnWrapperStyle: {
+            marginBottom: 10,
+        }
+    })
+}

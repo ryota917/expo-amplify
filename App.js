@@ -1,8 +1,7 @@
 import React from 'react';
 import { Image, View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
-import {
-  withAuthenticator, VerifyContact } from 'aws-amplify-react-native';
+import { Authenticator, withAuthenticator } from 'aws-amplify-react-native'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -39,6 +38,7 @@ import Signup from './Signup'
 import SignupConfirmation from './SignupConfirmation'
 import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
+import DefaultApp from './DefaultApp'
 
 //aws接続設定
 Amplify.configure(awsmobile);
@@ -93,7 +93,7 @@ const ProfileStack = createStackNavigator(
 )
 
 //Tab
-const Tab = createBottomTabNavigator(
+export const Tab = createBottomTabNavigator(
   {
     'アイテム': {
       screen: ItemTabStack,
@@ -166,44 +166,58 @@ const Drawer = createDrawerNavigator(
   }
 )
 
+//登録後画面
+const Container = (props) => {
+  console.log(props.authState)
+  const AppContainer = createAppContainer(Drawer)
+  if(props.authState !== 'signedIn') {
+    return null
+  } else {
+    return(
+      <SafeAreaView style={{ flex: 1, width: wp("100%") }}>
+        <AppContainer />
+      </SafeAreaView>
+    )
+  }
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLogoutModalVisile: false
+      displaySignin: false
     }
   }
 
+  toggleDisplaySignin = () => {
+    this.setState({ displaySignin: !this.state.displaySignin })
+  }
+
   render() {
-    const { isLogoutModalVisile } = this.state
-    const Layout = createAppContainer(Drawer);
+    const { displaySignin } = this.state
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          {/* TODO: DrawerにsetStateを渡す */}
-          {/* <DoubleButtonModal
-            isModalVisible={isLogoutModalVisile}
-            onPressLeftButton={() => this.setState({ isLogoutModalVisile: false })}
-            onPressRightButton={() => Auth.signOut()}
-            text={'このアカウントから\nログアウトしてもよろしいですか？'}
-            leftButtonText='戻る'
-            rightButtonText='ログアウト'
-          /> */}
-          <Layout />
+          <Authenticator hideDefault={true}>
+            <DefaultApp
+              displaySignin={displaySignin}
+              toggleDisplaySignin={this.toggleDisplaySignin}
+            />
+            <Signin
+              displaySignin={displaySignin}
+              toggleDisplaySignin={this.toggleDisplaySignin}
+            />
+            <Signup />
+            <SignupConfirmation />
+            <Container />
+            <ForgotPassword />
+            <ResetPassword />
+          </Authenticator>
         </SafeAreaView>
       )
     }
 }
 
-export default withAuthenticator(App, false,
-  [
-    <Signin />,
-    <Signup />,
-    <SignupConfirmation />,
-    <ForgotPassword />,
-    <ResetPassword />,
-    <VerifyContact />,
-  ]
-)
+export default App;
 
 const styles = StyleSheet.create({
   logoutView: {
