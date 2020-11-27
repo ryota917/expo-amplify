@@ -360,6 +360,7 @@ if(Platform.isPad) {
         scrollView: {
         },
         cardView: {
+            flexDirection: 'row',
             backgroundColor: 'white',
             height: wp('42%'),
             margin: wp('2%')
@@ -370,13 +371,11 @@ if(Platform.isPad) {
             margin: wp('3%')
         },
         textView: {
-            bottom: hp('18%'),
             width: wp('56%'),
-            left: wp('34%'),
             height: wp('36%'),
         },
         brand: {
-            marginTop: wp('5%'),
+            marginTop: wp('6%'),
             color: '#7389D9',
             fontSize: 12,
             width: wp('40%'),
