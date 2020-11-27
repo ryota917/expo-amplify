@@ -373,6 +373,37 @@ export const listCartLogs = /* GraphQL */ `
     }
   }
 `;
+export const getMessage = /* GraphQL */ `
+  query GetMessage($id: ID!) {
+    getMessage(id: $id) {
+      id
+      text
+      room
+      user
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listMessages = /* GraphQL */ `
+  query ListMessages(
+    $filter: ModelMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        text
+        room
+        user
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getItemCart = /* GraphQL */ `
   query GetItemCart($id: ID!) {
     getItemCart(id: $id) {
@@ -795,13 +826,6 @@ export const searchItems = /* GraphQL */ `
           nextToken
         }
         favoriteUser {
-          items {
-            id
-            itemId
-            userId
-            createdAt
-            updatedAt
-          }
           nextToken
         }
         createdAt
@@ -854,6 +878,32 @@ export const searchCartLogs = /* GraphQL */ `
     }
   }
 `;
+export const searchMessages = /* GraphQL */ `
+  query SearchMessages(
+    $filter: SearchableMessageFilterInput
+    $sort: SearchableMessageSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchMessages(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        text
+        room
+        user
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
 export const searchItemCarts = /* GraphQL */ `
   query SearchItemCarts(
     $filter: SearchableItemCartFilterInput
@@ -895,16 +945,6 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
-          favoriteUser {
-            items {
-              id
-              itemId
-              userId
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
           createdAt
           updatedAt
         }

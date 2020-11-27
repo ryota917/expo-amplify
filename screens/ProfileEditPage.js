@@ -19,8 +19,9 @@ export default class ProfileEditPage extends React.Component {
             inputedNameKana: '',
             inputedGender: '',
             inputedAddress: '',
-            inputedBirthday: new Date(),
+            inputedBirthday: new Date(2000, 0, 1),
             isDatePickerVisible: false,
+            isBirthdaySelected: false,
             inputedPostalCode: '',
             inputedPhoneNumber: '',
             inputedHeight: '',
@@ -111,10 +112,17 @@ export default class ProfileEditPage extends React.Component {
             inputedHeight,
             nameAlert,
             addressAlert,
+            isBirthdaySelected,
             isDatePickerVisible,
             isUpdatedModal
         } = this.state
-        const birthdayText = inputedBirthday.getFullYear() + '年' + (inputedBirthday.getMonth() + 1) + '月' + inputedBirthday.getDate() + '日'
+
+        const birthday = new Date(user.birthday)
+        const birthdayText = user.birthday ? birthday.getFullYear() + '年' + (birthday.getMonth() + 1) + '月' + birthday.getDate() + '日' : '選択してください'
+        // if(isBirthdaySelected) {
+        //     birthdayText = birthday.getFullYear() + '年' + (birthday.getMonth() + 1) + '月' + birthday.getDate() + '日'
+        // }
+
         return(
             <SafeAreaView style={{ flex: 1 }}>
                 <SingleButtonModal
@@ -207,17 +215,17 @@ export default class ProfileEditPage extends React.Component {
                                         <Button
                                             title={birthdayText}
                                             buttonStyle={styles.selectBirthdayButton}
-                                            titleStyle={styles.selectBirthdayText}
+                                            titleStyle={styles.selecdtBirthdayText}
                                             onPress={() => this.setState({ isDatePickerVisible: true })}
                                         />
                                         <DateTimePickerModal
                                             isVisible={isDatePickerVisible}
-                                            date={inputedBirthday}
                                             mode="date"
                                             isDardModeEnabled={false}
                                             onConfirm={(value) => this.setState({
                                                 inputedBirthday: value,
-                                                isDatePickerVisible: false
+                                                isDatePickerVisible: false,
+                                                isBirthdaySelected: true
                                             })}
                                             onCancel={() => this.setState({ isDatePickerVisible: false })}
                                             headerTextIOS='生年月日を選択してください'

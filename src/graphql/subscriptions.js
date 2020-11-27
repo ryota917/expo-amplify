@@ -652,6 +652,42 @@ export const onDeleteCartLog = /* GraphQL */ `
     }
   }
 `;
+export const onCreateMessage = /* GraphQL */ `
+  subscription OnCreateMessage {
+    onCreateMessage {
+      id
+      text
+      room
+      user
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMessage = /* GraphQL */ `
+  subscription OnUpdateMessage {
+    onUpdateMessage {
+      id
+      text
+      room
+      user
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMessage = /* GraphQL */ `
+  subscription OnDeleteMessage {
+    onDeleteMessage {
+      id
+      text
+      room
+      user
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateItemCart = /* GraphQL */ `
   subscription OnCreateItemCart {
     onCreateItemCart {

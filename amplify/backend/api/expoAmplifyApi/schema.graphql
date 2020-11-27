@@ -70,6 +70,18 @@ type CartLog
     itemCartLogs: [ItemCartLog] @connection(keyName: "byCartLog", fields: ["id"])
   }
 
+type Message
+  @model
+  @searchable
+  {
+    id: ID!
+    text: String!
+    room: String!
+    user: [String!]!
+    createdAt: AWSDateTime!
+    updatedAt: AWSDateTime!
+  }
+
 # 中間テーブル
 type ItemCart
   @model
