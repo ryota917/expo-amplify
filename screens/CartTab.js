@@ -10,6 +10,7 @@ import Modal from 'react-native-modal'
 import FastImage from 'react-native-fast-image'
 import DoubleButtonModal from './common/DoubleButtonModal'
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import DoubleButtonImageModal from './common/DoubleButtonImageModal'
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -30,7 +31,8 @@ export default class CartTab extends React.Component {
             isRentalAlertVisible: false,
             selectedDeleteItem: [],
             isDeleteConfirmModalVisible: false,
-            cartNum: 0
+            cartNum: 0,
+            isNotLoginModalVisible: false
         }
     }
 
@@ -50,20 +52,36 @@ export default class CartTab extends React.Component {
         this.fetchRentalData()
         //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
         this.props.navigation.addListener('didFocus', async () => {
-            await this.fetchCurrentUser()
-            this.fetchItemCart()
-            this.fetchRentalData()
+                await this.showModalToLogin()
+                this.fetchItemCart()
+                this.fetchRentalData()
         })
     }
 
+
+    //ログイン促進モーダル表示判定
+    showModalToLogin = () => {
+        if(!this.state.currentUserEmail) {
+            this.setState({ isNotLoginModalVisible: true })
+        }
+    }
+
+    //ログインユーザー情報
     fetchCurrentUser = async () => {
-        const currentUser = await Auth.currentAuthenticatedUser()
-        const currentUserEmail = currentUser.attributes.email
-        this.setState({ currentUserEmail: currentUserEmail })
+        try {
+            const currentUser = await Auth.currentAuthenticatedUser()
+            const currentUserEmail = currentUser.attributes.email
+            this.setState({ currentUserEmail: currentUserEmail })
+        } catch(err) {
+            this.setState({ isNotLoginModalVisible: true })
+            console.error(err)
+        }
     }
 
     //Cartに入っているアイテムを取得
     fetchItemCart = async () => {
+        //ログインしていない場合は処理を終了
+        if(!this.state.currentUserEmail) return
         try {
             const res = await API.graphql(graphqlOperation(gqlQueries.searchItemCarts, {
                 filter: {
@@ -88,6 +106,8 @@ export default class CartTab extends React.Component {
 
     //レンタル履歴を取得
     fetchRentalData = async () => {
+        //ログインしていない場合は処理を終了
+        if(!this.state.currentUserEmail) return
         try {
             const cartLogRes = await API.graphql(graphqlOperation(gqlQueries.searchCartLogs, {
                 filter: {
@@ -165,8 +185,26 @@ export default class CartTab extends React.Component {
         this.setState({ isRentalAlertVisible: !this.state.isRentalAlertVisible })
     }
 
+    onPressNotLoginedModalLeftButton = () => {
+        console.log('fdafsd')
+    }
+
+    onPressNotLoginedModalRightButton = () => {
+        this.setState({ isNotLoginModalVisible: false })
+        this.props.navigation.navigate('ItemTab')
+    }
+
     render() {
-        const { isCartFilled, isRental, canRental, canNextRental, canNextRentalDate, cartNum, isDeleteConfirmModalVisible } = this.state
+        const {
+            isCartFilled,
+            isRental,
+            isNotLoginModalVisible,
+            canRental,
+            canNextRental,
+            canNextRentalDate,
+            cartNum,
+            isDeleteConfirmModalVisible
+        } = this.state
         const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
         const rentalAlertText = canRental ? 'カートに5つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
         return(
@@ -193,6 +231,16 @@ export default class CartTab extends React.Component {
                     text={'このアイテムをカートから' + '\n' + '消去してよろしいですか？'}
                     leftButtonText='キャンセル'
                     rightButtonText='消去'
+                />
+                <DoubleButtonImageModal
+                    isModalVisible={isNotLoginModalVisible}
+                    onPressLeftButton={() => this.onPressNotLoginedModalLeftButton()}
+                    onPressRightButton={() => this.onPressNotLoginedModalRightButton()}
+                    bigText={'この画面の表示には\nログインが必要です。'}
+                    smallText={'レンタルを検討するためにはまず登録!\nユーザー登録は無料で行えます。\n※レンタル確定には有料のレンタルプランが必要です。'}
+                    leftButtonText='ユーザー登録する'
+                    rightButtonText='アイテム一覧へ戻る'
+                    image={require('../assets/thankYouTaggu.png')}
                 />
                 {isRental ?
                     <View style={styles.isRentalView}>
@@ -468,7 +516,7 @@ if(Platform.isPad) {
             textAlign: 'left'
         },
         name: {
-            fontSize: 16,
+            fontSize: 14,
             width: wp('50%'),
             textAlign: 'left'
         },

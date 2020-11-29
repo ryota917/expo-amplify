@@ -382,7 +382,7 @@ if(Platform.isPad) {
             textAlign: 'left'
         },
         name: {
-            fontSize: 16,
+            fontSize: 14,
             width: wp('50%'),
             textAlign: 'left'
         },

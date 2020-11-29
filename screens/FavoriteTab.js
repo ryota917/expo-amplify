@@ -6,6 +6,7 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Item from './item/Item'
+import DoubleButtonImageModal from './common/DoubleButtonImageModal'
 
 export default class FavoriteTab extends React.Component {
     constructor(props) {
@@ -16,7 +17,8 @@ export default class FavoriteTab extends React.Component {
             canLoad: true,
             isLoading: false,
             nextToken: '',
-            isRefreshing: false
+            isRefreshing: false,
+            isNotLoginModalVisible: false
         }
     }
 
@@ -31,21 +33,38 @@ export default class FavoriteTab extends React.Component {
     });
 
     componentDidMount = async () => {
+        await this.fetchCurrentUser()
+        this.fetchFavoriteItems()
+        //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
+        this.props.navigation.addListener('didFocus', async () => {
+            await this.showModalToLogin()
+            this.fetchFavoriteItems()
+        })
+    }
+
+    //ログイン促進モーダル表示判定
+    showModalToLogin = () => {
+        if(!this.state.currentUserEmail) {
+            this.setState({ isNotLoginModalVisible: true })
+        }
+    }
+
+    //ログインユーザー情報
+    fetchCurrentUser = async () => {
         try {
             const currentUser = await Auth.currentAuthenticatedUser()
             const currentUserEmail = currentUser.attributes.email
             this.setState({ currentUserEmail: currentUserEmail })
-            this.fetchFavoriteItems()
-            //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
-            await this.props.navigation.addListener('didFocus', async () => {
-                this.fetchFavoriteItems()
-            })
         } catch(err) {
-            console.error('errorだよ')
+            this.setState({ isNotLoginModalVisible: true })
+            console.error(err)
         }
     }
 
+    //お気に入りアイテムの取得
     fetchFavoriteItems = async () => {
+        //ログインしていない場合は処理を終了
+        if(!this.state.currentUserEmail) return
         console.log('お気に入り初期ローディング')
         this.setState({ isLoading: true })
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItemFavorites, {
@@ -100,11 +119,36 @@ export default class FavoriteTab extends React.Component {
         this.setState({ isRefreshing: false })
     }
 
+    onPressNotLoginedModalLeftButton = () => {
+        console.log('leftleft')
+    }
+
+    onPressNotLoginedModalRightButton = () => {
+        this.setState({ isNotLoginModalVisible: false })
+        this.props.navigation.navigate('ItemTab')
+    }
+
     render() {
         const activityIndicator = <ActivityIndicator animating size='large' />
-        const { canLoad, items, isLoading, isRefreshing } = this.state
+        const {
+            canLoad,
+            items,
+            isLoading,
+            isRefreshing,
+            isNotLoginModalVisible
+        } = this.state
         return (
             <SafeAreaView style={{ flex: 1 }}>
+                <DoubleButtonImageModal
+                    isModalVisible={isNotLoginModalVisible}
+                    onPressLeftButton={() => this.onPressNotLoginedModalLeftButton()}
+                    onPressRightButton={() => this.onPressNotLoginedModalRightButton()}
+                    bigText={'この画面の表示には\nログインが必要です。'}
+                    smallText={'気になる服を保存するために登録してみませんか。\nユーザー登録は無料で行えます。\n※レンタル確定には有料のレンタルプランが必要です。'}
+                    leftButtonText='ユーザー登録する'
+                    rightButtonText='アイテム一覧へ戻る'
+                    image={require('../assets/thankYouTaggu.png')}
+                />
                 <FlatList
                     refreshing={isRefreshing}
                     onRefresh={() => this.onRefresh()}

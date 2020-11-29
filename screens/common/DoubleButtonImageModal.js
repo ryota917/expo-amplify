@@ -1,23 +1,27 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Image, Text, View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
-const DoubleButtonModal = (props) => {
+const DoubleButtonImageModal = (props) => {
     const {
         isModalVisible,
         onPressLeftButton,
         onPressRightButton,
-        text,
+        image,
+        smallText,
+        bigText,
         leftButtonText,
-        rightButtonText
+        rightButtonText,
     } = props
     return(
         <Modal isVisible={isModalVisible}>
             <View style={styles.modalContainerView}>
                 <View style={styles.modalInnerView}>
-                    <Text style={styles.modalText}>{text}</Text>
+                    <Image source={image} style={styles.image}/>
+                    <Text style={styles.modalBigText}>{bigText}</Text>
+                    <Text style={styles.modalSmallText}>{smallText}</Text>
                     <View style={styles.modalButtonView}>
                         <Button
                             title={leftButtonText}
@@ -41,48 +45,62 @@ const DoubleButtonModal = (props) => {
 const styles = StyleSheet.create({
     modalContainerView: {
         backgroundColor: 'white',
-        width: wp('70%'),
-        height: hp('30%'),
-        left: wp('10%'),
+        width: wp('80%'),
+        height: hp('60%'),
+        left: wp('5%'),
         textAlign: 'center',
-        borderRadius: 15
     },
     modalInnerView: {
+        width: wp('70%'),
+        left: wp('5%'),
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    modalText: {
-        width: wp('60%'),
+    image: {
+        width: wp('35%'),
+        height: wp('35%'),
+        resizeMode: 'contain'
+    },
+    modalBigText: {
+        lineHeight: 19,
+        letterSpacing: 1.3,
+        width: wp('65%'),
+        marginTop: hp('4%'),
+        marginBottom: hp('3%'),
+        fontSize: 16,
+        textAlign: 'center'
+    },
+    modalSmallText: {
+        fontSize: 11,
+        lineHeight: 13,
+        letterSpacing: 1,
         marginBottom: hp('2%'),
         fontWeight: '400',
         textAlign: 'center'
     },
     modalButtonView: {
-        flexDirection: 'row',
         marginTop: hp('2%')
     },
     modalLeftButtonStyle: {
+        width: wp('70%'),
         borderRadius: 30,
-        width: wp('25%'),
         height: hp('7%'),
-        backgroundColor: '#333333'
+        backgroundColor: '#7389D9',
+        marginBottom: hp('1%')
     },
     modalLeftTitleStyle: {
         fontSize: 14,
         color: 'white',
     },
     modalRightButtonStyle: {
-        marginLeft: wp('3%'),
-        borderRadius: 30,
-        width: wp('25%'),
+        backgroundColor: 'white',
         height: hp('7%'),
-        backgroundColor: '#7389D9'
     },
     modalRightTitleStyle: {
         fontSize: 14,
-        color: 'white'
+        color: '#7389D9'
     },
 })
 
-export default DoubleButtonModal
+export default DoubleButtonImageModal

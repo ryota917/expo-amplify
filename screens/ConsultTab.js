@@ -48,7 +48,7 @@ class ConsultTab extends React.Component {
 }
 
 const initialMessage = {
-    _id: 0,
+    _id: 'support',
     text: "わからないことがあったら聞いてね",
     user: {
         _id: 'support',
@@ -64,6 +64,16 @@ export default class Chat extends React.Component {
             messages: []
         }
     }
+
+    static navigationOptions = ({navigation}) => ({
+        headerTitle: () => (
+            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
+        ),
+        headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
+        headerStyle: {
+            height: hp('7%')
+        }
+    });
 
     componentDidMount = async () => {
         await this.fetchCurrentUser()
@@ -95,13 +105,14 @@ export default class Chat extends React.Component {
         }))
         let messages = []
         //メッセージを整形
-        messageRes.data.searchMessages.items.forEach(obj => {
+        messageRes.data.searchMessages.items.map(obj => {
             obj['_id'] = obj['id']
-            obj['user'] = { '_id': obj['user'][0] }
+            obj['user'] = {
+                '_id': obj['user'][0],
+                'avatar': require('../assets/pretapo-icon.png')
+            }
             messages.push(obj)
         })
-        console.log('messagesです')
-        console.log(messages)
         this.setState({ messages: GiftedChat.append([initialMessage], messages) })
     }
 
@@ -126,16 +137,17 @@ export default class Chat extends React.Component {
     render() {
         const { messages, currentUserEmail } = this.state
         return(
-            <GiftedChat
-                showUserAvatar={false}
-                alwaysShowSend={true}
-                messages={messages}
-                onSend={messages => this.onSend(messages)}
-                placeholder='メッセージを入力してください'
-                user={{
-                    _id: currentUserEmail
-                }}
-            />
+            <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+                <GiftedChat
+                    alwaysShowSend={true}
+                    messages={messages}
+                    onSend={messages => this.onSend(messages)}
+                    placeholder='メッセージを入力してください'
+                    user={{
+                        _id: currentUserEmail
+                    }}
+                />
+            </SafeAreaView>
         )
     }
 }
