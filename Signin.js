@@ -51,7 +51,7 @@ export default class Signin extends React.Component {
     }
 
     navigateSignup = () => {
-        this.props.onStateChange('signUp', 'testtest')
+        this.props.onStateChange('signUp')
     }
 
     navigateForgotPassword = () => {

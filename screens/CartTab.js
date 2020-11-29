@@ -74,7 +74,6 @@ export default class CartTab extends React.Component {
             this.setState({ currentUserEmail: currentUserEmail })
         } catch(err) {
             this.setState({ isNotLoginModalVisible: true })
-            console.error(err)
         }
     }
 
@@ -186,7 +185,7 @@ export default class CartTab extends React.Component {
     }
 
     onPressNotLoginedModalLeftButton = () => {
-        console.log('fdafsd')
+        this.props.navigation.state.params.onStateChangeSignup()
     }
 
     onPressNotLoginedModalRightButton = () => {

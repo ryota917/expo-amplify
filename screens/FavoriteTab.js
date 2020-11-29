@@ -57,7 +57,6 @@ export default class FavoriteTab extends React.Component {
             this.setState({ currentUserEmail: currentUserEmail })
         } catch(err) {
             this.setState({ isNotLoginModalVisible: true })
-            console.error(err)
         }
     }
 
@@ -120,7 +119,7 @@ export default class FavoriteTab extends React.Component {
     }
 
     onPressNotLoginedModalLeftButton = () => {
-        console.log('leftleft')
+        this.props.navigation.state.params.onStateChangeSignup()
     }
 
     onPressNotLoginedModalRightButton = () => {

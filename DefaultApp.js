@@ -25,103 +25,95 @@ import ThankYouPage from './screens/cart/ThankYouPage'
 //import ConsultTab
 import ConsultTab from './screens/ConsultTab'
 
-//import ProfileTab
-import ProfileConfirmPage from './screens/ProfileConfirmPage'
-import ProfileEditPage from './screens/ProfileEditPage'
-
-
-const ItemTabStack = createStackNavigator(
-    {
-        ItemTab: {screen: ItemTab},
-        ItemDetail: {screen: ItemDetail},
-        SearchConditionModal: {screen: SearchConditionModal},
-    },
-    {
-        initialRouteName: 'ItemTab'
-    }
-);
-
-const CartTabStack = createStackNavigator(
-    {
-        CartTab: {screen: CartTab},
-        ConfirmPage: {screen: ConfirmPage},
-        CartItemDetail: {screen: CartItemDetail},
-        ThankYouPage: {screen: ThankYouPage}
-    },
-    {
-        initialRouteName: 'CartTab'
-    }
-)
-
-const FavoriteTabStack = createStackNavigator(
-    {
-        FavoriteTab: {screen: FavoriteTab},
-        FavoriteItemDetail: {screen: FavoriteItemDetail}
-    },
-    {
-        initialRouteName: 'FavoriteTab'
-    }
-)
-
-const ConsultTabStack = createStackNavigator(
-    {
-        ConsultTab: {screen: ConsultTab}
-    },
-    {
-        initialRouteName: 'ConsultTab'
-    }
-)
-
-// const ProfileStack = createStackNavigator(
-//     {
-//         ProfileConfirmPage: {screen: ProfileConfirmPage},
-//         ProfileEditPage: {screen: ProfileEditPage},
-//     },
-// )
-
-  //Tab
-export const Tab = createBottomTabNavigator(
-    {
-        'アイテム': {
-            screen: ItemTabStack,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Icon size={24} name='view-grid' color={tintColor} />
-            }
-        },
-        'お気に入り': {
-            screen: FavoriteTabStack,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Icon size={24} name='bookmark-minus' color={tintColor} />
-            }
-        },
-        'カート': {
-            screen: CartTabStack,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Icon size={24} name='cart' color={tintColor} />
-            }
-        },
-        '相談': {
-            screen: ConsultTabStack,
-            navigationOptions: {
-                tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
-            }
-        }
-    },
-    {
-        tabBarOptions: {
-            activeTintColor: '#7389D9',
-            inactiveTintColor: 'silver'
-        }
-    }
-);
-
-
 export default class DefaultApp extends React.Component {
     constructor(props) {
         super(props)
     }
 
     render() {
+        const ItemTabStack = createStackNavigator(
+            {
+                ItemTab: {screen: ItemTab},
+                ItemDetail: {screen: ItemDetail},
+                SearchConditionModal: {screen: SearchConditionModal},
+            },
+            {
+                initialRouteName: 'ItemTab',
+            }
+        );
+
+        const CartTabStack = createStackNavigator(
+            {
+                CartTab: {
+                    screen: CartTab,
+                    params: { onStateChangeSignup: () => this.props.onStateChange('signUp')}
+                },
+                ConfirmPage: {screen: ConfirmPage},
+                CartItemDetail: {screen: CartItemDetail},
+                ThankYouPage: {screen: ThankYouPage}
+            },
+            {
+                initialRouteName: 'CartTab'
+            }
+        )
+
+        const FavoriteTabStack = createStackNavigator(
+            {
+                FavoriteTab: {
+                    screen: FavoriteTab,
+                    params: { onStateChangeSignup: () => this.props.onStateChange('signUp')}
+                },
+                FavoriteItemDetail: {screen: FavoriteItemDetail}
+            },
+            {
+                initialRouteName: 'FavoriteTab'
+            }
+        )
+
+        const ConsultTabStack = createStackNavigator(
+            {
+                ConsultTab: {screen: ConsultTab}
+            },
+            {
+                initialRouteName: 'ConsultTab'
+            }
+        )
+
+        const Tab = createBottomTabNavigator(
+            {
+                'アイテム': {
+                    screen: ItemTabStack,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Icon size={24} name='view-grid' color={tintColor} />
+                    }
+                },
+                'お気に入り': {
+                    screen: FavoriteTabStack,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Icon size={24} name='bookmark-minus' color={tintColor} />
+                    }
+                },
+                'カート': {
+                    screen: CartTabStack,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Icon size={24} name='cart' color={tintColor} />
+                    }
+                },
+                '相談': {
+                    screen: ConsultTabStack,
+                    navigationOptions: {
+                        tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
+                    }
+                }
+            },
+            {
+                tabBarOptions: {
+                    activeTintColor: '#7389D9',
+                    inactiveTintColor: 'silver'
+                }
+            }
+        );
+
         const DefaultDrawer = createDrawerNavigator(
             {
                 'ホーム': {
