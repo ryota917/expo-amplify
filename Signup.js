@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
         height: hp('92%'),
     },
     formContainer: {
-        top: hp('5%'),
+        top: hp('10%'),
         width: wp('80%'),
         left: wp('10%')
     },

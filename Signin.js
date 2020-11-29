@@ -82,6 +82,7 @@ export default class Signin extends React.Component {
                             rightButtonText='再発行へ'
                         />
                         <ScrollView style={styles.scrollView}>
+                                    <Text onPress={() => this.props.toggleDisplaySignin()} style={{ fontSize: 20 }}>戻る</Text>
                             <View style={styles.formContainer}>
                                 <View>
                                     <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
@@ -91,7 +92,6 @@ export default class Signin extends React.Component {
                                         <Text style={[styles.alertText, { display: this.state.alert ? 'flex' : 'none' }]}>ログインに失敗しました</Text>
                                     </View>
                                     <View style={styles.form}>
-                            <Text onPress={() => this.props.toggleDisplaySignin()} style={{ fontSize: 20 }}>戻る</Text>
                                         <Text style={styles.formText}>メールアドレス</Text>
                                         <TextInput
                                             onChangeText={val => this.setState({ inputedEmail: val })}
