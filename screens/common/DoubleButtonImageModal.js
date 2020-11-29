@@ -46,11 +46,12 @@ const styles = StyleSheet.create({
     modalContainerView: {
         backgroundColor: 'white',
         width: wp('80%'),
-        height: hp('60%'),
+        height: hp('70%'),
         left: wp('5%'),
         textAlign: 'center',
     },
     modalInnerView: {
+        height: hp('20%'),
         width: wp('70%'),
         left: wp('5%'),
         flex: 1,

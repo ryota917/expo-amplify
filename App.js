@@ -206,7 +206,10 @@ class App extends React.Component {
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <Signup />
+            <Signup
+              displaySignin={displaySignin}
+              toggleDisplaySignin={this.toggleDisplaySignin}
+            />
             <SignupConfirmation />
             <Container />
             <ForgotPassword />

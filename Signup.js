@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactNative, { StyleSheet, Text, View, TextInput, Platform, Image, SafeAreaView } from 'react-native'
+import ReactNative, { StyleSheet, Text, View, TextInput, Platform, Image, SafeAreaView, TouchableHighlight } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlMutations from './src/graphql/mutations'
 import { Button } from 'react-native-elements'
@@ -48,7 +48,12 @@ export default class Signup extends React.Component {
     //ログイン画面へ
     navigateSignin = () => {
         this.setState({ isBackConfirmModalVisible: false })
-        this.props.onStateChange('signIn')
+        if(this.props.displaySignin) {
+            this.props.onStateChange('signIn')
+        } else {
+            this.props.toggleDisplaySignin()
+            this.props.onStateChange('signIn')
+        }
     }
 
     //性別を選択
@@ -159,9 +164,9 @@ export default class Signup extends React.Component {
                         isModalVisible={isBackConfirmModalVisible}
                         onPressLeftButton={() => this.setState({ isBackConfirmModalVisible: false })}
                         onPressRightButton={() => this.navigateSignin()}
-                        text={'現在入力されている情報が失われます。戻ってもよろしいですか？'}
+                        text={'現在入力されている情報が失われます。ログイン画面に移動してもよろしいですか？'}
                         leftButtonText='入力を続ける'
-                        rightButtonText='戻る'
+                        rightButtonText='移動する'
                     />
                     <SingleButtonModal
                         isModalVisible={isSignedUpModalVisible}
@@ -169,15 +174,20 @@ export default class Signup extends React.Component {
                         text={'入力されたアドレスに確認コードを送信しました。メールを確認してコードを入力してください。'}
                         buttonText='入力へ'
                     />
-                    <View style={styles.header}>
-                        <View style={styles.headerInner}>
-                            <Icon name='chevron-left' size={55} onPress={() => this.setState({ isBackConfirmModalVisible: true })} />
-                        </View>
-                    </View>
                     <KeyboardAwareScrollView style={styles.scrollView} ref="_scrollView">
                         <View style={styles.formContainer}>
                             <View>
                                 <Image source={require('./assets/signup.png')} style={styles.signUpTextImage} />
+                                {/* ログイン画面へのボタン */}
+                                <TouchableHighlight
+                                    underlayColor='white'
+                                    onPress={() => this.setState({ isBackConfirmModalVisible: true })}
+                                >
+                                    <View style={styles.toLoginView}>
+                                        <Text style={styles.toLoginBigText}>既に会員登録がお済みの方はこちら ></Text>
+                                        <Text style={styles.toLoginSmallText}>※ 一度サインアップ画面から情報を登録し、アドレスを認証されていない方もこちらから</Text>
+                                    </View>
+                                </TouchableHighlight>
                                 {/* アラートView */}
                                 <View style={styles.topAlertView}>
                                     <Icon name='alert-circle' size={17} style={{ color: '#A60000', display: signUpAlert ? 'flex' : 'none' }} />
@@ -469,5 +479,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomWidth: 1.3,
         borderBottomColor: 'silver'
+    },
+    toLoginView: {
+        marginTop: hp('1.5%'),
+    },
+    toLoginBigText: {
+        fontSize: 15,
+        color: '#7389D9',
+        fontWeight: '500',
+        letterSpacing: 1
+    },
+    toLoginSmallText: {
+        marginTop: hp('0.7%'),
+        fontSize: 12,
+        color: '#7389D9',
+        fontWeight: '500',
+        letterSpacing: 1,
+        lineHeight: 14
     }
 })
