@@ -33,7 +33,8 @@ export default class Signup extends React.Component {
             passWordAlert: false,
             signUpAlert: false,
             signUpAlertText: '',
-            isBackConfirmModalVisible: false
+            isLoginBackConfirmModalVisible: false,
+            isHomeBackConfirmModalVisible: false
         }
     }
 
@@ -47,11 +48,22 @@ export default class Signup extends React.Component {
 
     //ログイン画面へ
     navigateSignin = () => {
-        this.setState({ isBackConfirmModalVisible: false })
+        this.setState({ isLoginBackConfirmModalVisible: false })
         if(this.props.displaySignin) {
             this.props.onStateChange('signIn')
         } else {
             this.props.toggleDisplaySignin()
+            this.props.onStateChange('signIn')
+        }
+    }
+
+    //ホーム画面へ
+    navigateHome = () => {
+        this.setState({ isHomeBackConfirmModalVisible: false })
+        if(this.props.displaySignin) {
+            this.props.toggleDisplaySignin()
+            this.props.onStateChange('signIn')
+        } else {
             this.props.onStateChange('signIn')
         }
     }
@@ -143,7 +155,8 @@ export default class Signup extends React.Component {
             email,
             emailAlert,
             gender,
-            isBackConfirmModalVisible,
+            isLoginBackConfirmModalVisible,
+            isHomeBackConfirmModalVisible,
             isBirthdaySelected,
             isDatePickerVisible,
             isSignedUpModalVisible,
@@ -161,10 +174,18 @@ export default class Signup extends React.Component {
                 <SafeAreaView style={{ flex: 1 }}>
                     {/* ログイン画面に戻る時のアラートモーダル */}
                     <DoubleButtonModal
-                        isModalVisible={isBackConfirmModalVisible}
-                        onPressLeftButton={() => this.setState({ isBackConfirmModalVisible: false })}
+                        isModalVisible={isLoginBackConfirmModalVisible}
+                        onPressLeftButton={() => this.setState({ isLoginBackConfirmModalVisible: false })}
                         onPressRightButton={() => this.navigateSignin()}
                         text={'現在入力されている情報が失われます。ログイン画面に移動してもよろしいですか？'}
+                        leftButtonText='入力を続ける'
+                        rightButtonText='移動する'
+                    />
+                    <DoubleButtonModal
+                        isModalVisible={isHomeBackConfirmModalVisible}
+                        onPressLeftButton={() => this.setState({ isHomeBackConfirmModalVisible: false })}
+                        onPressRightButton={() => this.navigateHome()}
+                        text={'現在入力されている情報が失われます。ホーム画面に移動してもよろしいですか？'}
                         leftButtonText='入力を続ける'
                         rightButtonText='移動する'
                     />
@@ -174,6 +195,11 @@ export default class Signup extends React.Component {
                         text={'入力されたアドレスに確認コードを送信しました。メールを確認してコードを入力してください。'}
                         buttonText='入力へ'
                     />
+                    <View style={styles.header}>
+                        <View style={styles.headerInner}>
+                            <Icon name='chevron-left' size={55} onPress={() => this.setState({ isHomeBackConfirmModalVisible: true })} />
+                        </View>
+                    </View>
                     <KeyboardAwareScrollView style={styles.scrollView} ref="_scrollView">
                         <View style={styles.formContainer}>
                             <View>
@@ -181,7 +207,7 @@ export default class Signup extends React.Component {
                                 {/* ログイン画面へのボタン */}
                                 <TouchableHighlight
                                     underlayColor='white'
-                                    onPress={() => this.setState({ isBackConfirmModalVisible: true })}
+                                    onPress={() => this.setState({ isLoginBackConfirmModalVisible: true })}
                                 >
                                     <View style={styles.toLoginView}>
                                         <Text style={styles.toLoginBigText}>既に会員登録がお済みの方はこちら ></Text>
@@ -381,7 +407,7 @@ const styles = StyleSheet.create({
         height: hp('92%'),
     },
     formContainer: {
-        top: hp('10%'),
+        top: hp('5%'),
         width: wp('80%'),
         left: wp('10%')
     },

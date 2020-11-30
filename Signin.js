@@ -50,10 +50,6 @@ export default class Signin extends React.Component {
         }
     }
 
-    navigateSignup = () => {
-        this.props.onStateChange('signUp')
-    }
-
     navigateForgotPassword = () => {
         this.props.onStateChange('forgotPassword')
         this.toggleModal()
@@ -81,8 +77,12 @@ export default class Signin extends React.Component {
                             leftButtonText='戻る'
                             rightButtonText='再発行へ'
                         />
+                        <View style={styles.header}>
+                            <View style={styles.headerInner}>
+                                <Icon name='chevron-left' size={55} onPress={() => this.props.toggleDisplaySignin()} />
+                            </View>
+                        </View>
                         <ScrollView style={styles.scrollView}>
-                                    <Text onPress={() => this.props.toggleDisplaySignin()} style={{ fontSize: 20 }}>戻る</Text>
                             <View style={styles.formContainer}>
                                 <View>
                                     <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
@@ -119,7 +119,7 @@ export default class Signin extends React.Component {
                                     <View style={styles.toSignupButton}>
                                         <Button
                                             title='アカウントをお持ちでない方はこちら'
-                                            onPress={this.navigateSignup}
+                                            onPress={() => this.props.onStateChange('signUp')}
                                             buttonStyle={{ backgroundColor: 'white'}}
                                             titleStyle={styles.signUpButtonStyle}
                                         />
@@ -145,7 +145,7 @@ export default class Signin extends React.Component {
 const styles = StyleSheet.create({
     scrollView: {
         width: wp('100%'),
-        height: hp('100%')
+        height: hp('92%'),
     },
     modalContainerView: {
         backgroundColor: 'white',
@@ -191,16 +191,15 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     loginTextImage: {
-        marginTop: hp('27%'),
         width: wp('35%'),
         height: wp('14%'),
         resizeMode: 'contain',
     },
     formContainer: {
+        top: hp('5%'),
         width: wp('80%'),
         left: wp('10%'),
         height: wp('100%'),
-        justifyContent: 'center',
     },
     loginText: {
         width: wp('40%'),
@@ -279,5 +278,16 @@ const styles = StyleSheet.create({
         marginTop: 1.2,
         color: '#A60000',
         fontWeight: '500'
-    }
+    },
+    header: {
+        alignItems: 'center',
+        height: hp('9%'),
+    },
+    headerInner: {
+        flexDirection: 'row',
+        marginLeft: -wp('5%'),
+        width: wp('86%'),
+        height: hp('6%'),
+        marginTop: hp('2%')
+    },
 })
