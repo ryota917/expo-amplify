@@ -32,6 +32,39 @@ export const getItem = /* GraphQL */ `
           id
           itemId
           cartId
+          item {
+            id
+            name
+            description
+            stateDescription
+            imageURLs
+            status
+            season
+            bigCategory
+            smallCategory
+            color
+            dressLength
+            dressWidth
+            sleeveLength
+            waist
+            hip
+            rise
+            inseam
+            hemWidth
+            size
+            brand
+            supplierName
+            material
+            rank
+            createdAt
+            updatedAt
+          }
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -42,6 +75,39 @@ export const getItem = /* GraphQL */ `
           id
           itemId
           cartLogId
+          item {
+            id
+            name
+            description
+            stateDescription
+            imageURLs
+            status
+            season
+            bigCategory
+            smallCategory
+            color
+            dressLength
+            dressWidth
+            sleeveLength
+            waist
+            hip
+            rise
+            inseam
+            hemWidth
+            size
+            brand
+            supplierName
+            material
+            rank
+            createdAt
+            updatedAt
+          }
+          cartLog {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -52,6 +118,48 @@ export const getItem = /* GraphQL */ `
           id
           itemId
           userId
+          item {
+            id
+            name
+            description
+            stateDescription
+            imageURLs
+            status
+            season
+            bigCategory
+            smallCategory
+            color
+            dressLength
+            dressWidth
+            sleeveLength
+            waist
+            hip
+            rise
+            inseam
+            hemWidth
+            size
+            brand
+            supplierName
+            material
+            rank
+            createdAt
+            updatedAt
+          }
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -94,12 +202,33 @@ export const listItems = /* GraphQL */ `
         material
         rank
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -138,12 +267,31 @@ export const getUser = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -152,6 +300,24 @@ export const getUser = /* GraphQL */ `
           id
           userId
           createdAt
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
+          itemCartLogs {
+            nextToken
+          }
           updatedAt
         }
         nextToken
@@ -161,6 +327,48 @@ export const getUser = /* GraphQL */ `
           id
           itemId
           userId
+          item {
+            id
+            name
+            description
+            stateDescription
+            imageURLs
+            status
+            season
+            bigCategory
+            smallCategory
+            color
+            dressLength
+            dressWidth
+            sleeveLength
+            waist
+            hip
+            rise
+            inseam
+            hemWidth
+            size
+            brand
+            supplierName
+            material
+            rank
+            createdAt
+            updatedAt
+          }
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -193,13 +401,44 @@ export const listUsers = /* GraphQL */ `
         cart {
           id
           userId
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
+          itemCarts {
+            nextToken
+          }
         }
         cartLogs {
+          items {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteItem {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -229,13 +468,44 @@ export const getCart = /* GraphQL */ `
         cart {
           id
           userId
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
+          itemCarts {
+            nextToken
+          }
         }
         cartLogs {
+          items {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteItem {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -248,6 +518,39 @@ export const getCart = /* GraphQL */ `
           id
           itemId
           cartId
+          item {
+            id
+            name
+            description
+            stateDescription
+            imageURLs
+            status
+            season
+            bigCategory
+            smallCategory
+            color
+            dressLength
+            dressWidth
+            sleeveLength
+            waist
+            hip
+            rise
+            inseam
+            hemWidth
+            size
+            brand
+            supplierName
+            material
+            rank
+            createdAt
+            updatedAt
+          }
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -278,12 +581,31 @@ export const listCarts = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -312,13 +634,44 @@ export const getCartLog = /* GraphQL */ `
         cart {
           id
           userId
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
+          itemCarts {
+            nextToken
+          }
         }
         cartLogs {
+          items {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteItem {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -329,6 +682,39 @@ export const getCartLog = /* GraphQL */ `
           id
           itemId
           cartLogId
+          item {
+            id
+            name
+            description
+            stateDescription
+            imageURLs
+            status
+            season
+            bigCategory
+            smallCategory
+            color
+            dressLength
+            dressWidth
+            sleeveLength
+            waist
+            hip
+            rise
+            inseam
+            hemWidth
+            size
+            brand
+            supplierName
+            material
+            rank
+            createdAt
+            updatedAt
+          }
+          cartLog {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -361,10 +747,29 @@ export const listCartLogs = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         updatedAt
@@ -435,12 +840,33 @@ export const getItemCart = /* GraphQL */ `
         material
         rank
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -461,12 +887,31 @@ export const getItemCart = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         createdAt
         updatedAt
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -510,14 +955,41 @@ export const listItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
+          itemCarts {
+            nextToken
+          }
+          itemCartLogs {
+            nextToken
+          }
+          favoriteUser {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         cart {
           id
           userId
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
+          itemCarts {
+            nextToken
+          }
         }
         createdAt
         updatedAt
@@ -557,12 +1029,33 @@ export const getItemCartLog = /* GraphQL */ `
         material
         rank
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -584,10 +1077,29 @@ export const getItemCartLog = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         updatedAt
@@ -632,6 +1144,15 @@ export const listItemCartLogs = /* GraphQL */ `
           supplierName
           material
           rank
+          itemCarts {
+            nextToken
+          }
+          itemCartLogs {
+            nextToken
+          }
+          favoriteUser {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -639,6 +1160,24 @@ export const listItemCartLogs = /* GraphQL */ `
           id
           userId
           createdAt
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
+          itemCartLogs {
+            nextToken
+          }
           updatedAt
         }
         createdAt
@@ -679,12 +1218,33 @@ export const getItemFavorite = /* GraphQL */ `
         material
         rank
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -705,13 +1265,44 @@ export const getItemFavorite = /* GraphQL */ `
         cart {
           id
           userId
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
+          itemCarts {
+            nextToken
+          }
         }
         cartLogs {
+          items {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteItem {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -757,6 +1348,15 @@ export const listItemFavorites = /* GraphQL */ `
           supplierName
           material
           rank
+          itemCarts {
+            nextToken
+          }
+          itemCartLogs {
+            nextToken
+          }
+          favoriteUser {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -772,6 +1372,18 @@ export const listItemFavorites = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -820,12 +1432,33 @@ export const searchItems = /* GraphQL */ `
         material
         rank
         itemCarts {
+          items {
+            id
+            itemId
+            cartId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         favoriteUser {
+          items {
+            id
+            itemId
+            userId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -865,10 +1498,29 @@ export const searchCartLogs = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         itemCartLogs {
+          items {
+            id
+            itemId
+            cartLogId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         updatedAt
@@ -945,14 +1597,41 @@ export const searchItemCarts = /* GraphQL */ `
           supplierName
           material
           rank
+          itemCarts {
+            nextToken
+          }
+          itemCartLogs {
+            nextToken
+          }
+          favoriteUser {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         cart {
           id
           userId
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
+          itemCarts {
+            nextToken
+          }
         }
         createdAt
         updatedAt
@@ -1003,6 +1682,15 @@ export const searchItemCartLogs = /* GraphQL */ `
           supplierName
           material
           rank
+          itemCarts {
+            nextToken
+          }
+          itemCartLogs {
+            nextToken
+          }
+          favoriteUser {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -1010,6 +1698,24 @@ export const searchItemCartLogs = /* GraphQL */ `
           id
           userId
           createdAt
+          user {
+            id
+            name
+            nameKana
+            phoneNumber
+            address
+            postalCode
+            height
+            birthday
+            gender
+            rental
+            cartId
+            createdAt
+            updatedAt
+          }
+          itemCartLogs {
+            nextToken
+          }
           updatedAt
         }
         createdAt
@@ -1061,6 +1767,15 @@ export const searchItemFavorites = /* GraphQL */ `
           supplierName
           material
           rank
+          itemCarts {
+            nextToken
+          }
+          itemCartLogs {
+            nextToken
+          }
+          favoriteUser {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -1076,6 +1791,18 @@ export const searchItemFavorites = /* GraphQL */ `
           gender
           rental
           cartId
+          cart {
+            id
+            userId
+            createdAt
+            updatedAt
+          }
+          cartLogs {
+            nextToken
+          }
+          favoriteItem {
+            nextToken
+          }
           createdAt
           updatedAt
         }

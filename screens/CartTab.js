@@ -120,9 +120,19 @@ export default class CartTab extends React.Component {
                 },
                 limit: 1
             }))
+            console.log(cartLogRes)
+            const cartLogId = cartLogRes.data.searchCartLogs.items[0].id
+            const itemCartLogRes = await API.graphql(graphqlOperation(gqlQueries.searchItemCartLogs, {
+                filter: {
+                    cartLogId: {
+                        eq: cartLogId
+                    }
+                }
+            }))
             //最新のカートログに入っているアイテムデータを取得
             const itemCartLogArr = []
-            cartLogRes?.data?.searchCartLogs?.items[0]?.itemCartLogs?.items.forEach(obj => itemCartLogArr.push(obj.item))
+            console.log(itemCartLogRes)
+            itemCartLogRes.data.searchItemCartLogs.items.map(obj => itemCartLogArr.push(obj.item))
             //次回レンタル可能な日付データを取得(CartLogが存在しない場合はレンタル可能判定にする)
             let canNextRental = true
             let canNextRentalDate = new Date()
