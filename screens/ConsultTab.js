@@ -8,13 +8,15 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations'
 import * as gqlSubscriptions from '../src/graphql/subscriptions'
 import send_message from '../src/messaging/slack'
+import DoubleButtonImageModal from './common/DoubleButtonImageModal'
 
 class ConsultTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             itemCart: [],
-            cartSize: 0
+            cartSize: 0,
+            isNotLoginModalVisible: false
         }
     }
 
@@ -27,9 +29,6 @@ class ConsultTab extends React.Component {
             height: hp('7%')
         }
     });
-
-    componentDidMount() {
-    }
 
     render() {
         return(
@@ -79,17 +78,39 @@ export default class Chat extends React.Component {
         await this.fetchCurrentUser()
         this.fetchMessage()
         this.props.navigation.addListener('didFocus', async () => {
-            await this.fetchCurrentUser()
+            await this.showModalToLogin()
             this.fetchMessage()
         })
     }
 
+    //ログインユーザー商法取得
     fetchCurrentUser = async () => {
-        const currentUser = await Auth.currentAuthenticatedUser()
-        const currentUserEmail = currentUser.attributes.email
-        this.setState({ currentUserEmail: currentUserEmail })
+        try {
+            const currentUser = await Auth.currentAuthenticatedUser()
+            const currentUserEmail = currentUser.attributes.email
+            this.setState({ currentUserEmail: currentUserEmail })
+        } catch(err) {
+            this.setState({ isNotLoginModalVisible: true })
+        }
     }
 
+    //ログイン促進モーダル表示判定
+    showModalToLogin = () => {
+        if(!this.state.currentUserEmail) {
+            this.setState({ isNotLoginModalVisible: true })
+        }
+    }
+
+    onPressNotLoginedModalLeftButton = () => {
+        this.props.navigation.state.params.onStateChangeSignup()
+    }
+
+    onPressNotLoginedModalRightButton = () => {
+        this.setState({ isNotLoginModalVisible: false })
+        this.props.navigation.navigate('ItemTab')
+    }
+
+    //メッセージデータ取得
     fetchMessage = async () => {
         const { currentUserEmail } = this.state
         const messageRes = await API.graphql(graphqlOperation(gqlQueries.searchMessages, {
@@ -135,9 +156,23 @@ export default class Chat extends React.Component {
 
     //quickRepliesでアンケート取れる
     render() {
-        const { messages, currentUserEmail } = this.state
+        const {
+            messages,
+            currentUserEmail,
+            isNotLoginModalVisible
+        } = this.state
         return(
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+                <DoubleButtonImageModal
+                    isModalVisible={isNotLoginModalVisible}
+                    onPressLeftButton={() => this.onPressNotLoginedModalLeftButton()}
+                    onPressRightButton={() => this.onPressNotLoginedModalRightButton()}
+                    bigText={'この画面の表示には\nログインが必要です。'}
+                    smallText={'気になる服を保存するために登録してみませんか。\nユーザー登録は無料で行えます。\n※レンタル確定には有料のレンタルプランが必要です。'}
+                    leftButtonText='ユーザー登録する'
+                    rightButtonText='アイテム一覧へ戻る'
+                    image={require('../assets/thankYouTaggu.png')}
+                />
                 <GiftedChat
                     alwaysShowSend={true}
                     messages={messages}
