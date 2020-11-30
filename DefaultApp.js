@@ -72,7 +72,10 @@ export default class DefaultApp extends React.Component {
 
         const ConsultTabStack = createStackNavigator(
             {
-                ConsultTab: {screen: ConsultTab}
+                ConsultTab: {
+                    screen: ConsultTab,
+                    params: { onStateChangeSignup: () => this.props.onStateChange('signUp')}
+                }
             },
             {
                 initialRouteName: 'ConsultTab'

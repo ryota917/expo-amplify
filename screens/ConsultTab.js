@@ -10,42 +10,6 @@ import * as gqlSubscriptions from '../src/graphql/subscriptions'
 import send_message from '../src/messaging/slack'
 import DoubleButtonImageModal from './common/DoubleButtonImageModal'
 
-class ConsultTab extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            itemCart: [],
-            cartSize: 0,
-            isNotLoginModalVisible: false
-        }
-    }
-
-    static navigationOptions = ({navigation}) => ({
-        headerTitle: () => (
-            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
-        ),
-        headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
-        headerStyle: {
-            height: hp('7%')
-        }
-    });
-
-    render() {
-        return(
-            <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <View style={styles.innerContainer}>
-                        <Image source={require('../assets/consult-taggu.png')} style={styles.tagguImage} />
-                        <Text style={styles.mainText}>{"お問い合わせ・ご相談は\nLINE@で対応致します。"}</Text>
-                        <Image source={require('../assets/line.png')} style={styles.lineImage} />
-                        <Text style={styles.subText}>{"こちらのアカウントのトークルームにて、\n登録した氏名・メールアドレスを記載の上\nメッセージを送信してください"}</Text>
-                    </View>
-                </View>
-            </SafeAreaView>
-        )
-    }
-}
-
 const initialMessage = {
     _id: 'support',
     text: "わからないことがあったら聞いてね",
