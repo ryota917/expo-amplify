@@ -40,8 +40,14 @@ import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
 import DefaultApp from './DefaultApp'
 
+import { PayjpCore } from 'payjp-react-native'
+
 //aws接続設定
 Amplify.configure(awsmobile);
+
+PayjpCore.init({ publicKey: "pk_test_8e84ad899db7afe528aa5b42" })
+  .then(() => console.log('payjp init ok'))
+  .catch(e => console.warn('payjp init error', e))
 
 const ItemTabStack = createStackNavigator(
   {
