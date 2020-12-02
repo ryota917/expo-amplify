@@ -113,7 +113,8 @@ export default class Signup extends React.Component {
                         height: isHeightSelected ? height : '',
                         birthday: isBirthdaySelected ? birthday : '',
                         gender: gender,
-                        rental: false
+                        rental: false,
+                        customerId: ''
                     }
                 }))
                 await API.graphql(graphqlOperation(gqlMutations.createCart, {
