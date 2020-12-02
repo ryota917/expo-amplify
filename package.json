@@ -30,6 +30,7 @@
     "native-base": "^2.13.14",
     "node-forge": "^0.10.0",
     "payjp-react-native": "^0.5.3",
+    "qs": "^6.9.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-infinite-scroller": "^1.2.4",

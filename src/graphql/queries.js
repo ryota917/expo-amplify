@@ -157,6 +157,7 @@ export const getItem = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -252,6 +253,7 @@ export const getUser = /* GraphQL */ `
       gender
       rental
       cartId
+      customerId
       cart {
         id
         userId
@@ -267,6 +269,7 @@ export const getUser = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -312,6 +315,7 @@ export const getUser = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -366,6 +370,7 @@ export const getUser = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -398,6 +403,7 @@ export const listUsers = /* GraphQL */ `
         gender
         rental
         cartId
+        customerId
         cart {
           id
           userId
@@ -413,6 +419,7 @@ export const listUsers = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -465,6 +472,7 @@ export const getCart = /* GraphQL */ `
         gender
         rental
         cartId
+        customerId
         cart {
           id
           userId
@@ -480,6 +488,7 @@ export const getCart = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -581,6 +590,7 @@ export const listCarts = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -631,6 +641,7 @@ export const getCartLog = /* GraphQL */ `
         gender
         rental
         cartId
+        customerId
         cart {
           id
           userId
@@ -646,6 +657,7 @@ export const getCartLog = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -747,6 +759,7 @@ export const listCartLogs = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -887,6 +900,7 @@ export const getItemCart = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -982,6 +996,7 @@ export const listItemCarts = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -1077,6 +1092,7 @@ export const getItemCartLog = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -1172,6 +1188,7 @@ export const listItemCartLogs = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -1262,6 +1279,7 @@ export const getItemFavorite = /* GraphQL */ `
         gender
         rental
         cartId
+        customerId
         cart {
           id
           userId
@@ -1277,6 +1295,7 @@ export const getItemFavorite = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -1372,6 +1391,7 @@ export const listItemFavorites = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -1498,6 +1518,7 @@ export const searchCartLogs = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId
@@ -1624,6 +1645,7 @@ export const searchItemCarts = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -1710,6 +1732,7 @@ export const searchItemCartLogs = /* GraphQL */ `
             gender
             rental
             cartId
+            customerId
             createdAt
             updatedAt
           }
@@ -1791,6 +1814,7 @@ export const searchItemFavorites = /* GraphQL */ `
           gender
           rental
           cartId
+          customerId
           cart {
             id
             userId

@@ -49,7 +49,7 @@ export default class Chat extends React.Component {
         })
     }
 
-    //ログインユーザー商法取得
+    //ログインユーザー情報取得
     fetchCurrentUser = async () => {
         try {
             const currentUser = await Auth.currentAuthenticatedUser()

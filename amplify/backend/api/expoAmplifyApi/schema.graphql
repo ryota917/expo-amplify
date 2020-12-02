@@ -42,6 +42,7 @@ type User @model {
   gender: String
   rental: Boolean
   cartId: ID!
+  customerId: ID
   cart: Cart @connection(fields: ["cartId"])
   cartLogs: [CartLog] @connection(keyName: "byUser", fields: ["id"])
   favoriteItem: [ItemFavorite] @connection(keyName: "byUser", fields: ["id"])
