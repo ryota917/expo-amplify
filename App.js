@@ -40,6 +40,8 @@ import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
 import DefaultApp from './DefaultApp'
 
+import Credit from './screens/Credit'
+
 import { PayjpCore } from 'payjp-react-native'
 
 //aws接続設定
@@ -98,6 +100,12 @@ const ProfileStack = createStackNavigator(
   },
 )
 
+const CreditTabStack = createStackNavigator(
+  {
+    Credit: {screen: Credit}
+  }
+)
+
 //Tab
 export const Tab = createBottomTabNavigator(
   {
@@ -124,7 +132,7 @@ export const Tab = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
       }
-    }
+    },
   },
   {
     tabBarOptions: {

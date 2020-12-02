@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, View, StyleSheet, Text, Image, SafeAreaView, Button } from 'react-native';
+import { Platform, StyleSheet, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { GiftedChat } from 'react-native-gifted-chat'
@@ -8,13 +8,10 @@ import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations'
 import send_message from '../src/messaging/slack'
 import DoubleButtonImageModal from './common/DoubleButtonImageModal'
-import { PayjpCardForm } from 'payjp-react-native'
-import axios from 'axios'
-import { PAYJP } from './common/Payjp'
 
 const initialMessage = {
     _id: 'support',
-    text: "わからないことがあったら聞いてね",
+    text: "わからないことや、ご相談はこちらからお願いします。",
     user: {
         _id: 'support',
         avatar: require('../assets/pretapo-icon.png')
