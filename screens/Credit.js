@@ -4,7 +4,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations'
-import send_message from '../src/messaging/slack'
 import { PayjpCardForm } from 'payjp-react-native'
 import axios from 'axios'
 import { PAYJP } from './common/Payjp'
@@ -88,7 +87,8 @@ export default class Credit extends React.Component {
             .catch(e => console.log('error creating payjp customer', e))
     }
 
-    //Customerに紐付くSubscriptionを作成
+    //レンタル確定
+    //Customerに紐付くSubscriptionを作成、既存でactiveの場合は何もしない
     createSubscription = () => {
         console.log('subscriptionを作成します')
         console.log(this.state.customerId)
@@ -135,14 +135,24 @@ export default class Credit extends React.Component {
     render() {
         return(
             <View>
+                {/* 既存の場合は登録中のカードを表示 */}
                 <Button
-                    title='カードを追加する'
+                    title='カードを登録する'
                     onPress={() => PayjpCardForm.startCardForm()}
                 />
                 <Button
                     title='レンタルを確定する'
                     onPress={() => this.createSubscription()}
                 />
+                <Button
+                    title='サブスクリプションを削除する'
+                    onPress={() => console.log('削除')}
+                />
+                <Button
+                    title='カードを追加する'
+                    onPress={() => console.log('追加する')}
+                />
+                {/* どのカードで決済するか選択するチェックボックス的なもの */}
             </View>
         )
     }

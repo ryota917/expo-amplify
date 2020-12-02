@@ -75,6 +75,8 @@ export default class Chat extends React.Component {
 
     //メッセージデータ取得
     fetchMessage = async () => {
+        //ログインしていない場合は処理を終了
+        if(!this.state.currentUserEmail) return
         const { currentUserEmail } = this.state
         const messageRes = await API.graphql(graphqlOperation(gqlQueries.searchMessages, {
             filter: {
