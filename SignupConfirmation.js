@@ -5,6 +5,7 @@ import { Input, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
+import SingleButtonModal from './screens/common/SingleButtonModal'
 
 export default class Signin extends React.Component {
     constructor(props) {
@@ -13,6 +14,8 @@ export default class Signin extends React.Component {
             verificationCode: '',
             isResendConfimationModalVisile: false,
             isSendedModalVisible: false,
+            //ログイン完了モーダル
+            isConfirmedModalVisible: false,
             isConfirmPressed: false,
             confirmationAlert: false
         }
@@ -28,8 +31,8 @@ export default class Signin extends React.Component {
         const { email, password } = this.props.authData
         try{
             await Auth.confirmSignUp(email, verificationCode)
-            Auth.signIn(email, password)
-            // this.props.onStateChange('confirmSignIn', { verificationCode })
+            //ログイン完了モーダル表示
+            this.setState({ isConfirmedModalVisible: true })
         } catch(error) {
             console.error(error)
             this.setState({ confirmationAlert: true })
@@ -70,6 +73,11 @@ export default class Signin extends React.Component {
             isSendedModalVisible: false,
             isConfirmPressed: false
         })
+    }
+
+    signIn = () => {
+        const { email, password } = this.props.authData
+        Auth.signIn(email, password)
     }
 
     render() {
@@ -121,6 +129,12 @@ export default class Signin extends React.Component {
                                 </View>
                             </View>
                         </Modal>
+                        <SingleButtonModal
+                            isModalVisible={this.state.isConfirmedModalVisible}
+                            onPressButton={() => this.signIn() }
+                            text={'アドレスが確認されました。\nたくさん古着をお楽しみください！'}
+                            buttonText='ホーム画面へ'
+                        />
                         <View style={styles.header}>
                             <View style={styles.headerInner}>
                                 <Icon name='chevron-left' size={55} onPress={this.navigateSignIn}/>
