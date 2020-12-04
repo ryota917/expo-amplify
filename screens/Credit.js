@@ -5,22 +5,40 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../src/graphql/queries' // read
 import * as gqlMutations from '../src/graphql/mutations'
 import { PayjpCardForm } from 'payjp-react-native'
-import axios from 'axios'
-import { PAYJP } from './common/Payjp'
-
+import { PAYJP, payjpAxios } from './common/Payjp'
+import qs from 'qs'
 
 export default class Credit extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             currentUserEmail: '',
-            customerId: ''
+            customerId: '',
+            subscriptionId: '',
+            cards: []
         }
     }
 
     componentDidMount = async () => {
-        await this.fetchCurrentUser()
-        console.log('componentDidMountがコールされました')
+        try {
+            console.log('componentDidMountがコールされました')
+            await this.fetchCurrentUser()
+            this.fetchPayjpData()
+            this.payjpCardUpdate()
+        } catch(e) {
+            console.error('error while componentDidMount call:', e)
+        }
+    }
+
+    //クリーンアップ
+    componentWillUnmount = () => {
+        this.payjpCardUpdate()
+    }
+
+
+    //payjpのカード情報アップデート時
+    payjpCardUpdate = () => {
+        const { customerId } = this.state
         PayjpCardForm.onCardFormUpdate({
             onCardFormCanceled: () => {
                 console.log('PAY.JP card form canceled')
@@ -28,20 +46,37 @@ export default class Credit extends React.Component {
             onCardFormCompleted: () => {
                 console.log('PAY.JP card form completed')
             },
-            onCardFormProducedToken: token => {
+            onCardFormProducedToken: async (token) => {
                 console.log('PAY.JP token => ', token)
-                this.createCustomerByToken(token.id)
-                    .then(() => {
-                        //トークンの送信に成功したらカードフォームを完了する
-                        return PayjpCardForm.completeCardForm()
-                    })
-                    .catch(e => {
-                        console.log(e)
-                        console.log(convertMessage(e))
-                        return PayjpCardForm.showTokenProcessingError(convertMessage(e))
-                    })
+                //既にCustomerが作成されている場合はカード追加、Customer未作成の場合はCardに紐付くCustomerを作成
+                if(customerId) {
+                    await this.addCardToCustomer(token.id)
+                } else {
+                    await this.createCustomerByToken(token.id)
+                }
+                return PayjpCardForm.completeCardForm()
+
             }
         })
+    }
+
+    //customerIdを元にPayjpからデータ取得
+    fetchPayjpData = () => {
+        const { customerId } = this.state
+        if(!customerId) return
+        console.log('Customerデータを取得します', customerId)
+        payjpAxios.get('/customers/' + customerId)
+            .then(res => {
+                console.log('customerデータを取得しました', res)
+                const resObj = JSON.parse(res['request']['_response'])
+                const subscriptionId = resObj.subscriptions?.data[0]?.id
+                let cards = []
+                resObj.cards.data.map(card => cards.push(card))
+                this.setState({
+                    subscriptionId: subscriptionId,
+                    cards: cards
+                })
+            })
     }
 
     //ログインユーザー情報取得
@@ -52,25 +87,20 @@ export default class Credit extends React.Component {
         const customerId = userRes.data.getUser.customerId
         this.setState({
             currentUserEmail: currentUserEmail,
-            customerId: customerId
+            customerId: customerId,
         })
     }
 
-    //TokenをもとにCustomerを作成
+    //初回カード登録時
+    //TokenをもとにCardが紐づくCustomerを作成
     createCustomerByToken = async (tokenId) => {
         console.log('customerを作成します')
-        axios.post(
-            PAYJP.domain + '/customers',
-            // Content-Type application/jsonではなく、application/x-www-form-urlencodedで送信する必要がある。
+        payjpAxios.post(
+            'customers',
             qs.stringify({
                 email: this.state.currentUserEmail,
                 card: tokenId
-            }),
-            {
-                headers: {
-                    'Authorization': 'Basic c2tfdGVzdF84Yzc2MzliMWI0Nzk3ZjRmZjQ5NjAzNmE6'
-                }
-            }
+            })
         )
             .then(res => {
                 console.log('response creating payjp customer', res)
@@ -87,52 +117,76 @@ export default class Credit extends React.Component {
             .catch(e => console.log('error creating payjp customer', e))
     }
 
-    //レンタル確定
-    //Customerに紐付くSubscriptionを作成、既存でactiveの場合は何もしない
+    //カード追加時
+    addCardToCustomer = (tokenId) => {
+        console.log('既存のCustomerにカード情報を追加します')
+        const { customerId } = this.state
+        payjpAxios.post(
+            'customers/' + customerId  + '/cards',
+            qs.stringify({
+                card: tokenId
+            })
+        )
+            .then(res => console.log('カード情報を追加しました', res))
+            .catch(e => console.error('カード情報の追加に失敗しました', e))
+    }
+
+
+    //決済に用いるカード変更
+    changeSettleCard = (cardId) => {
+        console.log('デフォルトカードを変更します')
+        const { customerId } = this.state
+        payjpAxios.post(
+            'customers/' + customerId,
+            qs.stringify({
+                default_card: cardId
+            })
+        )
+            .then(res => console.log('デフォルトカードを更新しました' + res))
+            .catch(e => console.error('デフォルトカードの更新に失敗しました' + e))
+    }
+
+    //カードを削除
+    deleteCustomerCard = (cardId) => {
+        console.log('カードを削除します')
+        const { customerId } = this.state
+        payjpAxios.delete(
+            'customers/' + customerId + '/cards/' + cardId
+        )
+        console.log('カードを削除しました')
+    }
+
+    //サブスクリプション作成(レンタル確定?)
+    //Customerに紐付くSubscriptionがない場合作成、既存でactiveの場合は何もしない、activeでない場合はアクティベート
     createSubscription = () => {
         console.log('subscriptionを作成します')
-        console.log(this.state.customerId)
-        axios.post(
-            PAYJP.domain + '/subscriptions',
+        payjpAxios.post(
+            'subscriptions',
             qs.stringify({
                 customer: this.state.customerId,
                 plan: 'plan_standard'
-            }),
-            {
-                headers: {
-                    'Authorization': 'Basic c2tfdGVzdF84Yzc2MzliMWI0Nzk3ZjRmZjQ5NjAzNmE6'
-                }
-            }
+            })
         )
             .then(res => console.log('response creating payjp subscription', res))
             .catch(e => console.log('erro creating payjp subscriptions', e))
     }
 
-    componentWillUnmount = () => {
-        PayjpCardForm.onCardFormUpdate({
-            onCardFormCanceled: () => {
-                console.log('PAY.JP card form canceled')
-            },
-            onCardFormCompleted: () => {
-                console.log('PAY.JP card form completed')
-            },
-            onCardFormProducedToken: token => {
-                console.log('PAY.JP token => ', token)
-                this.createCustomerByToken(token.id)
-                    .then(() => {
-                        //トークンの送信に成功したらカードフォームを完了する
-                        return PayjpCardForm.completeCardForm()
-                    })
-                    .catch(e => {
-                        console.log(e)
-                        console.log(convertMessage(e))
-                        return PayjpCardForm.showTokenProcessingError(convertMessage(e))
-                    })
-            }
-        })
+    //サブスクリプションを停止は引き落とし時にエラーが発生した時の処理にかぶるので、手動で終了したい時はキャンセルにする
+    cancelSubscription = () => {
+        console.log('サブスクリプションを停止します')
+        const { subscriptionId } = this.state
+        payjpAxios.post('subscriptions/' + subscriptionId + '/cancel')
+            .then(res => console.log('サブスクリプションをキャンセルしました', res))
+    }
+
+    //Customerに単発支払いを作成
+    //Customerが既存の場合は、既存のものにCharge、未作成の場合はCustomerを作成してChargeを紐づける
+    createCharge = () => {
+        console.log('Chargeを作成します')
     }
 
     render() {
+        const { cards } = this.state
         return(
             <View>
                 {/* 既存の場合は登録中のカードを表示 */}
@@ -141,18 +195,34 @@ export default class Credit extends React.Component {
                     onPress={() => PayjpCardForm.startCardForm()}
                 />
                 <Button
+                    title='カードを追加する'
+                    onPress={() => PayjpCardForm.startCardForm()}
+                />
+                <Button
                     title='レンタルを確定する'
                     onPress={() => this.createSubscription()}
                 />
                 <Button
-                    title='サブスクリプションを削除する'
-                    onPress={() => console.log('削除')}
+                    title='サブスクリプションをキャンセルする'
+                    onPress={() => this.cancelSubscription()}
                 />
-                <Button
-                    title='カードを追加する'
-                    onPress={() => console.log('追加する')}
-                />
+                {cards.map((card, idx) =>
+                    <View key={idx}>
+                        <Button
+                            title={card.brand}
+                            onPress={() => this.changeSettleCard(card.id)}
+                        />
+                        <Button
+                            title='削除'
+                            onPress={() => this.deleteCustomerCard(card.id)}
+                        />
+                    </View>
+                )}
+                {/* customerIdが存在する時 */}
                 {/* どのカードで決済するか選択するチェックボックス的なもの */}
+                {/* 新規カード追加 */}
+                {/* customerIdが存在しない時 */}
+                {/* カードを登録する */}
             </View>
         )
     }

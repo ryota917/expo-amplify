@@ -34,7 +34,8 @@ export default class Signup extends React.Component {
             signUpAlert: false,
             signUpAlertText: '',
             isLoginBackConfirmModalVisible: false,
-            isHomeBackConfirmModalVisible: false
+            isHomeBackConfirmModalVisible: false,
+            isSignedUpModalVisible: false
         }
     }
 
@@ -44,6 +45,12 @@ export default class Signup extends React.Component {
             const user = await Auth.signIn(email, password)
         } catch(error) {
         }
+    }
+
+    onPressConfirmModalButton = () => {
+        const { email, password } = this.state
+        this.props.onStateChange('confirmSignUp', { email: email, password: password })
+        this.setState({ isSignedUpModalVisible: false })
     }
 
     //ログイン画面へ
@@ -192,7 +199,7 @@ export default class Signup extends React.Component {
                     />
                     <SingleButtonModal
                         isModalVisible={isSignedUpModalVisible}
-                        onPressButton={() => this.props.onStateChange('confirmSignUp', { email: email, password: password })}
+                        onPressButton={() => this.onPressConfirmModalButton()}
                         text={'入力されたアドレスに確認コードを送信しました。メールを確認してコードを入力してください。'}
                         buttonText='入力へ'
                     />
@@ -466,7 +473,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     topAlertView: {
-        paddingTop: hp('1%'),
+        paddingTop: hp('2%'),
         flexDirection: 'row',
         height: hp('6%'),
         width: wp('70%'),

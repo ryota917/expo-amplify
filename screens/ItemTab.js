@@ -289,6 +289,7 @@ export default class ItemTab extends React.Component {
     }
 
     initialLoad = async () => {
+        console.log('アイテム一覧初期ロード')
         this.setState({ isLoading: true })
         const query = await this.initialQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
@@ -302,6 +303,7 @@ export default class ItemTab extends React.Component {
     }
 
     continueLoading = async () => {
+        console.log('アイテム一覧追加ローディング')
         this.setState({ isLoading: true })
         const query = await this.loadQuery()
         const res = await API.graphql(graphqlOperation(gqlQueries.searchItems, query))
