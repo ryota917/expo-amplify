@@ -1,44 +1,32 @@
 import React from 'react';
 import { Image, View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
-import { Authenticator, withAuthenticator } from 'aws-amplify-react-native'
+import { Authenticator } from 'aws-amplify-react-native'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import awsmobile from './aws-exports'
+import awsmobile from '../aws-exports'
 
 //import ItemTab
-import ItemTab from './screens/ItemTab';
-import SearchConditionModal from './screens/item/search/SearchConditionModal'
-import ItemDetail from './screens/item/ItemDetail'
+import { ItemTab, ItemDetail, SearchConditionModal } from './screens/item'
 
 //import FavoriteTab
-import FavoriteTab from './screens/FavoriteTab'
-import FavoriteItemDetail from './screens/favorite/FavoriteItemDetail'
+import { FavoriteTab, FavoriteItemDetail } from './screens/favorite'
 
 //import CartTab
-import CartTab from './screens/CartTab'
-import CartItemDetail from './screens/cart/CartItemDetail'
-import ConfirmPage from "./screens/cart/ConfirmPage"
-import ThankYouPage from './screens/cart/ThankYouPage'
+import { CartTab, CartItemDetail, ConfirmPage, ThankYouPage } from './screens/cart'
 
 //import ConsultTab
-import ConsultTab from './screens/ConsultTab'
+import { ConsultTab } from './screens/consult'
 
 //import ProfileTab
-import ProfileConfirmPage from './screens/ProfileConfirmPage'
-import ProfileEditPage from './screens/ProfileEditPage'
+import { ProfileConfirmPage, ProfileEditPage } from './screens/profile'
 
 //import Authentication Page
-import Signin from './Signin'
-import Signup from './Signup'
-import SignupConfirmation from './SignupConfirmation'
-import ForgotPassword from './ForgotPassword'
-import ResetPassword from './ResetPassword'
-import DefaultApp from './DefaultApp'
+import * as auth from './auth'
 
 import Credit from './screens/Credit'
 
@@ -133,6 +121,9 @@ export const Tab = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
       }
     },
+    '決済': {
+      screen: CreditTabStack,
+    }
   },
   {
     tabBarOptions: {
@@ -161,7 +152,7 @@ const Drawer = createDrawerNavigator(
   {
     contentComponent: (props) => (
       <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
-        <Image source={require('./assets/pretapo-white.png')} style={styles.drawerImage} />
+        <Image source={require('../assets/pretapo-white.png')} style={styles.drawerImage} />
           <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
           <View style={styles.logoutView}>
             <Icon name="logout" size={24} color={'white'} />
@@ -212,22 +203,22 @@ class App extends React.Component {
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <Authenticator hideDefault={true}>
-            <DefaultApp
+            <auth.DefaultApp
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <Signin
+            <auth.Signin
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <Signup
+            <auth.Signup
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <SignupConfirmation />
+            <auth.SignupConfirmation />
             <Container />
-            <ForgotPassword />
-            <ResetPassword />
+            <auth.ForgotPassword />
+            <auth.ResetPassword />
           </Authenticator>
         </SafeAreaView>
       )

@@ -3,14 +3,14 @@ import { Platform, Image, Text, View, StyleSheet, ScrollView, SafeAreaView } fro
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
-import * as gqlQueries from '../src/graphql/queries' // read
-import * as gqlMutations from '../src/graphql/mutations' // create, update, delete
+import * as gqlQueries from '../../../src/graphql/queries' // read
+import * as gqlMutations from '../../../src/graphql/mutations' // create, update, delete
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
 import FastImage from 'react-native-fast-image'
-import DoubleButtonModal from './common/DoubleButtonModal'
+import DoubleButtonModal from '../common/DoubleButtonModal'
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import DoubleButtonImageModal from './common/DoubleButtonImageModal'
+import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 
 export default class CartTab extends React.Component {
     constructor(props) {
@@ -38,7 +38,7 @@ export default class CartTab extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         headerTitle: () => (
-            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
+            <Image source={require('../../../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
         ),
         headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
         headerStyle: {
@@ -249,11 +249,11 @@ export default class CartTab extends React.Component {
                     smallText={'レンタルを検討するためにはまず登録!\nユーザー登録は無料で行えます。\n※レンタル確定には有料のレンタルプランが必要です。'}
                     leftButtonText='ユーザー登録する'
                     rightButtonText='アイテム一覧へ戻る'
-                    image={require('../assets/thankYouTaggu.png')}
+                    image={require('../../../assets/thankYouTaggu.png')}
                 />
                 {isRental ?
                     <View style={styles.isRentalView}>
-                        <Image source={require('../assets/error.png')} style={styles.errorImage}/>
+                        <Image source={require('../../../assets/error.png')} style={styles.errorImage}/>
                         <Text style={styles.isRentalText}>以下のアイテムを現在レンタル中です。</Text>
                     </View>
                 :

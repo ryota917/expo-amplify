@@ -5,9 +5,9 @@ import { Card, Button } from 'react-native-elements';
 import { Auth, API, graphqlOperation } from 'aws-amplify'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
-import send_message from '../../src/messaging/slack'
-import * as gqlQueries from '../../src/graphql/queries' // read
-import * as gqlMutations from '../../src/graphql/mutations' // create, update, delete
+import send_message from '../../../src/messaging/slack'
+import * as gqlQueries from '../../../src/graphql/queries' // read
+import * as gqlMutations from '../../../src/graphql/mutations' // create, update, delete
 import FastImage from 'react-native-fast-image'
 
 export default class ConfirmPage extends React.Component {
@@ -152,7 +152,7 @@ export default class ConfirmPage extends React.Component {
                                         titleStyle={{ fontSize: 14, color: 'white' }}
                                     />
                                 </View>
-                                <Image source={require('../../assets/food.png')} style={styles.foodImage} />
+                                <Image source={require('../../../assets/food.png')} style={styles.foodImage} />
                             </View>
                         </View>
                     </Modal>

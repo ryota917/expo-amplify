@@ -2,11 +2,11 @@ import React from 'react';
 import { Platform, StyleSheet, Image, FlatList, ActivityIndicator, TouchableHighlight, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries' // read
+import * as gqlQueries from '../../../src/graphql/queries' // read
 import { Card } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Item from './item/Item'
-import DoubleButtonImageModal from './common/DoubleButtonImageModal'
+import Item from '../item/Item'
+import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 
 export default class FavoriteTab extends React.Component {
     constructor(props) {
@@ -24,7 +24,7 @@ export default class FavoriteTab extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         headerTitle: () => (
-            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
+            <Image source={require('../../../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
         ),
         headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
         headerStyle: {
@@ -146,7 +146,7 @@ export default class FavoriteTab extends React.Component {
                     smallText={'気になる服を保存するために登録してみませんか。\nユーザー登録は無料で行えます。\n※レンタル確定には有料のレンタルプランが必要です。'}
                     leftButtonText='ユーザー登録する'
                     rightButtonText='アイテム一覧へ戻る'
-                    image={require('../assets/thankYouTaggu.png')}
+                    image={require('../../../assets/thankYouTaggu.png')}
                 />
                 <FlatList
                     refreshing={isRefreshing}

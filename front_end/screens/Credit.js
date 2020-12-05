@@ -2,8 +2,8 @@ import React from 'react';
 import { Platform, View, StyleSheet, Text, Image, SafeAreaView, Button } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries' // read
-import * as gqlMutations from '../src/graphql/mutations'
+import * as gqlQueries from '../../src/graphql/queries' // read
+import * as gqlMutations from '../../src/graphql/mutations'
 import { PayjpCardForm } from 'payjp-react-native'
 import { PAYJP, payjpAxios } from './common/Payjp'
 import qs from 'qs'

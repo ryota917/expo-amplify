@@ -2,8 +2,8 @@ import React from 'react';
 import { Image, View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements';
-import * as gqlQueries from '../../src/graphql/queries'
-import * as gqlMutations from '../../src/graphql/mutations'
+import * as gqlQueries from '../../../src/graphql/queries'
+import * as gqlMutations from '../../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
@@ -158,7 +158,7 @@ export default class FavoriteItemDetail extends React.Component {
                 <Modal isVisible={this.state.isCartModalVisible}>
                     <View style={styles.modalContainerView}>
                         <View style={styles.modalInnerView}>
-                        <Image source={require('../../assets/taggu-cart.png')} style={styles.tagguImage} />
+                        <Image source={require('../../../assets/taggu-cart.png')} style={styles.tagguImage} />
                             <Text style={styles.modalText}>アイテムをカートに追加しました！</Text>
                             <View style={styles.modalButtonView}>
                                 <Button
@@ -202,7 +202,7 @@ export default class FavoriteItemDetail extends React.Component {
                         {isRental ?
                             <View style={styles.cartAlertView}>
                                 <Text style={styles.cartAlertText}>現在レンタル中のアイテムを返却すると{'\n'}カートが使えるようになります</Text>
-                                <Image source={require('../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
+                                <Image source={require('../../../assets/mini-taggu.png')} style={{ width: wp('8%'), height: wp('8%'), resizeMode: 'contain', backgroundColor: 'white' }} />
                             </View>
                         :  null
                         }

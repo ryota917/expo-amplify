@@ -1,8 +1,8 @@
 import React from 'react';
 import { Platform, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as gqlQueries from '../../src/graphql/queries'
-import * as gqlMutations from '../../src/graphql/mutations'
+import * as gqlQueries from '../../../src/graphql/queries'
+import * as gqlMutations from '../../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Swiper from 'react-native-swiper'

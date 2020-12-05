@@ -1,11 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView, SafeAreaView } from 'react-native'
-import { Auth, formContainer } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { Input, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Modal from 'react-native-modal'
-import SingleButtonModal from './screens/common/SingleButtonModal'
+import SingleButtonModal from '../screens/common/SingleButtonModal'
 
 export default class Signin extends React.Component {
     constructor(props) {

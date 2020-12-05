@@ -104,7 +104,7 @@ class SearchConditionModal extends React.Component {
                 <Text style={styles.choiceText}>選択中</Text>
                 {isSelected &&
                     <Image
-                        source={require('../../../assets/circle-check.png')}
+                        source={require('../../../../assets/circle-check.png')}
                         style={styles.choiceImage}
                     />
                 }
@@ -134,7 +134,7 @@ class SearchConditionModal extends React.Component {
                                 <View>
                                     <Button
                                         icon={
-                                            <Image source={require('../../../assets/tops.png')} style={styles.clothImage} />
+                                            <Image source={require('../../../../assets/tops.png')} style={styles.clothImage} />
                                         }
                                         title={this.returnChoiceName('トップス', searchCondition[1]['bigCategory'] === 'TOPS')}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'TOPS') ? '#333333' : 'white' }]}
@@ -142,7 +142,7 @@ class SearchConditionModal extends React.Component {
                                     />
                                     <Button
                                         icon={
-                                            <Image source={require('../../../assets/outer.png')} style={styles.clothImage} />
+                                            <Image source={require('../../../../assets/outer.png')} style={styles.clothImage} />
                                         }
                                         title={this.returnChoiceName('アウター', searchCondition[1]['bigCategory'] === 'OUTER' )}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'OUTER') ? '#333333' : 'white' }]}
@@ -150,7 +150,7 @@ class SearchConditionModal extends React.Component {
                                     />
                                     <Button
                                         icon={
-                                            <Image source={require('../../../assets/bottomsIcon.png')} style={styles.clothImage} />
+                                            <Image source={require('../../../../assets/bottomsIcon.png')} style={styles.clothImage} />
                                         }
                                         title={this.returnChoiceName('ボトムス', searchCondition[1]['bigCategory'] === 'BOTTOMS' )}
                                         buttonStyle={[styles.choiceButtonStyle, { backgroundColor: !!(searchCondition[1]['bigCategory'] === 'BOTTOMS') ? '#333333' : 'white' }]}

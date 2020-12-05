@@ -2,9 +2,9 @@ import React from 'react';
 import { Platform, StyleSheet, Image, View, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries' // read
+import * as gqlQueries from '../../../src/graphql/queries' // read
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Item from './item/Item'
+import Item from './Item'
 
 export default class ItemTab extends React.Component {
     constructor(props) {
@@ -23,7 +23,7 @@ export default class ItemTab extends React.Component {
         const { params } = navigation.state
         return {
                 headerTitle: () => (
-                <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
+                <Image source={require('../../../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
             ),
             headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft: 20}}/>,
             headerRight:() => <Icon name='search' size={Platform.isPad ? 40 : 28} onPress={() => {navigation.navigate('SearchConditionModal', { searchCondition: params.searchCondition } )}} style={{paddingRight: 20}}/>,

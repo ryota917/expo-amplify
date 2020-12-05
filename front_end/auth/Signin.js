@@ -4,7 +4,7 @@ import { Auth } from 'aws-amplify';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import DoubleButtonModal from './screens/common/DoubleButtonModal'
+import DoubleButtonModal from '../screens/common/DoubleButtonModal'
 
 export default class Signin extends React.Component {
     constructor(props) {
@@ -85,7 +85,7 @@ export default class Signin extends React.Component {
                         <ScrollView style={styles.scrollView}>
                             <View style={styles.formContainer}>
                                 <View>
-                                    <Image source={require('./assets/login.png')} style={styles.loginTextImage} />
+                                    <Image source={require('../../assets/login.png')} style={styles.loginTextImage} />
                                     {/* アラートView */}
                                     <View style={styles.alertView}>
                                         <Icon name='alert-circle' size={17} style={[styles.alertIcon, { display: this.state.alert ? 'flex' : 'none' }]} />

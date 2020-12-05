@@ -4,7 +4,7 @@ import { Auth } from 'aws-amplify';
 import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import SingleButtonModal from './screens/common/SingleButtonModal'
+import SingleButtonModal from '../screens/common/SingleButtonModal'
 
 
 export default class Signin extends React.Component {

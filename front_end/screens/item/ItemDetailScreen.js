@@ -70,7 +70,7 @@ const ItemDetailScreen = (props) => {
                             underlayColor='white'
                         >
                             <Image
-                                source={isFavorited ? require('../../assets/bookmark-black.png') : require('../../assets/bookmark-white.png')}
+                                source={isFavorited ? require('../../../assets/bookmark-black.png') : require('../../../assets/bookmark-white.png')}
                                 style={styles.favoriteImage}
                             />
                         </TouchableHighlight>
@@ -78,7 +78,7 @@ const ItemDetailScreen = (props) => {
                     {/* 長さ */}
                     {item.bigCategory[0] === 'BOTTOMS' ?
                         <View style={styles.lengthView}>
-                            <Image source={require('../../assets/bottoms.png')} style={styles.lengthImage} />
+                            <Image source={require('../../../assets/bottoms.png')} style={styles.lengthImage} />
                             <View style={styles.sizeTextView}>
                                 <Text style={styles.lengthText}>①ウエスト {item.waist}cm</Text>
                                 <Text style={styles.lengthText}>②ヒップ {item.hip}cm</Text>
@@ -89,7 +89,7 @@ const ItemDetailScreen = (props) => {
                         </View>
                     :
                         <View style={styles.lengthView}>
-                            <Image source={require('../../assets/vector.png')} style={styles.topsImage} />
+                            <Image source={require('../../../assets/vector.png')} style={styles.topsImage} />
                             <View style={styles.sizeTextView}>
                                 <Text style={styles.lengthText}>①着丈 {item.dressLength}cm</Text>
                                 <Text style={styles.lengthText}>②身幅 {item.dressWidth}cm</Text>

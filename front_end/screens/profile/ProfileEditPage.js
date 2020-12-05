@@ -3,12 +3,12 @@ import { Text, View, StyleSheet, Platform, SafeAreaView, TextInput } from 'react
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries' // read
-import * as gqlMutations from '../src/graphql/mutations'
+import * as gqlQueries from '../../../src/graphql/queries' // read
+import * as gqlMutations from '../../../src/graphql/mutations'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import SingleButtonModal from './common/SingleButtonModal'
+import SingleButtonModal from '../common/SingleButtonModal'
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {

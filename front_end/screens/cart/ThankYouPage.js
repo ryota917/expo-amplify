@@ -22,7 +22,7 @@ export default class ItemDetail extends React.Component {
           <View style={styles.mainImageContainer}>
             <Image
               style={styles.mainImage}
-              source={require("../../assets/thankYouTaggu.png")}
+              source={require("../../../assets/thankYouTaggu.png")}
             />
           </View>
           <View style={styles.confirmMessageContainer}>

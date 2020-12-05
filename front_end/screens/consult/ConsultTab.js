@@ -4,17 +4,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries' // read
-import * as gqlMutations from '../src/graphql/mutations'
-import send_message from '../src/messaging/slack'
-import DoubleButtonImageModal from './common/DoubleButtonImageModal'
+import * as gqlQueries from '../../../src/graphql/queries' // read
+import * as gqlMutations from '../../../src/graphql/mutations'
+import send_message from '../../../src/messaging/slack'
+import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 
 const initialMessage = {
     _id: 'support',
     text: "わからないことや、ご相談はこちらからお願いします。",
     user: {
         _id: 'support',
-        avatar: require('../assets/pretapo-icon.png')
+        avatar: require('../../../assets/pretapo-icon.png')
     },
 }
 
@@ -29,7 +29,7 @@ export default class Chat extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         headerTitle: () => (
-            <Image source={require('../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
+            <Image source={require('../../../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
         ),
         headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
         headerStyle: {
@@ -95,7 +95,7 @@ export default class Chat extends React.Component {
             obj['_id'] = obj['id']
             obj['user'] = {
                 '_id': obj['user'][0],
-                'avatar': require('../assets/pretapo-icon.png')
+                'avatar': require('../../../assets/pretapo-icon.png')
             }
             messages.push(obj)
         })
@@ -136,7 +136,7 @@ export default class Chat extends React.Component {
                     smallText={'気になる服を保存するために登録してみませんか。\nユーザー登録は無料で行えます。\n※レンタル確定には有料のレンタルプランが必要です。'}
                     leftButtonText='ユーザー登録する'
                     rightButtonText='アイテム一覧へ戻る'
-                    image={require('../assets/thankYouTaggu.png')}
+                    image={require('../../../assets/thankYouTaggu.png')}
                 />
                 <GiftedChat
                     alwaysShowSend={true}

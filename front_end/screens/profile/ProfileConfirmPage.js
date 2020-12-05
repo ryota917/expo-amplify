@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { Button } from 'react-native-elements'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import * as gqlQueries from '../src/graphql/queries' // read
+import * as gqlQueries from '../../../src/graphql/queries' // read
 import Modal from 'react-native-modal'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 

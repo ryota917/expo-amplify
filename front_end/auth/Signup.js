@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactNative, { StyleSheet, Text, View, TextInput, Platform, Image, SafeAreaView, TouchableHighlight } from 'react-native'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import * as gqlMutations from './src/graphql/mutations'
+import * as gqlMutations from '../../src/graphql/mutations'
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import DoubleButtonModal from './screens/common/DoubleButtonModal'
-import SingleButtonModal from './screens/common/SingleButtonModal'
+import DoubleButtonModal from '../screens/common/DoubleButtonModal'
+import SingleButtonModal from '../screens/common/SingleButtonModal'
 
 export default class Signup extends React.Component {
     constructor(props) {
@@ -211,7 +211,7 @@ export default class Signup extends React.Component {
                     <KeyboardAwareScrollView style={styles.scrollView} ref="_scrollView">
                         <View style={styles.formContainer}>
                             <View>
-                                <Image source={require('./assets/signup.png')} style={styles.signUpTextImage} />
+                                <Image source={require('../../assets/signup.png')} style={styles.signUpTextImage} />
                                 {/* ログイン画面へのボタン */}
                                 <TouchableHighlight
                                     underlayColor='white'
@@ -532,3 +532,4 @@ const styles = StyleSheet.create({
         lineHeight: 14
     }
 })
+

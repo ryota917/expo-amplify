@@ -8,22 +8,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 //import ItemTab
-import ItemTab from './screens/ItemTab';
-import SearchConditionModal from './screens/item/search/SearchConditionModal'
-import ItemDetail from './screens/item/ItemDetail'
+import { ItemTab, ItemDetail, SearchConditionModal } from '../screens/item'
 
 //import FavoriteTab
-import FavoriteTab from './screens/FavoriteTab'
-import FavoriteItemDetail from './screens/favorite/FavoriteItemDetail'
+import { FavoriteTab, FavoriteItemDetail } from '../screens/favorite'
 
 //import CartTab
-import CartTab from './screens/CartTab'
-import CartItemDetail from './screens/cart/CartItemDetail'
-import ConfirmPage from "./screens/cart/ConfirmPage"
-import ThankYouPage from './screens/cart/ThankYouPage'
+import { CartTab, CartItemDetail, ConfirmPage, ThankYouPage } from '../screens/cart'
 
 //import ConsultTab
-import ConsultTab from './screens/ConsultTab'
+import { ConsultTab } from '../screens/consult'
 
 export default class DefaultApp extends React.Component {
     constructor(props) {
@@ -129,7 +123,7 @@ export default class DefaultApp extends React.Component {
             {
                 contentComponent: (props) => (
                     <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
-                        <Image source={require('./assets/pretapo-white.png')} style={styles.drawerImage} />
+                        <Image source={require('../../assets/pretapo-white.png')} style={styles.drawerImage} />
                         <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
                         <View style={styles.logoutView}>
                             <Icon name="logout" size={24} color={'white'} />
