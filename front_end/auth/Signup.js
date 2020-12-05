@@ -10,7 +10,7 @@ import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import DoubleButtonModal from '../screens/common/DoubleButtonModal'
 import SingleButtonModal from '../screens/common/SingleButtonModal'
 
-export default class Signup extends React.Component {
+export class Signup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

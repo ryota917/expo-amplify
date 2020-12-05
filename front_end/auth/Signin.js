@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import DoubleButtonModal from '../screens/common/DoubleButtonModal'
 
-export default class Signin extends React.Component {
+export class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

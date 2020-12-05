@@ -12,7 +12,7 @@ import DoubleButtonModal from '../common/DoubleButtonModal'
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 
-export default class CartTab extends React.Component {
+export class CartTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

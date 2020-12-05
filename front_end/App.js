@@ -26,7 +26,14 @@ import { ConsultTab } from './screens/consult'
 import { ProfileConfirmPage, ProfileEditPage } from './screens/profile'
 
 //import Authentication Page
-import * as auth from './auth'
+import {
+  Signin,
+  Signup,
+  SignupConfirmation,
+  ResetPassword,
+  ForgotPassword,
+  DefaultApp
+} from './auth'
 
 import Credit from './screens/Credit'
 
@@ -203,22 +210,22 @@ class App extends React.Component {
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <Authenticator hideDefault={true}>
-            <auth.DefaultApp
+            <DefaultApp
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <auth.Signin
+            <Signin
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <auth.Signup
+            <Signup
               displaySignin={displaySignin}
               toggleDisplaySignin={this.toggleDisplaySignin}
             />
-            <auth.SignupConfirmation />
+            <SignupConfirmation />
             <Container />
-            <auth.ForgotPassword />
-            <auth.ResetPassword />
+            <ForgotPassword />
+            <ResetPassword />
           </Authenticator>
         </SafeAreaView>
       )

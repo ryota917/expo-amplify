@@ -7,7 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import SingleButtonModal from '../screens/common/SingleButtonModal'
 
 
-export default class Signin extends React.Component {
+export class ForgotPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

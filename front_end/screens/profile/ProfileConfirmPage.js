@@ -8,7 +8,7 @@ import * as gqlQueries from '../../../src/graphql/queries' // read
 import Modal from 'react-native-modal'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-export default class ProfileConfirmPage extends React.Component {
+export class ProfileConfirmPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

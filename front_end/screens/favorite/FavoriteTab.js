@@ -8,7 +8,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Item from '../item/Item'
 import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 
-export default class FavoriteTab extends React.Component {
+export class FavoriteTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

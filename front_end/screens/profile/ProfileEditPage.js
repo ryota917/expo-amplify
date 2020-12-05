@@ -10,7 +10,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import{ KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import SingleButtonModal from '../common/SingleButtonModal'
 
-export default class ProfileEditPage extends React.Component {
+export class ProfileEditPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

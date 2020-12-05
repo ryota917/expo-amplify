@@ -10,7 +10,7 @@ import * as gqlQueries from '../../../src/graphql/queries' // read
 import * as gqlMutations from '../../../src/graphql/mutations' // create, update, delete
 import FastImage from 'react-native-fast-image'
 
-export default class ConfirmPage extends React.Component {
+export class ConfirmPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
-class SearchConditionModal extends React.Component {
+export class SearchConditionModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -538,5 +538,3 @@ if(Platform.isPad) {
         }
     })
 }
-
-export default SearchConditionModal;

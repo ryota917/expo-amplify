@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 
-export default class ResetPassword extends React.Component {
+export class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

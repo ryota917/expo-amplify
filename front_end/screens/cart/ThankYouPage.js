@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { Button } from "react-native-elements";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
-export default class ItemDetail extends React.Component {
+export class ThankYouPage extends React.Component {
   constructor(props) {
     super(props);
   }

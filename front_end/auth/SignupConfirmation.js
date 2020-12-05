@@ -7,7 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Modal from 'react-native-modal'
 import SingleButtonModal from '../screens/common/SingleButtonModal'
 
-export default class Signin extends React.Component {
+export class SignupConfirmation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

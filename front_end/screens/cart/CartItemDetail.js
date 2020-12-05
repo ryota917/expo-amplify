@@ -5,11 +5,10 @@ import * as gqlQueries from '../../../src/graphql/queries'
 import * as gqlMutations from '../../../src/graphql/mutations'
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Swiper from 'react-native-swiper'
 import FastImage from 'react-native-fast-image'
 import ItemDetailScreen from '../item/ItemDetailScreen'
 
-export default class FavoriteItemDetail extends React.Component {
+export class CartItemDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

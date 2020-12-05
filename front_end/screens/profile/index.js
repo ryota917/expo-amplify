@@ -1,2 +1,2 @@
-export { ProfileConfirmPage } from './ProfileConfirmPage'
-export { ProfileEditPage } from './ProfileEditPage'
+export * from './ProfileConfirmPage'
+export * from './ProfileEditPage'

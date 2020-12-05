@@ -9,7 +9,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nati
 import Modal from 'react-native-modal'
 import ItemDetailScreen from '../item/ItemDetailScreen'
 
-export default class FavoriteItemDetail extends React.Component {
+export class FavoriteItemDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

@@ -10,7 +10,7 @@ import Modal from 'react-native-modal'
 import FastImage from 'react-native-fast-image'
 import ItemDetailScreen from './ItemDetailScreen'
 
-export default class ItemDetail extends React.Component {
+export class ItemDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

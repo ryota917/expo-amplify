@@ -19,7 +19,7 @@ import { CartTab, CartItemDetail, ConfirmPage, ThankYouPage } from '../screens/c
 //import ConsultTab
 import { ConsultTab } from '../screens/consult'
 
-export default class DefaultApp extends React.Component {
+export class DefaultApp extends React.Component {
     constructor(props) {
         super(props)
     }
