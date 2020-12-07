@@ -1,8 +1,17 @@
 import React from 'react';
-import { Platform, StyleSheet, Image, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Platform, StyleSheet, Image, SafeAreaView, View, Text, TextInput } from 'react-native';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import { GiftedChat } from 'react-native-gifted-chat'
+import {
+    GiftedChat,
+    Send,
+    Composer,
+    Message,
+    MessageText,
+    Bubble,
+    Avatar,
+    Day
+} from 'react-native-gifted-chat'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../../../src/graphql/queries' // read
 import * as gqlMutations from '../../../src/graphql/mutations'
@@ -11,7 +20,7 @@ import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 
 const initialMessage = {
     _id: 'support',
-    text: "わからないことや、ご相談はこちらからお願いします。",
+    text: "わからないことや、ご相談はこちらからお気軽にお尋ねください。",
     user: {
         _id: 'support',
         avatar: require('../../../assets/pretapo-icon.png')
@@ -31,7 +40,7 @@ export class ConsultTab extends React.Component {
         headerTitle: () => (
             <Image source={require('../../../assets/pretapo-logo-header.png')} style={styles.logoImage}/>
         ),
-        headerLeft: () => <Icon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
+        headerLeft: () => <FontAwesomeIcon name="bars" size={Platform.isPad ? 40 : 28} onPress={()=>{navigation.openDrawer()}} style={{paddingLeft:20}}/>,
         headerStyle: {
             height: hp('7%')
         }
@@ -104,8 +113,8 @@ export class ConsultTab extends React.Component {
 
     onSend = (messages = []) => {
         const { currentUserEmail } = this.state
-        const slackMessage = currentUserEmail + 'からご相談が来たよ\。\nadminから返信してね\n' + messages[0]['text']
-        send_message(slackMessage)
+        // const slackMessage = currentUserEmail + 'からご相談が来たよ\。\nadminから返信してね\n' + messages[0]['text']
+        // send_message(slackMessage)
         this.setState(prevState => ({
             messages: GiftedChat.append(prevState.messages, messages)
         }))
@@ -119,6 +128,77 @@ export class ConsultTab extends React.Component {
         }))
     }
 
+    renderComposer = props => {
+        return(
+            <Composer
+                {...props}
+                textInputStyle={styles.renderComposerStyle}
+                placeholder='メッセージを入力してください。'
+            />
+        )
+    }
+
+    renderSend = props => {
+        return(
+            <Send {...props}>
+                <Image source={require('pretapo/assets/send.png')} style={styles.renderSendStyle} />
+            </Send>
+        )
+    }
+
+    renderBubble = props => {
+        return(
+            <Bubble
+                {...props}
+                textStyle={{
+                    left: {
+                        color: '#7389D9',
+                        padding: 8
+                    },
+                    right: {
+                        color: 'white',
+                        padding: 8
+                    }
+                }}
+                wrapperStyle={{
+                    left: {
+                        backgroundColor: 'white',
+                        borderBottomRightRadius: 28,
+                        borderBottomLeftRadius: 28,
+                        borderTopRightRadius: 28,
+                        borderTopLeftRadius: 28,
+                        marginTop: 5,
+                    },
+                    right: {
+                        backgroundColor: '#7389D9',
+                        borderBottomRightRadius: 28,
+                        borderBottomLeftRadius: 28,
+                        borderTopRightRadius: 28,
+                        borderTopLeftRadius: 28,
+                        marginTop: 5,
+                    }
+                }}
+            />
+        )
+    }
+
+    renderChatFooter = () => {
+        return(
+            <View style={{ height: 10 }}>
+            </View>
+        )
+    }
+
+    renderDay = props => {
+        console.log('renderDayprops', props)
+        return(
+            <Day
+                {...props}
+                dateFormat='YYYY.M.D'
+            />
+        )
+    }
+
     //quickRepliesでアンケート取れる
     render() {
         const {
@@ -127,7 +207,7 @@ export class ConsultTab extends React.Component {
             isNotLoginModalVisible
         } = this.state
         return(
-            <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <DoubleButtonImageModal
                     isModalVisible={isNotLoginModalVisible}
                     onPressLeftButton={() => this.onPressNotLoginedModalLeftButton()}
@@ -139,10 +219,15 @@ export class ConsultTab extends React.Component {
                     image={require('../../../assets/thankYouTaggu.png')}
                 />
                 <GiftedChat
+                    renderSend={props => this.renderSend(props)}
+                    renderComposer={props => this.renderComposer(props)}
+                    renderChatFooter={() => this.renderChatFooter()}
+                    renderDay={props => this.renderDay(props)}
+                    renderBubble={props => this.renderBubble(props)}
+                    renderTime={() => null}
                     alwaysShowSend={true}
                     messages={messages}
                     onSend={messages => this.onSend(messages)}
-                    placeholder='メッセージを入力してください'
                     user={{
                         _id: currentUserEmail
                     }}
@@ -225,8 +310,18 @@ if(Platform.isPad) {
         subText: {
             textAlign: 'center',
             marginTop: hp('3%')
+        },
+        renderSendStyle: {
+            width: 30,
+            height: 30,
+            marginBottom: 7,
+            marginRight: 20
+        },
+        renderComposerStyle: {
+            marginBottom: 5,
+            marginTop: 15,
+            marginLeft: 15,
+            marginRight: 15
         }
     })
 }
-
-
