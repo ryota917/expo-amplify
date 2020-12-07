@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import awsmobile from '../aws-exports'
+import awsmobile from 'pretapo/aws-exports'
 
 //import ItemTab
 import { ItemTab, ItemDetail, SearchConditionModal } from './screens/item'

@@ -6,9 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/pretapo-icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/pretapo-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#7389D9"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
