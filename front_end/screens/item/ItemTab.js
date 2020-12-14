@@ -5,6 +5,7 @@ import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from '../../../src/graphql/queries' // read
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Item from './Item'
+import TutorialModal from 'pretapo/front_end/screens/common/tutorial/TutorialModal'
 
 export class ItemTab extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ export class ItemTab extends React.Component {
             canLoad: true,
             isLoading: false,
             isRefreshing: false,
+            isTutorialModalVisible: true
         }
     }
 
@@ -325,11 +327,25 @@ export class ItemTab extends React.Component {
         this.setState({ isRefreshing: false })
     }
 
+    toggleTutorial = () => {
+        this.setState({ isTutorialModalVisible: !this.state.isTutorialModalVisible })
+    }
+
     render() {
         const activityIndicator = <ActivityIndicator size='large' />
-        const { canLoad, items, isLoading, isRefreshing } = this.state
+        const {
+            canLoad,
+            items,
+            isLoading,
+            isRefreshing,
+            isTutorialModalVisible
+        } = this.state
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
+                <TutorialModal
+                    isModalVisible={isTutorialModalVisible}
+                    toggleTutorial={this.toggleTutorial}
+                />
                 <FlatList
                     refreshing={isRefreshing}
                     onRefresh={() => this.onRefresh()}

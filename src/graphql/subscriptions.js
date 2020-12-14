@@ -158,7 +158,7 @@ export const onCreateItem = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -329,7 +329,7 @@ export const onUpdateItem = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -500,7 +500,7 @@ export const onDeleteItem = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -529,7 +529,7 @@ export const onCreateUser = /* GraphQL */ `
       rental
       cartId
       customerId
-      registed
+      registered
       cart {
         id
         userId
@@ -546,7 +546,7 @@ export const onCreateUser = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -593,7 +593,7 @@ export const onCreateUser = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -649,7 +649,7 @@ export const onCreateUser = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -678,7 +678,7 @@ export const onUpdateUser = /* GraphQL */ `
       rental
       cartId
       customerId
-      registed
+      registered
       cart {
         id
         userId
@@ -695,7 +695,7 @@ export const onUpdateUser = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -742,7 +742,7 @@ export const onUpdateUser = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -798,7 +798,7 @@ export const onUpdateUser = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -827,7 +827,7 @@ export const onDeleteUser = /* GraphQL */ `
       rental
       cartId
       customerId
-      registed
+      registered
       cart {
         id
         userId
@@ -844,7 +844,7 @@ export const onDeleteUser = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -891,7 +891,7 @@ export const onDeleteUser = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -947,7 +947,7 @@ export const onDeleteUser = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -979,7 +979,7 @@ export const onCreateCart = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -996,7 +996,7 @@ export const onCreateCart = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -1094,7 +1094,7 @@ export const onUpdateCart = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -1111,7 +1111,7 @@ export const onUpdateCart = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -1209,7 +1209,7 @@ export const onDeleteCart = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -1226,7 +1226,7 @@ export const onDeleteCart = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -1325,7 +1325,7 @@ export const onCreateCartLog = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -1342,7 +1342,7 @@ export const onCreateCartLog = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -1440,7 +1440,7 @@ export const onUpdateCartLog = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -1457,7 +1457,7 @@ export const onUpdateCartLog = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -1555,7 +1555,7 @@ export const onDeleteCartLog = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -1572,7 +1572,7 @@ export const onDeleteCartLog = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -1766,7 +1766,7 @@ export const onCreateItemCart = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -1879,7 +1879,7 @@ export const onUpdateItemCart = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -1992,7 +1992,7 @@ export const onDeleteItemCart = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -2106,7 +2106,7 @@ export const onCreateItemCartLog = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -2219,7 +2219,7 @@ export const onUpdateItemCartLog = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -2332,7 +2332,7 @@ export const onDeleteItemCartLog = /* GraphQL */ `
           rental
           cartId
           customerId
-          registed
+          registered
           cart {
             id
             userId
@@ -2441,7 +2441,7 @@ export const onCreateItemFavorite = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -2458,7 +2458,7 @@ export const onCreateItemFavorite = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -2571,7 +2571,7 @@ export const onUpdateItemFavorite = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -2588,7 +2588,7 @@ export const onUpdateItemFavorite = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }
@@ -2701,7 +2701,7 @@ export const onDeleteItemFavorite = /* GraphQL */ `
         rental
         cartId
         customerId
-        registed
+        registered
         cart {
           id
           userId
@@ -2718,7 +2718,7 @@ export const onDeleteItemFavorite = /* GraphQL */ `
             rental
             cartId
             customerId
-            registed
+            registered
             createdAt
             updatedAt
           }

@@ -219,12 +219,12 @@ export class CartTab extends React.Component {
             this.toggleAlertModal()
             return
         }
-        console.log('第一関門とっぱ')
         //サブスク登録してない場合は登録フォームへ遷移
-        if(!registered) {
-            this.setState({ isSettleNavigateModalVisible: true })
-            return
-        }
+        //TODO: 決済
+        // if(!registered) {
+        //     this.setState({ isSettleNavigateModalVisible: true })
+        //     return
+        // }
         //全ての条件を満たしている場合は確認画面へ遷移
         //TODO: カード情報が保存されていない場合はEditPage, カード情報が保存されている場合はConfirmPageへ遷移
         this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
