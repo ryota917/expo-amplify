@@ -17,13 +17,23 @@ import { ItemTab, ItemDetail, SearchConditionModal } from './screens/item'
 import { FavoriteTab, FavoriteItemDetail } from './screens/favorite'
 
 //import CartTab
-import { CartTab, CartItemDetail, ConfirmPage, ThankYouPage } from './screens/cart'
+import {
+  CartTab,
+  CartItemDetail,
+  ConfirmPage,
+  ThankYouPage,
+  CartSettleConfirmPage,
+  CartSettleEditPage
+} from './screens/cart'
 
 //import ConsultTab
 import { ConsultTab } from './screens/consult'
 
 //import ProfileTab
 import { ProfileConfirmPage, ProfileEditPage } from './screens/profile'
+
+//import SettleTab
+import { SettleEditPage } from './screens/settle'
 
 //import Authentication Page
 import {
@@ -34,8 +44,6 @@ import {
   ForgotPassword,
   DefaultApp
 } from './auth'
-
-import Credit from './screens/Credit'
 
 import { PayjpCore } from 'payjp-react-native'
 
@@ -62,7 +70,9 @@ const CartTabStack = createStackNavigator(
     CartTab: {screen: CartTab},
     ConfirmPage: {screen: ConfirmPage},
     CartItemDetail: {screen: CartItemDetail},
-    ThankYouPage: {screen: ThankYouPage}
+    ThankYouPage: {screen: ThankYouPage},
+    CartSettleConfirmPage: {screen: CartSettleConfirmPage},
+    CartSettleEditPage: {screen: CartSettleEditPage},
   },
   {
     initialRouteName: 'CartTab'
@@ -95,9 +105,9 @@ const ProfileStack = createStackNavigator(
   },
 )
 
-const CreditTabStack = createStackNavigator(
+const SettleStack = createStackNavigator(
   {
-    Credit: {screen: Credit}
+    SettleEditPage: {screen: SettleEditPage}
   }
 )
 
@@ -127,9 +137,6 @@ export const Tab = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
       }
-    },
-    '決済': {
-      screen: CreditTabStack,
     }
   },
   {
@@ -153,6 +160,12 @@ const Drawer = createDrawerNavigator(
       screen: ProfileStack,
       navigationOptions: {
         drawerIcon: <Icon name='account-circle' size={24}  color='white' style={{ left: wp('5%') }} />,
+      }
+    },
+    '決済情報を編集': {
+      screen: SettleStack,
+      navigationOptions: {
+        drawerIcon: <Icon name='credit-card-outline' size={24} color='white' style={{ left: wp('5%') }} />
       }
     }
   },

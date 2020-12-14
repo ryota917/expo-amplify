@@ -43,6 +43,7 @@ type User @model {
   rental: Boolean
   cartId: ID!
   customerId: ID
+  registered: Boolean
   cart: Cart @connection(fields: ["cartId"])
   cartLogs: [CartLog] @connection(keyName: "byUser", fields: ["id"])
   favoriteItem: [ItemFavorite] @connection(keyName: "byUser", fields: ["id"])

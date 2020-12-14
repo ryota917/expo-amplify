@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image'
 import DoubleButtonModal from '../common/DoubleButtonModal'
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
+import DoubleButtonTextsModal from '../common/DoubleButtonTextsModal';
 
 export class CartTab extends React.Component {
     constructor(props) {
@@ -32,7 +33,9 @@ export class CartTab extends React.Component {
             selectedDeleteItem: [],
             isDeleteConfirmModalVisible: false,
             cartNum: 0,
-            isNotLoginModalVisible: false
+            isNotLoginModalVisible: false,
+            isSettleNavigateModalVisible: false,
+            registered: false
         }
     }
 
@@ -71,7 +74,12 @@ export class CartTab extends React.Component {
         try {
             const currentUser = await Auth.currentAuthenticatedUser()
             const currentUserEmail = currentUser.attributes.email
-            this.setState({ currentUserEmail: currentUserEmail })
+            const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: currentUserEmail }))
+            const registered = userRes.data.getUser.registered
+            this.setState({
+                currentUserEmail: currentUserEmail,
+                registered: registered
+            })
         } catch(err) {
             this.setState({ isNotLoginModalVisible: true })
         }
@@ -186,12 +194,12 @@ export class CartTab extends React.Component {
         })
     }
 
-    navigateConfirmPage = () => {
-        this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
-    }
-
     toggleAlertModal = () => {
         this.setState({ isRentalAlertVisible: !this.state.isRentalAlertVisible })
+    }
+
+    navigateConfirmPage = () => {
+        this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
     }
 
     onPressNotLoginedModalLeftButton = () => {
@@ -203,21 +211,55 @@ export class CartTab extends React.Component {
         this.props.navigation.navigate('ItemTab')
     }
 
+    //レンタル内容確認画面へ
+    onPressToConfirmPage = () => {
+        const { isCartFilled, canRental, registered } = this.state
+        //アイテムが5つ入ってないまたはレンタル可能日に達していない場合はalert
+        if(!isCartFilled || !canRental) {
+            this.toggleAlertModal()
+            return
+        }
+        console.log('第一関門とっぱ')
+        //サブスク登録してない場合は登録フォームへ遷移
+        if(!registered) {
+            this.setState({ isSettleNavigateModalVisible: true })
+            return
+        }
+        //全ての条件を満たしている場合は確認画面へ遷移
+        //TODO: カード情報が保存されていない場合はEditPage, カード情報が保存されている場合はConfirmPageへ遷移
+        this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
+    }
+
+    navigateSettleEditPage = () => {
+        this.setState({ isSettleNavigateModalVisible: false })
+        this.props.navigation.navigate('CartSettleEditPage')
+    }
+
     render() {
         const {
             isCartFilled,
             isRental,
             isNotLoginModalVisible,
+            isDeleteConfirmModalVisible,
+            isSettleNavigateModalVisible,
             canRental,
             canNextRental,
             canNextRentalDate,
             cartNum,
-            isDeleteConfirmModalVisible
         } = this.state
         const nextRentalText = (new Date(canNextRentalDate).getMonth() + 1) + '月' + new Date(canNextRentalDate).getDate() + '日'
         const rentalAlertText = canRental ? 'カートに5つアイテムを入れた状態で\n手続きを行ってください' : '次回のレンタル可能日(' + nextRentalText  + ')まで\nお待ちください'
         return(
             <SafeAreaView style={{ flex: 1 }}>
+                <DoubleButtonTextsModal
+                    isModalVisible={isSettleNavigateModalVisible}
+                    onPressLeftButton={() => this.setState({ isSettleNavigateModalVisible: false })}
+                    onPressRightButton={() => this.navigateSettleEditPage()}
+                    bigText='レンタルの申し込みを行うにはお支払い情報を登録する必要があります。'
+                    smallText={'クレジットカード登録のあと、サブスクリプション契約が必要です。\n※解約に制限はありません。'}
+                    leftButtonText='戻る'
+                    rightButtonText='登録へ'
+                />
                 <Modal isVisible={this.state.isRentalAlertVisible}>
                     <View style={styles.modalContainerView}>
                         <View style={styles.modalInnerView}>
@@ -318,7 +360,7 @@ export class CartTab extends React.Component {
                             title='レンタル手続きへ →'
                             buttonStyle={[styles.rentalButtonStyle, { backgroundColor: (isCartFilled && canRental) ? 'white': 'rgba(255,255,255,0.5)' }]}
                             titleStyle={styles.rentalTitleStyle}
-                            onPress={(isCartFilled && canRental) ? () => this.navigateConfirmPage() : () => this.toggleAlertModal()}
+                            onPress={() => this.onPressToConfirmPage()}
                         />
                     </View>
                 }
