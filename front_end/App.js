@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
 import { Authenticator } from 'aws-amplify-react-native'
@@ -9,6 +9,7 @@ import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import awsmobile from 'pretapo/aws-exports'
+import TutorialModal from 'pretapo/front_end/screens/common/tutorial/TutorialModal'
 
 //import ItemTab
 import { ItemTab, ItemDetail, SearchConditionModal } from './screens/item'
@@ -147,59 +148,77 @@ export const Tab = createBottomTabNavigator(
   }
 );
 
-//drawer
-const Drawer = createDrawerNavigator(
-  {
-    'ホーム': {
-      screen: Tab,
-      navigationOptions: {
-        drawerIcon: <Icon name='home' size={24} color='white' style={{ left: wp('5%') }} />
-      }
-    },
-    '登録情報を編集': {
-      screen: ProfileStack,
-      navigationOptions: {
-        drawerIcon: <Icon name='account-circle' size={24}  color='white' style={{ left: wp('5%') }} />,
-      }
-    },
-    '決済情報を編集': {
-      screen: SettleStack,
-      navigationOptions: {
-        drawerIcon: <Icon name='credit-card-outline' size={24} color='white' style={{ left: wp('5%') }} />
-      }
-    }
-  },
-  {
-    contentComponent: (props) => (
-      <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
-        <Image source={require('../assets/pretapo-white.png')} style={styles.drawerImage} />
-          <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
-          <View style={styles.logoutView}>
-            <Icon name="logout" size={24} color={'white'} />
-            <Text
-              style={styles.logoutText}
-              onPress={() => Auth.signOut()}
-            >
-              ログアウト
-            </Text>
-          </View>
-      </View>
-    ),
-    initialRouteName: "ホーム",
-    edgeWidth: wp('100%'),
-    drawerWidth: wp('60%')
-  }
-)
-
 //登録後画面
 const Container = (props) => {
-  console.log(props.authState)
+  const [isTutorialModalVisible, setIsTutorialModalVisible] = useState(false)
+
+  const toggleTutorial = () => {
+    setIsTutorialModalVisible(prevState => !prevState)
+  }
+
+  //drawer
+  const Drawer = createDrawerNavigator(
+    {
+      'ホーム': {
+        screen: Tab,
+        navigationOptions: {
+          drawerIcon: <Icon name='home' size={24} color='white' style={{ left: wp('5%') }} />
+        }
+      },
+      '登録情報を編集': {
+        screen: ProfileStack,
+        navigationOptions: {
+          drawerIcon: <Icon name='account-circle' size={24}  color='white' style={{ left: wp('5%') }} />,
+        }
+      },
+      '決済情報を編集': {
+        screen: SettleStack,
+        navigationOptions: {
+          drawerIcon: <Icon name='credit-card-outline' size={24} color='white' style={{ left: wp('5%') }} />
+        }
+      }
+    },
+    {
+      contentComponent: (props) => (
+        <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
+          <Image source={require('../assets/pretapo-white.png')} style={styles.drawerImage} />
+            <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
+            <View style={styles.informationView}>
+              <Icon name='information-outline' size={24} color={'white'} />
+              <Text
+                style={styles.informationText}
+                onPress={() => toggleTutorial()}
+              >
+                サービスについて
+              </Text>
+            </View>
+            <View style={styles.logoutView}>
+              <Icon name="logout" size={24} color={'white'} />
+              <Text
+                style={styles.logoutText}
+                onPress={() => Auth.signOut()}
+              >
+                ログアウト
+              </Text>
+            </View>
+        </View>
+      ),
+      initialRouteName: "ホーム",
+      edgeWidth: wp('100%'),
+      drawerWidth: wp('60%')
+    }
+  )
+
   const AppContainer = createAppContainer(Drawer)
   if(props.authState !== 'signedIn') {
     return null
   } else {
     return(
       <SafeAreaView style={{ flex: 1, width: wp("100%") }}>
+        <TutorialModal
+          isModalVisible={isTutorialModalVisible}
+          toggleTutorial={toggleTutorial}
+        />
         <AppContainer />
       </SafeAreaView>
     )
@@ -210,7 +229,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      displaySignin: false
+      displaySignin: false,
     }
   }
 
@@ -257,6 +276,19 @@ const styles = StyleSheet.create({
     marginLeft: wp('15%')
   },
   logoutText: {
+    marginLeft: wp('2%'),
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14
+  },
+  informationView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: wp('30%'),
+    top: 40,
+    marginLeft: wp('9%')
+  },
+  informationText: {
     marginLeft: wp('2%'),
     color: 'white',
     fontWeight: '600',

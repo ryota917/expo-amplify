@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import TutorialModal from 'pretapo/front_end/screens/common/tutorial/TutorialModal'
 
 //import ItemTab
 import { ItemTab, ItemDetail, SearchConditionModal } from '../screens/item'
@@ -21,7 +22,14 @@ import { ConsultTab } from '../screens/consult'
 
 export class DefaultApp extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            isTutorialModalVisible: false
+        }
+    }
+
+    toggleTutorial = () => {
+        this.setState({ isTutorialModalVisible: !this.state.isTutorialModalVisible })
     }
 
     render() {
@@ -125,6 +133,15 @@ export class DefaultApp extends React.Component {
                     <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
                         <Image source={require('../../assets/pretapo-white.png')} style={styles.drawerImage} />
                         <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
+                        <View style={styles.informationView}>
+                        <Icon name='information-outline' size={24} color={'white'} />
+                        <Text
+                            style={styles.informationText}
+                            onPress={() => this.toggleTutorial()}
+                        >
+                            サービスについて
+                        </Text>
+                        </View>
                         <View style={styles.logoutView}>
                             <Icon name="logout" size={24} color={'white'} />
                             <Text
@@ -141,12 +158,18 @@ export class DefaultApp extends React.Component {
                 drawerWidth: wp('60%')
             }
         )
-        const DefaultLayout = createAppContainer(DefaultDrawer);
+
+        const DefaultLayout = createAppContainer(DefaultDrawer)
+
         if(this.props.displaySignin || this.props.authState !== 'signIn') {
             return null
         } else {
             return(
             <SafeAreaView style={{ flex: 1, width: wp('100%') }}>
+                <TutorialModal
+                    isModalVisible={this.state.isTutorialModalVisible}
+                    toggleTutorial={this.toggleTutorial}
+                />
                 <DefaultLayout />
             </SafeAreaView>
             )
@@ -164,6 +187,19 @@ const styles = StyleSheet.create({
         marginLeft: wp('15%')
     },
     logoutText: {
+        marginLeft: wp('2%'),
+        color: 'white',
+        fontWeight: '600',
+        fontSize: 14
+    },
+    informationView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: wp('30%'),
+        top: 40,
+        marginLeft: wp('9%')
+    },
+    informationText: {
         marginLeft: wp('2%'),
         color: 'white',
         fontWeight: '600',

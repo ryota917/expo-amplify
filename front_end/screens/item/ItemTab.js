@@ -6,6 +6,7 @@ import * as gqlQueries from '../../../src/graphql/queries' // read
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import Item from './Item'
 import TutorialModal from 'pretapo/front_end/screens/common/tutorial/TutorialModal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export class ItemTab extends React.Component {
     constructor(props) {
@@ -17,7 +18,8 @@ export class ItemTab extends React.Component {
             canLoad: true,
             isLoading: false,
             isRefreshing: false,
-            isTutorialModalVisible: true
+            isTutorialModalVisible: false,
+            firstLaunch: null
         }
     }
 
@@ -36,6 +38,7 @@ export class ItemTab extends React.Component {
     };
 
     componentDidMount = async () => {
+        this.detectFirstLaunch()
         this.initialLoad()
         //navigationのイベントリスナーでTabが押された時に毎回アイテム情報を取得する
         await this.props.navigation.addListener('didFocus', async () => {
@@ -43,6 +46,20 @@ export class ItemTab extends React.Component {
             await this.updateSearchState()
             this.initialLoad()
         })
+    }
+
+    //初期起動を検知してチュートリアル画面を制御
+    detectFirstLaunch = async() => {
+        const value = await AsyncStorage.getItem('alreadyLaunched')
+        console.log('asyncStorageないのデータです。', value)
+        if(value == null) {
+            await AsyncStorage.setItem('alreadyLaunched', 'true')
+            const res = await AsyncStorage.getItem('alreadyLaunched')
+            console.log('asyncstorageupdated', res)
+            this.setState({ isTutorialModalVisible: true })
+        } else {
+            this.setState({ isTutorialModalVisible: false })
+        }
     }
 
     //検索条件を更新
