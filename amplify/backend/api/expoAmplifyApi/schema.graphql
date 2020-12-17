@@ -2,14 +2,14 @@
 type Item @model @searchable {
   id: ID!
   name: String!
-  description: String!
+  description: String
   stateDescription: String
-  imageURLs: [String!]!
-  status: String!
-  season: [String]!
-  bigCategory: [String]!
+  imageURLs: [String]
+  status: String
+  season: [String]
+  bigCategory: [String]
   smallCategory: [String]
-  color: [String]!
+  color: [String]
   dressLength: Int
   dressWidth: Int
   sleeveLength: Int
