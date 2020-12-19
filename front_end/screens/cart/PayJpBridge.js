@@ -23,7 +23,7 @@ export default class PayJpBridge extends React.Component {
             return payJpJs
         } else {
             const res = await fetch(PAY_JP_JS_URL)
-            console.log('getPayJpJs内の処理です', res)
+            console.log('payjpを読み込みます fetch_payjp_url:', res)
             return await res.text()
         }
     }
@@ -40,13 +40,15 @@ export default class PayJpBridge extends React.Component {
     //トークン作成時
     //@params {object} data
     onToken = data => {
-        const error = data.error && JSON.parse(data.error)
-        console.log('onToken時のエラー', error)
-        const token = data.token && JSON.parse(data.token)
-        console.log('onTokenのtoken', token)
-        const callback = this.callbacks[data.callbackKey]
-        console.log('callback', callback)
-        callback && callback(token, error)
+        try {
+            const error = data.error && JSON.parse(data.error)
+            const token = data.token && JSON.parse(data.token)
+            console.log('作成されたトークン token:', token)
+            const callback = this.callbacks[data.callbackKey]
+            callback && callback(token, error)
+        } catch(e) {
+            console.error('トークン作成時のエラー', e)
+        }
     }
 
     //カードトークンの作成
@@ -58,10 +60,10 @@ export default class PayJpBridge extends React.Component {
                 const callbackKey = (+new Date()).toString()
                 this.callbacks[callbackKey] = (token, error) => {
                     if(token) {
-                        console.log('token in PayJpBridge', token)
+                        console.log('createToken内で読み込まれました。token:', token)
                         resolve(token)
                     } else {
-                        console.error('error occurring', error)
+                        console.error('createToken内でエラーが発生しました。error:', error)
                         reject(new Error(error.description || error.message))
                     }
                 }

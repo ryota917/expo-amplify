@@ -9,6 +9,7 @@ import send_message from '../../../src/messaging/slack'
 import * as gqlQueries from '../../../src/graphql/queries' // read
 import * as gqlMutations from '../../../src/graphql/mutations' // create, update, delete
 import FastImage from 'react-native-fast-image'
+import DoubleButtonImageModal from 'pretapo/front_end/screens/common/DoubleButtonImageModal'
 
 export class ConfirmPage extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ export class ConfirmPage extends React.Component {
             itemCart: this.props.navigation.state.params.itemCart,
             currentUserEmail: '',
             userAddress: '',
-            isConfirmModalVisible: false,
+            isRegisteredModalVisible: this.props.navigation.state.params.register,
             cartLogId: ''
         }
     }
@@ -129,10 +130,27 @@ export class ConfirmPage extends React.Component {
         }))
     }
 
+    toggleRegisteredModal = () => {
+        this.setState({ isRegisteredModalVisible: !this.state.isRegisteredModalVisible })
+    }
+
     render() {
-        const { itemCart, currentUserEmail, userAddress, isConfirmModalVisible, cartLogId } = this.state
+        const {
+            itemCart,
+            userAddress,
+            isConfirmModalVisible,
+            isRegisteredModalVisible
+        } = this.state
         return(
             <SafeAreaView style={{ flex: 1 }}>
+                <DoubleButtonImageModal
+                    isModalVisible={isRegisteredModalVisible}
+                    onPressLeftButton={this.navigateConfirmPage}
+                    bigText={'登録ありがとうございます！'}
+                    smallText={'あなたのファッションが私たちのレンタルでより楽しいものになりますように。'}
+                    image={require('pretapo/assets/register.png')}
+                    leftButtonText='選んだ服のお届けに進む'
+                />
                 <View style={styles.container}>
                     <Modal isVisible={isConfirmModalVisible}>
                         <View style={styles.modalContainerView}>

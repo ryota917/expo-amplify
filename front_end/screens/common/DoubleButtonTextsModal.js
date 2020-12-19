@@ -19,7 +19,7 @@ const DoubleButtonTextsModal = (props) => {
             <View style={styles.modalContainerView}>
                 <View style={styles.modalInnerView}>
                     <Text style={styles.modalText}>{bigText}</Text>
-                    <Text style={styles.modalText}>{smallText}</Text>
+                    <Text style={styles.modalSmallText}>{smallText}</Text>
                     <View style={styles.modalButtonView}>
                         <Button
                             title={leftButtonText}
@@ -57,8 +57,13 @@ const styles = StyleSheet.create({
     modalText: {
         width: wp('60%'),
         marginBottom: hp('2%'),
-        fontWeight: '400',
-        textAlign: 'center'
+        textAlign: 'center',
+        letterSpacing: 1
+    },
+    modalSmallText: {
+        fontSize: 12,
+        textAlign: 'center',
+        letterSpacing: 1,
     },
     modalButtonView: {
         flexDirection: 'row',

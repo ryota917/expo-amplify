@@ -129,7 +129,7 @@ export class CartTab extends React.Component {
                 limit: 1
             }))
             console.log(cartLogRes)
-            const cartLogId = cartLogRes.data.searchCartLogs.items[0].id
+            const cartLogId = cartLogRes?.data?.searchCartLogs?.items[0]?.id
             const itemCartLogRes = await API.graphql(graphqlOperation(gqlQueries.searchItemCartLogs, {
                 filter: {
                     cartLogId: {
@@ -199,7 +199,13 @@ export class CartTab extends React.Component {
     }
 
     navigateConfirmPage = () => {
-        this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
+        this.props.navigation.navigate(
+            'ConfirmPage',
+            {
+                itemCart: this.state.itemCart,
+                register: false
+            }
+        )
     }
 
     onPressNotLoginedModalLeftButton = () => {
@@ -221,10 +227,10 @@ export class CartTab extends React.Component {
         }
         //サブスク登録してない場合は登録フォームへ遷移
         //TODO: 決済
-        // if(!registered) {
-        //     this.setState({ isSettleNavigateModalVisible: true })
-        //     return
-        // }
+        if(!registered) {
+            this.setState({ isSettleNavigateModalVisible: true })
+            return
+        }
         //全ての条件を満たしている場合は確認画面へ遷移
         //TODO: カード情報が保存されていない場合はEditPage, カード情報が保存されている場合はConfirmPageへ遷移
         this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
@@ -232,7 +238,7 @@ export class CartTab extends React.Component {
 
     navigateSettleEditPage = () => {
         this.setState({ isSettleNavigateModalVisible: false })
-        this.props.navigation.navigate('CartSettleEditPage')
+        this.props.navigation.navigate('CartSettleEditPage', { itemCart: this.state.itemCart })
     }
 
     render() {
@@ -255,8 +261,8 @@ export class CartTab extends React.Component {
                     isModalVisible={isSettleNavigateModalVisible}
                     onPressLeftButton={() => this.setState({ isSettleNavigateModalVisible: false })}
                     onPressRightButton={() => this.navigateSettleEditPage()}
-                    bigText='レンタルの申し込みを行うにはお支払い情報を登録する必要があります。'
-                    smallText={'クレジットカード登録のあと、サブスクリプション契約が必要です。\n※解約に制限はありません。'}
+                    bigText={'レンタルの申し込みを行うには\nお支払い情報を登録する必要が\nあります。'}
+                    smallText={'クレジットカード登録の後、\nサブスクリプション契約が必要です。\n※解約に制限はありません。'}
                     leftButtonText='戻る'
                     rightButtonText='登録へ'
                 />

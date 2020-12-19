@@ -11,3 +11,12 @@ export const payjpAxios = axios.create({
         'Authorization': 'Basic c2tfdGVzdF84Yzc2MzliMWI0Nzk3ZjRmZjQ5NjAzNmE6'
     }
 })
+
+export const cardBrandImageUrl = {
+    visa: require('pretapo/assets/visa.png'),
+    masterCard: require('pretapo/assets/master-card.png'),
+    jcb: require('pretapo/assets/jcb.jpg'),
+    americanExpress: require('pretapo/assets/american-express.png'),
+    dinersClub: require('pretapo/assets/diners-club.png'),
+    discover: require('pretapo/assets/discover.jpg')
+}

@@ -22,20 +22,31 @@ const DoubleButtonImageModal = (props) => {
                     <Image source={image} style={styles.image}/>
                     <Text style={styles.modalBigText}>{bigText}</Text>
                     <Text style={styles.modalSmallText}>{smallText}</Text>
-                    <View style={styles.modalButtonView}>
-                        <Button
-                            title={leftButtonText}
-                            onPress={() => onPressLeftButton()}
-                            buttonStyle={styles.modalLeftButtonStyle}
-                            titleStyle={styles.modalLeftTitleStyle}
-                        />
-                        <Button
-                            title={rightButtonText}
-                            onPress={() =>  onPressRightButton()}
-                            buttonStyle={styles.modalRightButtonStyle}
-                            titleStyle={styles.modalRightTitleStyle}
-                        />
-                    </View>
+                        {rightButtonText ?
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title={leftButtonText}
+                                    onPress={() => onPressLeftButton()}
+                                    buttonStyle={styles.modalLeftButtonStyle}
+                                    titleStyle={styles.modalLeftTitleStyle}
+                                />
+                                <Button
+                                    title={rightButtonText}
+                                    onPress={() =>  onPressRightButton()}
+                                    buttonStyle={styles.modalRightButtonStyle}
+                                    titleStyle={styles.modalRightTitleStyle}
+                                />
+                            </View>
+                        :
+                            <View style={styles.modalButtonView}>
+                                <Button
+                                    title={leftButtonText}
+                                    onPress={() => onPressLeftButton()}
+                                    buttonStyle={styles.modalLeftButtonStyle}
+                                    titleStyle={styles.modalLeftTitleStyle}
+                                />
+                            </View>
+                        }
                 </View>
             </View>
         </Modal>

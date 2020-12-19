@@ -50,14 +50,17 @@ const styles = StyleSheet.create({
         width: wp('60%'),
         marginBottom: hp('2%'),
         fontWeight: '400',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 12,
+        letterSpacing: 1,
+        lineHeight: 14
     },
     modalButtonView: {
         flexDirection: 'row',
         marginTop: hp('2%')
     },
     modalButtonStyle: {
-        borderRadius: 25,
+        borderRadius: 40,
         width: wp('25%'),
         height: hp('6%'),
         backgroundColor: '#7389D9'
