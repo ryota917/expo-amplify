@@ -61,8 +61,8 @@ export class ConfirmPage extends React.Component {
             itemIdArr.push(item.id)
         })
         //slackに通知
-        // const message = '注文が届いたよ\n注文したユーザーは' + name + '様だよ\n注文したユーザーの住所は' + address + 'だよ\n注文したアイテムは\n' + itemIdArr
-        // send_message(message)
+        const message = '注文が届いたよ\n注文したユーザーは' + name + '様だよ\n注文したユーザーの住所は' + address + 'だよ\n注文したアイテムは\n' + itemIdArr
+        send_message(message)
         try{
             //CartLogの生成
             await this.createCartLog()
