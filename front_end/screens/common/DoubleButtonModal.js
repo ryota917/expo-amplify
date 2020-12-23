@@ -11,10 +11,14 @@ const DoubleButtonModal = (props) => {
         onPressRightButton,
         text,
         leftButtonText,
-        rightButtonText
+        rightButtonText,
+        onModalHide
     } = props
     return(
-        <Modal isVisible={isModalVisible}>
+        <Modal
+            isVisible={isModalVisible}
+            onModalHide={() => onModalHide ? onModalHide() : null}
+        >
             <View style={styles.modalContainerView}>
                 <View style={styles.modalInnerView}>
                     <Text style={styles.modalText}>{text}</Text>

@@ -18,7 +18,6 @@ export class ConfirmPage extends React.Component {
             itemCart: this.props.navigation.state.params.itemCart,
             currentUserEmail: '',
             userAddress: '',
-            isRegisteredModalVisible: this.props.navigation.state.params.register,
             cartLogId: ''
         }
     }
@@ -54,7 +53,6 @@ export class ConfirmPage extends React.Component {
     onPressRental = async () => {
         this.toggleModal()
         this.props.navigation.navigate('ThankYouPage')
-        //slackに通知
         const orderedUser = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: this.state.currentUserEmail }))
         const name = orderedUser.data.getUser.name
         const address = orderedUser.data.getUser.address
@@ -62,8 +60,9 @@ export class ConfirmPage extends React.Component {
         this.state.itemCart.forEach(item => {
             itemIdArr.push(item.id)
         })
-        const message = '注文が届いたよ\n注文したユーザーは' + name + '様だよ\n注文したユーザーの住所は' + address + 'だよ\n注文したアイテムは\n' + itemIdArr
-        send_message(message)
+        //slackに通知
+        // const message = '注文が届いたよ\n注文したユーザーは' + name + '様だよ\n注文したユーザーの住所は' + address + 'だよ\n注文したアイテムは\n' + itemIdArr
+        // send_message(message)
         try{
             //CartLogの生成
             await this.createCartLog()
@@ -130,27 +129,14 @@ export class ConfirmPage extends React.Component {
         }))
     }
 
-    toggleRegisteredModal = () => {
-        this.setState({ isRegisteredModalVisible: !this.state.isRegisteredModalVisible })
-    }
-
     render() {
         const {
             itemCart,
             userAddress,
             isConfirmModalVisible,
-            isRegisteredModalVisible
         } = this.state
         return(
             <SafeAreaView style={{ flex: 1 }}>
-                <DoubleButtonImageModal
-                    isModalVisible={isRegisteredModalVisible}
-                    onPressLeftButton={this.navigateConfirmPage}
-                    bigText={'登録ありがとうございます！'}
-                    smallText={'あなたのファッションが私たちのレンタルでより楽しいものになりますように。'}
-                    image={require('pretapo/assets/register.png')}
-                    leftButtonText='選んだ服のお届けに進む'
-                />
                 <View style={styles.container}>
                     <Modal isVisible={isConfirmModalVisible}>
                         <View style={styles.modalContainerView}>

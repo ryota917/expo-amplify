@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Modal from 'react-native-modal'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'

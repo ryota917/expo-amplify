@@ -6,7 +6,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from 'pretapo/src/graphql/queries' // read
 import * as gqlMutations from 'pretapo/src/graphql/mutations'
-import { PAYJP, payjpAxios } from 'pretapo/front_end/screens/common/Payjp'
+import { payjpAxios } from 'pretapo/front_end/screens/common/Payjp'
 import qs from 'qs'
 import PayJpBridge from './PayJpBridge';
 import ErrorAlertModal from 'pretapo/front_end/screens/common/ErrorAlertModal'
@@ -40,7 +40,7 @@ export class CartSettleEditPage extends React.Component {
             const currentUserEmail = currentUser.attributes.email
             this.setState({ currentUserEmail: currentUserEmail })
         } catch(err) {
-            this.setState({ isNotLoginModalVisible: true })
+            console.error(err)
         }
     }
 
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         marginTop: -7,
         marginRight: 5
     },
-    componentView : {
+    componentView: {
         backgroundColor: 'white',
     },
     planTitle: {

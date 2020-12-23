@@ -11,7 +11,8 @@ import FastImage from 'react-native-fast-image'
 import DoubleButtonModal from '../common/DoubleButtonModal'
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
-import DoubleButtonTextsModal from '../common/DoubleButtonTextsModal';
+import DoubleButtonTextsModal from '../common/DoubleButtonTextsModal'
+import { payjpAxios } from 'pretapo/front_end/screens/common/Payjp'
 
 export class CartTab extends React.Component {
     constructor(props) {
@@ -35,7 +36,8 @@ export class CartTab extends React.Component {
             cartNum: 0,
             isNotLoginModalVisible: false,
             isSettleNavigateModalVisible: false,
-            registered: false
+            registered: false,
+            customerId: ''
         }
     }
 
@@ -55,9 +57,10 @@ export class CartTab extends React.Component {
         this.fetchRentalData()
         //Tab移動時のイベントリスナー(カートに追加したアイテムが反映されないのでここで再度取得)
         this.props.navigation.addListener('didFocus', async () => {
-                await this.showModalToLogin()
-                this.fetchItemCart()
-                this.fetchRentalData()
+            await this.fetchCurrentUser()
+            await this.showModalToLogin()
+            this.fetchItemCart()
+            this.fetchRentalData()
         })
     }
 
@@ -76,9 +79,11 @@ export class CartTab extends React.Component {
             const currentUserEmail = currentUser.attributes.email
             const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: currentUserEmail }))
             const registered = userRes.data.getUser.registered
+            const customerId = userRes.data.getUser.customerId
             this.setState({
                 currentUserEmail: currentUserEmail,
-                registered: registered
+                registered: registered,
+                customerId: customerId
             })
         } catch(err) {
             this.setState({ isNotLoginModalVisible: true })
@@ -128,7 +133,6 @@ export class CartTab extends React.Component {
                 },
                 limit: 1
             }))
-            console.log(cartLogRes)
             const cartLogId = cartLogRes?.data?.searchCartLogs?.items[0]?.id
             const itemCartLogRes = await API.graphql(graphqlOperation(gqlQueries.searchItemCartLogs, {
                 filter: {
@@ -139,7 +143,6 @@ export class CartTab extends React.Component {
             }))
             //最新のカートログに入っているアイテムデータを取得
             const itemCartLogArr = []
-            console.log(itemCartLogRes)
             itemCartLogRes.data.searchItemCartLogs.items.map(obj => itemCartLogArr.push(obj.item))
             //次回レンタル可能な日付データを取得(CartLogが存在しない場合はレンタル可能判定にする)
             let canNextRental = true
@@ -199,13 +202,7 @@ export class CartTab extends React.Component {
     }
 
     navigateConfirmPage = () => {
-        this.props.navigation.navigate(
-            'ConfirmPage',
-            {
-                itemCart: this.state.itemCart,
-                register: false
-            }
-        )
+        this.props.navigation.navigate('ConfirmPage',{ itemCart: this.state.itemCart} )
     }
 
     onPressNotLoginedModalLeftButton = () => {
@@ -218,22 +215,32 @@ export class CartTab extends React.Component {
     }
 
     //レンタル内容確認画面へ
-    onPressToConfirmPage = () => {
-        const { isCartFilled, canRental, registered } = this.state
+    onPressToConfirmPage = async () => {
+        const { isCartFilled, canRental, registered, customerId } = this.state
         //アイテムが5つ入ってないまたはレンタル可能日に達していない場合はalert
         if(!isCartFilled || !canRental) {
             this.toggleAlertModal()
             return
         }
-        //サブスク登録してない場合は登録フォームへ遷移
-        //TODO: 決済
-        if(!registered) {
+        //決済情報を入力していない場合は決済情報入力画面へ
+        if(!customerId) {
             this.setState({ isSettleNavigateModalVisible: true })
             return
         }
+        //決済情報を入力しているがサブスク登録してない場合は登録フォームへ遷移
+        if(!registered) {
+            const customer = await this.getCustomer()
+            this.props.navigation.navigate('CartSettleConfirmPage', { itemCart: this.state.itemCart, customer: customer })
+            return
+        }
         //全ての条件を満たしている場合は確認画面へ遷移
-        //TODO: カード情報が保存されていない場合はEditPage, カード情報が保存されている場合はConfirmPageへ遷移
-        this.props.navigation.navigate('ConfirmPage', { itemCart: this.state.itemCart })
+        this.navigateConfirmPage()
+    }
+
+    getCustomer = async () => {
+        const { customerId } = this.state
+        const res = await payjpAxios.get('/customers/' + customerId)
+        return res
     }
 
     navigateSettleEditPage = () => {

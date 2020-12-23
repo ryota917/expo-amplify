@@ -6,8 +6,9 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { payjpAxios, cardBrandImageUrl } from 'pretapo/front_end/screens/common/Payjp'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import DoubleButtonModal from 'pretapo/front_end/screens/common/DoubleButtonModal'
+import DoubleButtonImageModal from '../common/DoubleButtonImageModal'
 import qs from 'qs'
-import { API } from 'aws-amplify'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
 import * as gqlMutations from 'pretapo/src/graphql/mutations'
 
 export class CartSettleConfirmPage extends React.Component {
@@ -15,10 +16,20 @@ export class CartSettleConfirmPage extends React.Component {
         super(props);
         this.state = {
             customer: JSON.parse(this.props.navigation.state.params.customer['request']['_response']),
-            card: JSON.parse(this.props.navigation.state.params.customer['request']['_response'])['cards']['data'][0],
+            defaultCard: this.getDefaultCardData(this.props.navigation.state.params.customer),
             isConfirmModalVisible: false,
-            currentUserEmail: ''
+            isRegisteredModalVisible: false,
+            //モーダル連続表示フラグ
+            isConfirmed: false,
+            currentUserEmail: '',
         }
+    }
+
+    getDefaultCardData = (res) => {
+        const customer = JSON.parse(res['request']['_response'])
+        const defaultCardId = customer['default_card']
+        const defaultCard = customer['cards']['data'].find(card => card.id === defaultCardId)
+        return defaultCard
     }
 
     static navigationOptions = ({ navigation: { navigate } }) => ({
@@ -29,7 +40,7 @@ export class CartSettleConfirmPage extends React.Component {
         }
     });
 
-    componentDidMount = async () => {
+    componentDidMount = () => {
         this.fetchCurrentUser()
     }
 
@@ -45,50 +56,73 @@ export class CartSettleConfirmPage extends React.Component {
     }
 
     //サブスクリプション作成(レンタル確定?)
-    //Customerに紐付くSubscriptionがない場合作成、既存でactiveの場合は何もしない、activeでない場合はアクティベート
     createSubscription = async () => {
+        const { customer, currentUserEmail } = this.state
         try {
-            console.log('サブスクリプションを作成します')
-            const res = await payjpAxios.post(
-                'subscriptions',
-                qs.stringify({
-                    customer: this.state.customer.id,
-                    plan: 'plan_standard'
-                })
-            )
-            console.log('サブスクリプションが作成されました', res)
+            //Customerに紐付くSubscriptionがない場合作成、一ヶ月以内にキャンセルしている場合は再開
+            if(customer.subscriptions?.data?.length) {
+                const subscriptionId = customer.subscriptions.data[0].id
+                const res = await payjpAxios.post('subscriptions/' + subscriptionId + '/resume')
+                console.log('キャンセル済みのサブスクリプションを再開しました', res)
+            } else {
+                const res = await payjpAxios.post(
+                    'subscriptions',
+                    qs.stringify({
+                        customer: customer.id,
+                        plan: 'plan_standard'
+                    })
+                )
+                console.log('新規サブスクリプションが作成されました', res)
+            }
             await API.graphql(graphqlOperation(gqlMutations.updateUser, {
                 input: {
-                    id: this.state.currentUserEmail,
+                    id: currentUserEmail,
                     registered: true
                 }
             }))
-            this.toggleConfirmModal()
-            this.props.navigation.navigate(
-                'ConfirmPage',
-                {
-                    itemCart: this.props.navigation.state.params.itemCart,
-                    register: true
-                }
-            )
-            // this.props.navigation.navigate('ConfirmPage', { itemCart: this.props.navigation.state.params.itemCart })
+            this.confirmRegister()
         } catch(e) {
             console.error('サブスクリプションの作成に失敗しました', e)
         }
     }
 
+    //サンキューモーダル非表示にしてConfirmPageへ遷移
+    navigateConfirmPage = () => {
+        this.setState({
+            isRegisteredModalVisible: false,
+            isConfirmed: false
+        })
+        this.props.navigation.navigate('ConfirmPage', { itemCart: this.props.navigation.state.params.itemCart })
+    }
+
+    //モーダル開閉
     toggleConfirmModal = () => {
         this.setState({ isConfirmModalVisible: !this.state.isConfirmModalVisible })
     }
 
+    //登録確定ボタン押下時モーダルアクション
+    confirmRegister = () => {
+        this.setState({
+            isConfirmed: true,
+            isConfirmModalVisible: false
+        })
+    }
+
+    //サンキューモーダル表示
+    showRegisteredModal = () => {
+        if(this.state.isConfirmed) {
+            this.setState({ isRegisteredModalVisible: true })
+        }
+    }
+
     render() {
         const {
-            card,
+            defaultCard,
             isConfirmModalVisible,
             isRegisteredModalVisible
         } = this.state
         let brandLogoSource
-        switch(card.brand) {
+        switch(defaultCard.brand) {
             case 'Visa':
                 brandLogoSource = cardBrandImageUrl.visa
                 break
@@ -117,6 +151,15 @@ export class CartSettleConfirmPage extends React.Component {
                     text={'サブスクリプションに登録して初回のお支払いを行います'}
                     leftButtonText='戻る'
                     rightButtonText='進む'
+                    onModalHide={this.showRegisteredModal}
+                />
+                <DoubleButtonImageModal
+                    isModalVisible={isRegisteredModalVisible}
+                    onPressLeftButton={this.navigateConfirmPage}
+                    bigText={'登録ありがとうございます！'}
+                    smallText={'あなたのファッションが私たちのレンタルでより楽しいものになりますように。'}
+                    image={require('pretapo/assets/register.png')}
+                    leftButtonText='選んだ服のお届けに進む'
                 />
                 <ScrollView>
                     <Text style={styles.titleText}>加入プラン(サブスクリプション)</Text>
@@ -184,12 +227,12 @@ export class CartSettleConfirmPage extends React.Component {
                         <View style={styles.innerView}>
                             <View style={{ flexDirection: 'row' }}>
                                 <MaterialIcon name='credit-card-outline' size={20} />
-                                <Text style={styles.cardNumberText}>**** **** **** {card.last4}</Text>
+                                <Text style={styles.cardNumberText}>**** **** **** {defaultCard.last4}</Text>
                                 <Image source={brandLogoSource} style={styles.brandImage} />
                             </View>
                             <View style={{ flexDirection: 'row', marginTop: 10 }}>
                                 <Text style={styles.cardText}>有効期限</Text>
-                                <Text style={styles.cardDataText}>{card.exp_month}/{card.exp_year}</Text>
+                                <Text style={styles.cardDataText}>{defaultCard.exp_month}/{defaultCard.exp_year}</Text>
                             </View>
                         </View>
                     </View>

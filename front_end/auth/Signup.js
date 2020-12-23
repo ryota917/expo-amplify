@@ -121,6 +121,7 @@ export class Signup extends React.Component {
                         birthday: isBirthdaySelected ? birthday : '',
                         gender: gender,
                         rental: false,
+                        registered: false,
                         customerId: ''
                     }
                 }))

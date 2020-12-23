@@ -124,6 +124,7 @@ if(Platform.isPad) {
             height: hp('70%'),
             left: wp('5%'),
             textAlign: 'center',
+            borderRadius: 20
         },
         modalInnerView: {
             width: wp('70%'),

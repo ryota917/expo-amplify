@@ -20,8 +20,6 @@ export const CardForm = (props) => {
         onSubmit(card)
     }
 
-    console.log('errors', errors)
-
     return(
         <View style={styles.cardFormContainer}>
             <View style={styles.innerContainer}>
@@ -53,7 +51,7 @@ export const CardForm = (props) => {
                     }}
                     rules={{
                         required: true,
-                        minLength: 16,
+                        minLength: 14,
                         maxLength: 16
                     }}
                 />
@@ -139,7 +137,7 @@ export const CardForm = (props) => {
                 /> */}
                 <View style={styles.bottonContainer}>
                     <Button
-                        title='登録して支払いへ'
+                        title='登録'
                         onPress={handleSubmit(onHandleSubmit)}
                         buttonStyle={styles.registerButtonStyle}
                         titleStyle={styles.registerTitleStyle}

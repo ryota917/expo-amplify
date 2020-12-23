@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { Image, View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import { Amplify, Auth } from 'aws-amplify';
+import React, { useState, useEffect } from 'react';
+import { Image, View, Text, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { Amplify, API, graphqlOperation, Auth } from 'aws-amplify';
+import * as gqlQueries from 'pretapo/src/graphql/queries' // read
 import { Authenticator } from 'aws-amplify-react-native'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import awsmobile from 'pretapo/aws-exports'
 import TutorialModal from 'pretapo/front_end/screens/common/tutorial/TutorialModal'
+
 
 //import ItemTab
 import { ItemTab, ItemDetail, SearchConditionModal } from './screens/item'
@@ -34,7 +36,7 @@ import { ConsultTab } from './screens/consult'
 import { ProfileConfirmPage, ProfileEditPage } from './screens/profile'
 
 //import SettleTab
-import { SettleEditPage } from './screens/settle'
+import { SettleEditPage, Cancellation } from './screens/settle'
 
 //import Authentication Page
 import {
@@ -108,7 +110,18 @@ const ProfileStack = createStackNavigator(
 
 const SettleStack = createStackNavigator(
   {
-    SettleEditPage: {screen: SettleEditPage}
+    SettleEditPage: {screen: SettleEditPage},
+    'プランの解約': { screen: Cancellation }
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => {
+      return {
+        headerLeft:() => <MaterialIcon name="chevron-left" size={Platform.isPad ? 60 : 42} style={{ paddingLeft: 10 }} onPress={() => { navigation.goBack() }} />,
+        headerStyle: {
+            height: hp('7%')
+        }
+      }
+    }
   }
 )
 
@@ -118,25 +131,25 @@ export const Tab = createBottomTabNavigator(
     'アイテム': {
       screen: ItemTabStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='view-grid' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <MaterialIcon size={24} name='view-grid' color={tintColor} />
       }
     },
     'お気に入り': {
       screen: FavoriteTabStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='bookmark-minus' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <MaterialIcon size={24} name='bookmark-minus' color={tintColor} />
       }
     },
     'カート': {
       screen: CartTabStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='cart' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <MaterialIcon size={24} name='cart' color={tintColor} />
       }
     },
     '相談': {
       screen: ConsultTabStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon size={24} name='comment-multiple' color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <MaterialIcon size={24} name='comment-multiple' color={tintColor} />
       }
     }
   },
@@ -151,10 +164,28 @@ export const Tab = createBottomTabNavigator(
 //登録後画面
 const Container = (props) => {
   const [isTutorialModalVisible, setIsTutorialModalVisible] = useState(false)
+  const [registered, setRegistered] = useState(false)
+  const [name, setName] = useState('')
 
   const toggleTutorial = () => {
     setIsTutorialModalVisible(prevState => !prevState)
   }
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await Auth.currentAuthenticatedUser()
+      const currentUserEmail = currentUser.attributes.email
+      const userRes = await API.graphql(graphqlOperation(gqlQueries.getUser, { id: currentUserEmail }))
+      const registered = userRes.data.getUser.registered
+      const name = userRes.data.getUser.name
+      setRegistered(registered)
+      setName(name)
+    }
+    console.log('テストuseEffect')
+    fetchUser()
+  }, [])
+
+  const userStatus = registered ? 'レギュラー会員' : 'ゲストユーザー'
 
   //drawer
   const Drawer = createDrawerNavigator(
@@ -162,19 +193,19 @@ const Container = (props) => {
       'ホーム': {
         screen: Tab,
         navigationOptions: {
-          drawerIcon: <Icon name='home' size={24} color='white' style={{ left: wp('5%') }} />
+          drawerIcon: <MaterialIcon name='home' size={24} color='white' style={{ left: wp('5%') }} />
         }
       },
       '登録情報を編集': {
         screen: ProfileStack,
         navigationOptions: {
-          drawerIcon: <Icon name='account-circle' size={24}  color='white' style={{ left: wp('5%') }} />,
+          drawerIcon: <MaterialIcon name='account-circle' size={24}  color='white' style={{ left: wp('5%') }} />,
         }
       },
       '決済情報を編集': {
         screen: SettleStack,
         navigationOptions: {
-          drawerIcon: <Icon name='credit-card-outline' size={24} color='white' style={{ left: wp('5%') }} />
+          drawerIcon: <MaterialIcon name='credit-card-outline' size={24} color='white' style={{ left: wp('5%') }} />
         }
       }
     },
@@ -182,9 +213,13 @@ const Container = (props) => {
       contentComponent: (props) => (
         <View style={{ flex: 1, backgroundColor: '#7389D9' }}>
           <Image source={require('../assets/pretapo-white.png')} style={styles.drawerImage} />
+          <View style={styles.registerView}>
+            <Text style={styles.registerNameText}>{name} さん</Text>
+            <Text style={styles.registerText}>{userStatus}</Text>
+          </View>
             <DrawerItems {...props} activeTintColor='white' inactiveTintColor='white'/>
             <View style={styles.informationView}>
-              <Icon name='information-outline' size={24} color={'white'} />
+              <MaterialIcon name='information-outline' size={24} color={'white'} />
               <Text
                 style={styles.informationText}
                 onPress={() => toggleTutorial()}
@@ -193,7 +228,7 @@ const Container = (props) => {
               </Text>
             </View>
             <View style={styles.logoutView}>
-              <Icon name="logout" size={24} color={'white'} />
+              <MaterialIcon name="logout" size={24} color={'white'} />
               <Text
                 style={styles.logoutText}
                 onPress={() => Auth.signOut()}
@@ -301,5 +336,24 @@ const styles = StyleSheet.create({
     marginTop: hp('10%'),
     marginBottom: hp('2%'),
     resizeMode: 'contain'
+  },
+  registerView: {
+    width: wp('60%'),
+    backgroundColor: '#FFFFFF',
+    opacity: 0.6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 80,
+    padding: 20
+  },
+  registerNameText: {
+    fontSize: 16,
+    color: '#7389D9',
+    marginBottom: 10
+  },
+  registerText: {
+    color: '#7389D9',
+    fontSize: 18,
+    fontWeight: '700'
   }
 })
