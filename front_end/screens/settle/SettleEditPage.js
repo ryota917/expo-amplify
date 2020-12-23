@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from 'pretapo/src/graphql/queries' // read
 import * as gqlMutations from 'pretapo/src/graphql/mutations'
-import { payjpAxios, cardBrandImageUrl } from 'pretapo/front_end/screens/common/Payjp'
+import { PAYJP, payjpAxios, cardBrandImageUrl } from 'pretapo/front_end/screens/common/Payjp'
 import qs from 'qs'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -288,7 +288,7 @@ export class SettleEditPage extends React.Component {
                                 this.payJp = ref
                             }
                         }}
-                        publicKey='pk_test_8e84ad899db7afe528aa5b42'
+                        publicKey={PAYJP.publickKey}
                     />
                     {registered ?
                         <Text style={styles.titleText}>現在加入中のプラン</Text>

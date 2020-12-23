@@ -6,7 +6,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import * as gqlQueries from 'pretapo/src/graphql/queries' // read
 import * as gqlMutations from 'pretapo/src/graphql/mutations'
-import { payjpAxios } from 'pretapo/front_end/screens/common/Payjp'
+import { PAYJP, payjpAxios } from 'pretapo/front_end/screens/common/Payjp'
 import qs from 'qs'
 import PayJpBridge from './PayJpBridge';
 import ErrorAlertModal from 'pretapo/front_end/screens/common/ErrorAlertModal'
@@ -112,7 +112,7 @@ export class CartSettleEditPage extends React.Component {
                                 this.payJp = ref
                             }
                         }}
-                        publicKey='pk_test_8e84ad899db7afe528aa5b42'
+                        publicKey={PAYJP.publicKey}
                     />
                     <Text style={styles.titleText}>加入プラン(サブスクリプション)</Text>
                     <View style={styles.componentView}>
