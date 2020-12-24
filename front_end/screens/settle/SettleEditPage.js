@@ -47,8 +47,9 @@ export class SettleEditPage extends React.Component {
     componentDidMount = async () => {
         try {
             await this.fetchCurrentUser()
-            this.fetchPayjpData()
+            await this.fetchPayjpData()
             this.props.navigation.addListener('didFocus', async () => {
+                await this.fetchCurrentUser()
                 this.fetchPayjpData()
             })
         } catch(e) {
